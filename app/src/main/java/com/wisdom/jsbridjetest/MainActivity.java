@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
-import com.blankj.utilcode.util.LogUtils;
+
 import com.smallbuer.jsbridge.core.BridgeWebView;
 import com.wisdom.jsinterfacelib.activity.WebViewActivity;
 
