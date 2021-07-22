@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+//apply plugin: 'com.android.application'
 //apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.FordGT40 '
@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.wisdom.jsbridjetest"
+//        applicationId "com.wisdom.jsbridjetest"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
