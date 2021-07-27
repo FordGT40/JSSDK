@@ -182,10 +182,22 @@ public class ChooseImageHandler extends BridgeHandler {
                                                 if (resultCode == RESULT_OK) {
                                                     try {
                                                         List<String> list = new ArrayList<>();
+                                                        //根据图片uri获得图片的绝对路径
+                                                        String filePath=UriUtil.getFileAbsolutePath(context,finalImageUri);
+                                                        //根据图片uri获得图片的bitmap
+                                                        Bitmap bitmap=ImageUtil.getBitmapFromUri(context,finalImageUri);
+                                                        //根据图片的绝对路径获得图片应该旋转的角度
+                                                        int degree=ImageUtil.getBitmapDegree(filePath);
+                                                        //对图片进行相应角度的旋转操作
+                                                        Bitmap roteBitmap=ImageUtil.rotateBitmap(bitmap,degree);
+                                                        //将旋转后的bitMap保存本地，并返回保存路径
+                                                        String filePathLocal= ImageUtil.saveMyBitmapLocal(context,roteBitmap,System.currentTimeMillis()+".jpg");
                                                         if (isCompressed) {
-                                                            list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,UriUtil.getFileAbsolutePath(context,finalImageUri)));
+                                                            //压缩图片
+                                                            list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,filePathLocal));
                                                         } else {
-                                                            list.add("data:image/png;base64," + ImageUtil.ImageToBase64(UriUtil.getFileAbsolutePath(context,finalImageUri)));
+                                                            //不压缩图片
+                                                            list.add("data:image/png;base64," + ImageUtil.ImageToBase64(filePathLocal));
                                                         }
                                                         BaseModel baseModel = new BaseModel("拍照成功", -1, list);
                                                         function.onCallBack(GsonUtils.toJson(baseModel));

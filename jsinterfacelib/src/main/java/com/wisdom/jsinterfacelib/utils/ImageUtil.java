@@ -6,7 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -260,7 +263,7 @@ public class ImageUtil {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
 // 获得存储卡的路径
-            String sdpath = Environment.getExternalStorageState() + "/";
+            String sdpath = context.getExternalCacheDir() + "/";
             File f = new File(sdpath, bitName);
             f.createNewFile();
             FileOutputStream fOut = null;
@@ -282,6 +285,36 @@ public class ImageUtil {
 
         }
         return flag;
+    }
+
+    /**
+     * 保存图片到本地，并且返回保存地址
+     * @param context
+     * @param bmp
+     * @param bitName
+     * @return
+     * @throws IOException
+     */
+    public static String saveMyBitmapLocal(Context context,Bitmap bmp, String bitName) throws IOException {
+        boolean flag = false;
+
+// 获得存储卡的路径
+            String sdpath = context.getExternalCacheDir() + "/";
+            File f = new File(sdpath, bitName);
+            f.createNewFile();
+            FileOutputStream fOut = null;
+            try {
+                fOut = new FileOutputStream(f);
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                flag = true;
+                fOut.flush();
+                fOut.close();
+                compress(context,8,bitName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        return f.getAbsolutePath();
     }
 
 
@@ -459,6 +492,77 @@ public class ImageUtil {
 
         String videodata = Base64.encodeToString(objByteArrayOS.toByteArray(), Base64.DEFAULT);
         return videodata;
+    }
+
+
+
+
+
+    //拍照后图片旋转角度相关内容
+    /**
+     * 读取图片的旋转的角度
+     *
+     * @param path 图片绝对路径
+     * @return 图片的旋转角度
+     */
+    public static int getBitmapDegree(String path) {
+        int degree = 0;
+        try {
+            // 从指定路径下读取图片，并获取其EXIF信息
+            ExifInterface exifInterface = new ExifInterface(path);
+            // 获取图片的旋转信息
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+    /**
+     * 根据uri获取bitmap
+     * @param mContext
+     * @param uri
+     * @return
+     */
+    public static Bitmap getBitmapFromUri(Context mContext, Uri uri) {
+        try {
+            // 读取uri所在的图片
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), uri);
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 旋转图片，使图片保持正确的方向。
+     *
+     * @param bitmap  原始图片
+     * @param degrees 原始图片的角度
+     * @return Bitmap 旋转后的图片
+     */
+    public static Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+        if (degrees == 0 || null == bitmap) {
+            return bitmap;
+        }
+        Matrix matrix = new Matrix();
+        matrix.setRotate(degrees, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+        Bitmap bmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        bitmap.recycle();
+        return bmp;
     }
 }
 
