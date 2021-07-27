@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 
 import com.wisdom.jsinterfacelib.R;
@@ -28,19 +29,19 @@ public abstract class SignViewDialog extends Dialog implements View.OnClickListe
     TextView btnCancel;
     TextView btnSure;
 
-    public static String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + System.currentTimeMillis() + "sign.jpg";
-
+    public static String path = "";
 
 
     public SignViewDialog(@NonNull Context context) {
         super(context, R.style.DialogTheme);
         setContentView(R.layout.dialog_sign_view);
-        ivScreen=findViewById(R.id.iv_screen);
-        signview=findViewById(R.id.signview);
-        ivClear=findViewById(R.id.iv_clear);
-        btnCancel=findViewById(R.id.btn_cancel);
-        btnSure=findViewById(R.id.btn_sure);
-        iv_close=findViewById(R.id.iv_close);
+        path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + System.currentTimeMillis() + "sign.jpg";
+        ivScreen = findViewById(R.id.iv_screen);
+        signview = findViewById(R.id.signview);
+        ivClear = findViewById(R.id.iv_clear);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnSure = findViewById(R.id.btn_sure);
+        iv_close = findViewById(R.id.iv_close);
         ivScreen.setOnClickListener(this);
         ivClear.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
@@ -48,8 +49,6 @@ public abstract class SignViewDialog extends Dialog implements View.OnClickListe
         iv_close.setOnClickListener(this);
 
     }
-
-
 
 
     public abstract void onComplete(String path);

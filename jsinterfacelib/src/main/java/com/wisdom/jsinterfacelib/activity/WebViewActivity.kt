@@ -22,7 +22,7 @@ open class WebViewActivity : AppCompatActivity() {
 
         //获得控件
         webView = findViewById<View>(R.id.wv_webview) as BridgeWebView
-        LogUtils.i("进入：1")
+
 //        webViewInstance(webView!!)
         //        tv_1 = (TextView)findViewById(R.id.tv_1);
 //        tv_2 = (TextView)findViewById(R.id.tv_2);

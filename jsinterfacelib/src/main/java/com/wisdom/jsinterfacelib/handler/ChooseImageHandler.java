@@ -2,11 +2,20 @@ package com.wisdom.jsinterfacelib.handler;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.UriUtils;
+import com.huantansheng.easyphotos.ui.dialog.LoadingDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -16,21 +25,27 @@ import com.permissionx.guolindev.callback.RequestCallback;
 import com.smallbuer.jsbridge.core.BridgeHandler;
 import com.smallbuer.jsbridge.core.CallBackFunction;
 import com.wisdom.jsinterfacelib.model.BaseModel;
+import com.wisdom.jsinterfacelib.utils.Base64Util;
 import com.wisdom.jsinterfacelib.utils.GlideEngine;
 import com.wisdom.jsinterfacelib.utils.ImageUtil;
+import com.wisdom.jsinterfacelib.utils.UriUtil;
+import com.wisdom.jsinterfacelib.utils.avoidonresult.AvoidOnResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * 选择图片
  */
 public class ChooseImageHandler extends BridgeHandler {
-
 
     @Override
     public void handler(final Context context, final String data, final CallBackFunction function) {
@@ -65,7 +80,18 @@ public class ChooseImageHandler extends BridgeHandler {
                                     }
                                 }
                                 final Boolean finalIsCompressed = isCompressed[0];
-                                showImageSelect(context, hasCamaro[0], count[0], finalIsCompressed, baseModel, function);
+                                if (hasCamaro.length > 0) {
+                                    if (hasCamaro[0]) {
+                                        //打开相机拍照
+                                        openCamare(context, finalIsCompressed, function);
+                                    } else {
+                                        //相册选择
+                                        showImageSelect(context, hasCamaro[0], count[0], finalIsCompressed, baseModel, function);
+                                    }
+                                } else {
+                                    //相册选择
+                                    showImageSelect(context, hasCamaro[0], count[0], finalIsCompressed, baseModel, function);
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 baseModel[0] = new BaseModel("获取失败", -1, "js入参格式解析失败，请参考文档传参");
@@ -82,7 +108,7 @@ public class ChooseImageHandler extends BridgeHandler {
     }
 
 
-    private void showImageSelect(Context context, Boolean hasCamaro, int count, final Boolean finalIsCompressed, final BaseModel[] baseModel, final CallBackFunction function) {
+    private void showImageSelect(final Context context, Boolean hasCamaro, int count, final Boolean finalIsCompressed, final BaseModel[] baseModel, final CallBackFunction function) {
         PictureSelector.create((AppCompatActivity) context)
                 .openGallery(PictureMimeType.ofImage())
                 .isCamera(hasCamaro)
@@ -96,7 +122,7 @@ public class ChooseImageHandler extends BridgeHandler {
                             for (int i = 0; i < result.size(); i++) {
                                 //是否压缩
                                 if (finalIsCompressed) {
-                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(result.get(i).getRealPath()));
+                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context, result.get(i).getRealPath()));
                                 } else {
                                     list.add("data:image/png;base64," + ImageUtil.ImageToBase64(result.get(i).getRealPath()));
                                 }
@@ -115,4 +141,84 @@ public class ChooseImageHandler extends BridgeHandler {
                     }
                 });
     }
+
+    /**
+     * 打开相机，拍照
+     *
+     * @param context
+     * @param function
+     */
+    private void openCamare(final Context context, final Boolean isCompressed, final CallBackFunction function) {
+        PermissionX.init(((AppCompatActivity) context))
+                .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .request(new RequestCallback() {
+                    @Override
+                    public void onResult(boolean allGranted, List<String> grantedList, List<String> deniedList) {
+                        if (allGranted) {
+                            //获得权限，打开相机
+                            try {
+                                File outputImage = new File(context.getExternalCacheDir(), "output_image.jpg");
+                                if (outputImage.exists()) {
+                                    outputImage.delete();
+                                }
+                                outputImage.createNewFile();
+                                Uri imageUri = null;
+                                if (Build.VERSION.SDK_INT >= 24) {
+                                    imageUri = FileProvider.getUriForFile(context,
+                                            "com.wisdom.jsinterfacelib.fileprovider", outputImage);
+                                } else {
+                                    imageUri = Uri.fromFile(outputImage);
+                                }
+                                // 启动相机
+                                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+
+                                final Uri finalImageUri = imageUri;
+                                new AvoidOnResult(((AppCompatActivity) context))
+                                        .startForResult(intent, new AvoidOnResult.Callback() {
+                                            @Override
+                                            public void onActivityResult(int resultCode, Intent data) {
+                                                if (resultCode == RESULT_OK) {
+                                                    try {
+                                                        List<String> list = new ArrayList<>();
+                                                        if (isCompressed) {
+                                                            list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,UriUtil.getFileAbsolutePath(context,finalImageUri)));
+                                                        } else {
+                                                            list.add("data:image/png;base64," + ImageUtil.ImageToBase64(UriUtil.getFileAbsolutePath(context,finalImageUri)));
+                                                        }
+                                                        BaseModel baseModel = new BaseModel("拍照成功", -1, list);
+                                                        function.onCallBack(GsonUtils.toJson(baseModel));
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                        BaseModel baseModel = new BaseModel("拍照失败", -1, "系统错误");
+                                                        function.onCallBack(GsonUtils.toJson(baseModel));
+                                                    }
+                                                } else if (resultCode == RESULT_CANCELED) {
+                                                    //用户取消了操作
+                                                    BaseModel baseModel = new BaseModel("取消拍照", -1, "取消拍照");
+                                                    function.onCallBack(GsonUtils.toJson(baseModel));
+                                                } else {
+                                                    //其他返回值，未知错误（可能是系统不兼容等）
+                                                    BaseModel baseModel = new BaseModel("打开相机失败", -1, "未知错误（可能是系统不兼容等）");
+                                                    function.onCallBack(GsonUtils.toJson(baseModel));
+                                                }
+                                            }
+                                        });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                BaseModel baseModel = new BaseModel("获取相机失败", -1, "系统错误");
+                                function.onCallBack(GsonUtils.toJson(baseModel));
+                            }
+
+
+                        } else {
+                            BaseModel baseModel = new BaseModel("获取权限失败", -1, "用户拒接授权");
+                            function.onCallBack(GsonUtils.toJson(baseModel));
+                        }
+                    }
+                });
+    }
+
+
 }

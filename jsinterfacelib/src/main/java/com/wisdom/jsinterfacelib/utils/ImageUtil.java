@@ -1,5 +1,6 @@
 package com.wisdom.jsinterfacelib.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -179,12 +180,31 @@ public class ImageUtil {
         String result = Base64.encodeToString(data, Base64.NO_WRAP);
         return result;
     }
-    public static String ImageToBase64Compress(String imgPath) {
+    /* 本地图片转换Base64的方法
+     * @param imgPath
+     */
+    public static String ImageToBase64(File imgFile) {
         InputStream in = null;
         byte[] data = null;
 // 读取图片字节数组
         try {
-            in = new FileInputStream(saveMyBitmapForCompress(imgPath));
+            in = new FileInputStream(imgFile);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+// 返回Base64编码过的字节数组字符串
+        String result = Base64.encodeToString(data, Base64.NO_WRAP);
+        return result;
+    }
+    public static String ImageToBase64Compress(Context context,String imgPath) {
+        InputStream in = null;
+        byte[] data = null;
+// 读取图片字节数组
+        try {
+            in = new FileInputStream(saveMyBitmapForCompress(context,imgPath));
             data = new byte[in.available()];
             in.read(data);
             in.close();
@@ -235,12 +255,12 @@ public class ImageUtil {
         return result;
     }
 
-    public static boolean saveMyBitmap(Bitmap bmp, String bitName) throws IOException {
+    public static boolean saveMyBitmap(Context context,Bitmap bmp, String bitName) throws IOException {
         boolean flag = false;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
 // 获得存储卡的路径
-            String sdpath = Environment.getExternalStorageDirectory() + "/";
+            String sdpath = Environment.getExternalStorageState() + "/";
             File f = new File(sdpath, bitName);
             f.createNewFile();
             FileOutputStream fOut = null;
@@ -254,7 +274,7 @@ public class ImageUtil {
             try {
                 fOut.flush();
                 fOut.close();
-                compress(8,bitName);
+                compress(context,8,bitName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -265,12 +285,12 @@ public class ImageUtil {
     }
 
 
-    public static String saveMyBitmapForCompress(String path) throws IOException {
+    public static String saveMyBitmapForCompress(Context context,String path) throws IOException {
         boolean flag = false;
         String pathResult="";
-        String sdpath = Environment.getExternalStorageDirectory() + "/";
+        String sdpath =context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/";
         File f = new File(sdpath, "Compress.jpg");
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+//        if (Environment.getExternalStorageState().equals(Environment.DIRECTORY_PICTURES)) {
 
 // 获得存储卡的路径
             Bitmap bmp=BitmapFactory.decodeFile(path);
@@ -286,13 +306,13 @@ public class ImageUtil {
             try {
                 fOut.flush();
                 fOut.close();
-                pathResult=compress(8,"Compress.jpg");
+                pathResult=compress(context,8,"Compress.jpg");
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
-        }
+//        }
         if (flag) {
             if (!pathResult.equals("")) {
                 return pathResult;
@@ -389,8 +409,8 @@ public class ImageUtil {
 
      * @param inSampleSize  可以根据需求计算出合理的inSampleSize
      */
-    public static String compress(int inSampleSize,String fileName) {
-        File sdFile = Environment.getExternalStorageDirectory();
+    public static String compress(Context context,int inSampleSize, String fileName) {
+        File sdFile = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File originFile = new File(sdFile, fileName);
         BitmapFactory.Options options = new BitmapFactory.Options();
         //设置此参数是仅仅读取图片的宽高到options中，不会将整张图片读到内存中，防止oom

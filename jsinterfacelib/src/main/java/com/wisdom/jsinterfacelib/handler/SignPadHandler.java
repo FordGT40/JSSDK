@@ -41,7 +41,7 @@ public class SignPadHandler extends BridgeHandler {
             public void onComplete(String path) {
                 //完成签名，拿到签名路径
                 EventBus.getDefault().unregister(SignPadHandler.this);
-                String picData = "data:image/png;base64," + ImageUtil.ImageToBase64Compress(path);
+                String picData = "data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,path);
                 SignModel signModel=new SignModel();
                 signModel.setSignData(picData);
                 BaseModel baseModel = new BaseModel("获取签名图片成功", 0, signModel);
@@ -97,7 +97,7 @@ public class SignPadHandler extends BridgeHandler {
             signViewDialog.dismiss();
         }
         EventBus.getDefault().unregister(SignPadHandler.this);
-        String picData = "data:image/png;base64," + ImageUtil.ImageToBase64Compress(event.path);
+        String picData = "data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,event.path);
         SignModel signModel=new SignModel();
         signModel.setSignData(picData);
         BaseModel baseModel = new BaseModel("获取签名图片成功", 0, signModel);
