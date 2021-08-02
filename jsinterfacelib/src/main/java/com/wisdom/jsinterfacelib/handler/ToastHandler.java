@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialog.util.BaseDialog;
 import com.kongzue.dialog.v3.MessageDialog;
@@ -31,6 +32,11 @@ public class ToastHandler extends BridgeHandler {
     @Override
     public void handler(Context context, String data, CallBackFunction function) {
         LogUtils.i("接到的json：" + data);
+        LogUtils.i("接到的json：" + data);
+//        LogUtils.i("***获取屏幕的宽度***:" + ScreenUtils.getScreenWidth());
+//        LogUtils.i("***获取屏幕的高度***:" + ScreenUtils.getScreenHeight());
+//        LogUtils.i("***获取屏幕密度***:" + ScreenUtils.getScreenDensity());
+//        LogUtils.i("***获取屏幕密度Dpi***:" + ScreenUtils.getScreenDensityDpi());
         //{"type":"errorText","text":"点击了","detailText":"呵呵呵附件阿卡丽事件东方卡拉胶风口浪尖阿卡丽"}
         BaseModel baseModel;
         try {

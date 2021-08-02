@@ -20,6 +20,9 @@ android {
         //重命名
         rename('classes.jar', 'jsSDK.jar')
     }
+    packagingOptions {
+        exclude 'META-INF/library_release.kotlin_module'
+    }
 
     defaultConfig {
         minSdkVersion 21
@@ -36,6 +39,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -74,6 +81,12 @@ dependencies {
 //    # 可选，包含StandardVideoController的实现
     implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //人脸识别----阿里
+    implementation 'com.alibaba.android.mnnkit:facedetection:0.0.5'
+    //加载gif图的控件
+    implementation 'com.github.Cutta:GifView:1.4'
+
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
 
 //    # 可选，使用exoplayer进行解码
 //    implementation 'xyz.doikki.android.dkplayer:player-exo:3.3.3'

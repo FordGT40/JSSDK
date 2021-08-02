@@ -22,6 +22,7 @@ public class MainActivity extends WebViewActivity {
         setContentView(R.layout.activity_main);
         ll_parent = findViewById(R.id.ll_parent);
         ll_parent.setBackgroundColor(Color.parseColor("#00ffffff"));
+
 //        WebViewActivity.Companion.setUrl("http://192.168.111.173:8000/index.html");
 
 //        WebViewActivity.Companion.getWebView().loadUrl("http://192.168.111.173:8000/index.html");
@@ -62,8 +63,9 @@ public class MainActivity extends WebViewActivity {
 
 
         Intent intent=new Intent(this, WebViewActivity.class);
-        intent.putExtra("url","http://192.168.111.173:8000/index.html");
+        intent.putExtra("url","http://192.168.1.39:8090/jstest/index.html");
         startActivity(intent);
+
     }
 
 

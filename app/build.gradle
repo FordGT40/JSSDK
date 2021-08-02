@@ -16,7 +16,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    packagingOptions {
+        exclude 'META-INF/library_release.kotlin_module'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -44,6 +46,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.smallbuer:jsbridge:1.0.3'
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
+
+
 
 
 }

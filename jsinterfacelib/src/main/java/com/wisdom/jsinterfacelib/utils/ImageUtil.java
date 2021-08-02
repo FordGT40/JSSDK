@@ -4,8 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.graphics.YuvImage;
+import android.hardware.Camera;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
@@ -13,6 +16,8 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+
+import com.wisdom.jsinterfacelib.face.CameraView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -563,6 +568,27 @@ public class ImageUtil {
         Bitmap bmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         bitmap.recycle();
         return bmp;
+    }
+
+    /**
+     * 定制方法，获得人脸识别后的图片 （扫脸登录专用）
+     * @param mCameraView
+     * @param data
+     * @return
+     */
+    public static Bitmap getBitmapView(CameraView mCameraView, byte[] data) {
+        //获取bitmap
+        Camera.Size previewSize = mCameraView.getPreviewSize();//获取尺寸,格式转换的时候要用到
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        newOpts.inJustDecodeBounds = true;
+        YuvImage yuvimage = new YuvImage(data, ImageFormat.NV21, previewSize.width, previewSize.height,
+                null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        yuvimage.compressToJpeg(new Rect(0, 0, previewSize.width, previewSize.height), 100, baos);// 80--JPG图片的质量[0-100],100最高
+        byte[] rawImage = baos.toByteArray();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        return BitmapFactory.decodeByteArray(rawImage, 0, rawImage.length, options);
     }
 }
 

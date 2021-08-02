@@ -4,15 +4,15 @@ import android.app.Application;
 
 import com.smallbuer.jsbridge.core.Bridge;
 import com.smallbuer.jsbridge.core.BridgeHandler;
-import com.wisdom.jsinterfacelib.handler.GetTokenHandler;
-import com.wisdom.jsinterfacelib.utils.JsInterfaceBridge;
 import com.wisdom.jsinterfacelib.handler.AppVersionHandler;
 import com.wisdom.jsinterfacelib.handler.ChooseImageHandler;
 import com.wisdom.jsinterfacelib.handler.ChooseVideoHandler;
 import com.wisdom.jsinterfacelib.handler.DeviceInfoHandler;
 import com.wisdom.jsinterfacelib.handler.ExistApiHandler;
 import com.wisdom.jsinterfacelib.handler.ExistApisHandler;
+import com.wisdom.jsinterfacelib.handler.FaceRecognitionHandler;
 import com.wisdom.jsinterfacelib.handler.FingerPrintCompareHandler;
+import com.wisdom.jsinterfacelib.handler.GetTokenHandler;
 import com.wisdom.jsinterfacelib.handler.ImgePreviewHandler;
 import com.wisdom.jsinterfacelib.handler.LocationHandler;
 import com.wisdom.jsinterfacelib.handler.NavigationBarTitleHandler;
@@ -27,6 +27,7 @@ import com.wisdom.jsinterfacelib.handler.ToastHandler;
 import com.wisdom.jsinterfacelib.handler.ToggleNavigationBarHandler;
 import com.wisdom.jsinterfacelib.handler.WebViewCloseHandler;
 import com.wisdom.jsinterfacelib.handler.WebViewGoBackHandler;
+import com.wisdom.jsinterfacelib.utils.JsInterfaceBridge;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,12 +42,13 @@ import java.util.Map;
  */
 public class InitJsSDKUtil {
 
- /**
-  * 初始化jssdk方法，在主项目的Application中进行调用
-  * @param application
-  */
-   public static void init(Application application){
-       Bridge.INSTANCE.openLog();
+    /**
+     * 初始化jssdk方法，在主项目的Application中进行调用
+     *
+     * @param application
+     */
+    public static void init(Application application) {
+        Bridge.INSTANCE.openLog();
         Map<String, BridgeHandler> bridgeHandlerMap = new HashMap();
         bridgeHandlerMap.put("WISDOM.app.toast", new ToastHandler());
         bridgeHandlerMap.put("WISDOM.app.chooseImage", new ChooseImageHandler());
@@ -70,6 +72,7 @@ public class InitJsSDKUtil {
         bridgeHandlerMap.put("WISDOM.app.close", new WebViewCloseHandler());
         bridgeHandlerMap.put("WISDOM.app.setToken", new SetTokenHandler());
         bridgeHandlerMap.put("WISDOM.app.getToken", new GetTokenHandler());
+        bridgeHandlerMap.put("WISDOM.app.mnnFaceVerification", new FaceRecognitionHandler());
         JsInterfaceBridge.init(application, bridgeHandlerMap);
-   }
+    }
 }

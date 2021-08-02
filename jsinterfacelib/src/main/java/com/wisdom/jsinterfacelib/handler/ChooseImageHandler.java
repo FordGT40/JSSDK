@@ -176,45 +176,42 @@ public class ChooseImageHandler extends BridgeHandler {
 
                                 final Uri finalImageUri = imageUri;
                                 new AvoidOnResult(((AppCompatActivity) context))
-                                        .startForResult(intent, new AvoidOnResult.Callback() {
-                                            @Override
-                                            public void onActivityResult(int resultCode, Intent data) {
-                                                if (resultCode == RESULT_OK) {
-                                                    try {
-                                                        List<String> list = new ArrayList<>();
-                                                        //根据图片uri获得图片的绝对路径
-                                                        String filePath=UriUtil.getFileAbsolutePath(context,finalImageUri);
-                                                        //根据图片uri获得图片的bitmap
-                                                        Bitmap bitmap=ImageUtil.getBitmapFromUri(context,finalImageUri);
-                                                        //根据图片的绝对路径获得图片应该旋转的角度
-                                                        int degree=ImageUtil.getBitmapDegree(filePath);
-                                                        //对图片进行相应角度的旋转操作
-                                                        Bitmap roteBitmap=ImageUtil.rotateBitmap(bitmap,degree);
-                                                        //将旋转后的bitMap保存本地，并返回保存路径
-                                                        String filePathLocal= ImageUtil.saveMyBitmapLocal(context,roteBitmap,System.currentTimeMillis()+".jpg");
-                                                        if (isCompressed) {
-                                                            //压缩图片
-                                                            list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,filePathLocal));
-                                                        } else {
-                                                            //不压缩图片
-                                                            list.add("data:image/png;base64," + ImageUtil.ImageToBase64(filePathLocal));
-                                                        }
-                                                        BaseModel baseModel = new BaseModel("拍照成功", -1, list);
-                                                        function.onCallBack(GsonUtils.toJson(baseModel));
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                        BaseModel baseModel = new BaseModel("拍照失败", -1, "系统错误");
-                                                        function.onCallBack(GsonUtils.toJson(baseModel));
+                                        .startForResult(intent, (resultCode, data) -> {
+                                            if (resultCode == RESULT_OK) {
+                                                try {
+                                                    List<String> list = new ArrayList<>();
+                                                    //根据图片uri获得图片的绝对路径
+                                                    String filePath=UriUtil.getFileAbsolutePath(context,finalImageUri);
+                                                    //根据图片uri获得图片的bitmap
+                                                    Bitmap bitmap=ImageUtil.getBitmapFromUri(context,finalImageUri);
+                                                    //根据图片的绝对路径获得图片应该旋转的角度
+                                                    int degree=ImageUtil.getBitmapDegree(filePath);
+                                                    //对图片进行相应角度的旋转操作
+                                                    Bitmap roteBitmap=ImageUtil.rotateBitmap(bitmap,degree);
+                                                    //将旋转后的bitMap保存本地，并返回保存路径
+                                                    String filePathLocal= ImageUtil.saveMyBitmapLocal(context,roteBitmap,System.currentTimeMillis()+".jpg");
+                                                    if (isCompressed) {
+                                                        //压缩图片
+                                                        list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,filePathLocal));
+                                                    } else {
+                                                        //不压缩图片
+                                                        list.add("data:image/png;base64," + ImageUtil.ImageToBase64(filePathLocal));
                                                     }
-                                                } else if (resultCode == RESULT_CANCELED) {
-                                                    //用户取消了操作
-                                                    BaseModel baseModel = new BaseModel("取消拍照", -1, "取消拍照");
+                                                    BaseModel baseModel = new BaseModel("拍照成功", -1, list);
                                                     function.onCallBack(GsonUtils.toJson(baseModel));
-                                                } else {
-                                                    //其他返回值，未知错误（可能是系统不兼容等）
-                                                    BaseModel baseModel = new BaseModel("打开相机失败", -1, "未知错误（可能是系统不兼容等）");
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    BaseModel baseModel = new BaseModel("拍照失败", -1, "系统错误");
                                                     function.onCallBack(GsonUtils.toJson(baseModel));
                                                 }
+                                            } else if (resultCode == RESULT_CANCELED) {
+                                                //用户取消了操作
+                                                BaseModel baseModel = new BaseModel("取消拍照", -1, "取消拍照");
+                                                function.onCallBack(GsonUtils.toJson(baseModel));
+                                            } else {
+                                                //其他返回值，未知错误（可能是系统不兼容等）
+                                                BaseModel baseModel = new BaseModel("打开相机失败", -1, "未知错误（可能是系统不兼容等）");
+                                                function.onCallBack(GsonUtils.toJson(baseModel));
                                             }
                                         });
                             } catch (Exception e) {
