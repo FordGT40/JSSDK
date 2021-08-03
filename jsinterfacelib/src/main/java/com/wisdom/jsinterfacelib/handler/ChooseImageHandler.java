@@ -151,80 +151,75 @@ public class ChooseImageHandler extends BridgeHandler {
     private void openCamare(final Context context, final Boolean isCompressed, final CallBackFunction function) {
         PermissionX.init(((AppCompatActivity) context))
                 .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .request(new RequestCallback() {
-                    @Override
-                    public void onResult(boolean allGranted, List<String> grantedList, List<String> deniedList) {
-                        if (allGranted) {
-                            //获得权限，打开相机
-                            try {
-                                File outputImage = new File(context.getExternalCacheDir(), "output_image.jpg");
-                                if (outputImage.exists()) {
-                                    outputImage.delete();
-                                }
-                                outputImage.createNewFile();
-                                Uri imageUri = null;
-                                if (Build.VERSION.SDK_INT >= 24) {
-                                    imageUri = FileProvider.getUriForFile(context,
-                                            "com.wisdom.jsinterfacelib.fileprovider", outputImage);
-                                } else {
-                                    imageUri = Uri.fromFile(outputImage);
-                                }
-                                // 启动相机
-                                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                .request((allGranted, grantedList, deniedList) -> {
+                    if (allGranted) {
+                        //获得权限，打开相机
+                        try {
+                            File outputImage = new File(context.getExternalCacheDir(), "output_image.jpg");
+                            if (outputImage.exists()) {
+                                outputImage.delete();
+                            }
+                            outputImage.createNewFile();
+                            Uri imageUri = null;
+                            if (Build.VERSION.SDK_INT >= 24) {
+                                imageUri = FileProvider.getUriForFile(context,
+                                        "com.wisdom.jsinterfacelib.fileprovider", outputImage);
+                            } else {
+                                imageUri = Uri.fromFile(outputImage);
+                            }
+                            // 启动相机
+                            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 
 
-                                final Uri finalImageUri = imageUri;
-                                new AvoidOnResult(((AppCompatActivity) context))
-                                        .startForResult(intent, (resultCode, data) -> {
-                                            if (resultCode == RESULT_OK) {
-                                                try {
-                                                    List<String> list = new ArrayList<>();
-                                                    //根据图片uri获得图片的绝对路径
-                                                    String filePath=UriUtil.getFileAbsolutePath(context,finalImageUri);
-                                                    //根据图片uri获得图片的bitmap
-                                                    Bitmap bitmap=ImageUtil.getBitmapFromUri(context,finalImageUri);
-                                                    //根据图片的绝对路径获得图片应该旋转的角度
-                                                    int degree=ImageUtil.getBitmapDegree(filePath);
-                                                    //对图片进行相应角度的旋转操作
-                                                    Bitmap roteBitmap=ImageUtil.rotateBitmap(bitmap,degree);
-                                                    //将旋转后的bitMap保存本地，并返回保存路径
-                                                    String filePathLocal= ImageUtil.saveMyBitmapLocal(context,roteBitmap,System.currentTimeMillis()+".jpg");
-                                                    if (isCompressed) {
-                                                        //压缩图片
-                                                        list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,filePathLocal));
-                                                    } else {
-                                                        //不压缩图片
-                                                        list.add("data:image/png;base64," + ImageUtil.ImageToBase64(filePathLocal));
-                                                    }
-                                                    BaseModel baseModel = new BaseModel("拍照成功", -1, list);
-                                                    function.onCallBack(GsonUtils.toJson(baseModel));
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                    BaseModel baseModel = new BaseModel("拍照失败", -1, "系统错误");
-                                                    function.onCallBack(GsonUtils.toJson(baseModel));
+                            final Uri finalImageUri = imageUri;
+                            new AvoidOnResult(((AppCompatActivity) context))
+                                    .startForResult(intent, (resultCode, data) -> {
+                                        if (resultCode == RESULT_OK) {
+                                            try {
+                                                List<String> list = new ArrayList<>();
+                                                //根据图片uri获得图片的绝对路径
+                                                String filePath=UriUtil.getFileAbsolutePath(context,finalImageUri);
+                                                //根据图片uri获得图片的bitmap
+                                                Bitmap bitmap=ImageUtil.getBitmapFromUri(context,finalImageUri);
+                                                //根据图片的绝对路径获得图片应该旋转的角度
+                                                int degree=ImageUtil.getBitmapDegree(filePath);
+                                                //对图片进行相应角度的旋转操作
+                                                Bitmap roteBitmap=ImageUtil.rotateBitmap(bitmap,degree);
+                                                //将旋转后的bitMap保存本地，并返回保存路径
+                                                String filePathLocal= ImageUtil.saveMyBitmapLocal(context,roteBitmap,System.currentTimeMillis()+".jpg");
+                                                if (isCompressed) {
+                                                    //压缩图片
+                                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,filePathLocal));
+                                                } else {
+                                                    //不压缩图片
+                                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64(filePathLocal));
                                                 }
-                                            } else if (resultCode == RESULT_CANCELED) {
-                                                //用户取消了操作
-                                                BaseModel baseModel = new BaseModel("取消拍照", -1, "取消拍照");
+                                                BaseModel baseModel = new BaseModel("拍照成功", 0, list);
                                                 function.onCallBack(GsonUtils.toJson(baseModel));
-                                            } else {
-                                                //其他返回值，未知错误（可能是系统不兼容等）
-                                                BaseModel baseModel = new BaseModel("打开相机失败", -1, "未知错误（可能是系统不兼容等）");
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                BaseModel baseModel = new BaseModel("拍照失败", -1, "系统错误");
                                                 function.onCallBack(GsonUtils.toJson(baseModel));
                                             }
-                                        });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                BaseModel baseModel = new BaseModel("获取相机失败", -1, "系统错误");
-                                function.onCallBack(GsonUtils.toJson(baseModel));
-                            }
-
-
-                        } else {
-                            BaseModel baseModel = new BaseModel("获取权限失败", -1, "用户拒接授权");
+                                        } else if (resultCode == RESULT_CANCELED) {
+                                            //用户取消了操作
+                                            BaseModel baseModel = new BaseModel("取消拍照", -1, "取消拍照");
+                                            function.onCallBack(GsonUtils.toJson(baseModel));
+                                        } else {
+                                            //其他返回值，未知错误（可能是系统不兼容等）
+                                            BaseModel baseModel = new BaseModel("打开相机失败", -1, "未知错误（可能是系统不兼容等）");
+                                            function.onCallBack(GsonUtils.toJson(baseModel));
+                                        }
+                                    });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            BaseModel baseModel = new BaseModel("获取相机失败", -1, "系统错误");
                             function.onCallBack(GsonUtils.toJson(baseModel));
                         }
+                    } else {
+                        BaseModel baseModel = new BaseModel("获取权限失败", -1, "用户拒接授权");
+                        function.onCallBack(GsonUtils.toJson(baseModel));
                     }
                 });
     }

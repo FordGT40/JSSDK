@@ -63,7 +63,8 @@ public class MainActivity extends WebViewActivity {
 
 
         Intent intent=new Intent(this, WebViewActivity.class);
-        intent.putExtra("url","http://192.168.1.39:8090/jstest/index.html");
+//        intent.putExtra("url","http://192.168.1.39:8090/jstest/index.html");
+        intent.putExtra("url","http://192.168.111.173:8000/index.html");
         startActivity(intent);
 
     }
