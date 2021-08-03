@@ -61,9 +61,8 @@ public class FaceRecognitionHandler extends BridgeHandler {
                                                 if (code == 0) {
                                                     String filePath = data1.getStringExtra("filePath");
                                                     //人脸识别成功
-                                                    LogUtils.i("BASE64:"+"data:image/png;base64,"+ImageUtil.ImageToBase64Compress(context, filePath));
                                                     FaceDetectionModel faceDetectionModel=new FaceDetectionModel("data:image/png;base64,"+ImageUtil.ImageToBase64Compress(context, filePath));
-                                                    BaseModel baseModel = new BaseModel(msg, 70000, faceDetectionModel);
+                                                    BaseModel baseModel = new BaseModel(msg, 0, faceDetectionModel);
                                                     function.onCallBack(GsonUtils.toJson(baseModel));
                                                 } else {
                                                     //人脸识别失败
