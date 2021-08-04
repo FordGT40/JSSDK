@@ -1,4 +1,4 @@
-package com.wisdom.jsbridjetest;
+package com.wisdom.jssdk_basic;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.wisdom.jsbridjetest", appContext.getPackageName());
+        assertEquals("com.wisdom.jssdk_basic", appContext.getPackageName());
     }
 }

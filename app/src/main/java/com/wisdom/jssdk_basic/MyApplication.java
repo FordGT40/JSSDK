@@ -1,4 +1,4 @@
-package com.wisdom.jsbridjetest;
+package com.wisdom.jssdk_basic;
 
 import com.uuzuche.lib_zxing.ZApplication;
 import com.wisdom.jsinterfacelib.InitJsSDKUtil;

@@ -2,7 +2,7 @@ package com.wisdom.jsinterfacelib.model;
 
 /**
  * @author HanXueFeng
- * @ProjectName project： JsbridjeTest
+ * @ProjectName project： jssdk_basic
  * @class package：com.wisdom.jsinterfacelib.model
  * @class describe：
  * @time 2021/8/2 0002 14:29

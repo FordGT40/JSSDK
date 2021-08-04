@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 /**
  * @author HanXueFeng
- * @ProjectName project： JsbridjeTest
+ * @ProjectName project： jssdk_basic
  * @class package：com.wisdom.jsinterfacelib.utils
  * @class describe：
  * @time 2021/7/14 0014 14:14

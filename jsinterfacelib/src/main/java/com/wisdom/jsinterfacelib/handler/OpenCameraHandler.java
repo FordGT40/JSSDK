@@ -19,7 +19,7 @@ public class OpenCameraHandler extends BridgeHandler {
     @Override
     public void handler(Context context, String data, CallBackFunction function) {
         EasyPhotos.createCamera(((Activity) context),false)//参数说明：上下文,是否使用宽高数据（false时宽高数据为0，扫描速度更快）
-                .setFileProviderAuthority("com.wisdom.jsbridjetest.fileprovider")//参数说明：见下方`FileProvider的配置`
+                .setFileProviderAuthority("com.wisdom.jssdk_basic.fileprovider")//参数说明：见下方`FileProvider的配置`
                 .start(0);
 
     }

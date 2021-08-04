@@ -2,4 +2,4 @@ include ':library'
 include ':sweetAlert'
 include ':jsinterfacelib'
 include ':app'
-rootProject.name = "JsbridjeTest"
+rootProject.name = "JSSDK_Basic"

@@ -14,7 +14,7 @@ import com.wisdom.jsinterfacelib.R;
 
 /**
  * @author HanXueFeng
- * @ProjectName project： JsbridjeTest
+ * @ProjectName project： jssdk_basic
  * @class package：com.wisdom.jsinterfacelib
  * @class describe：
  * @time 2021/7/13 0013 13:29

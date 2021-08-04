@@ -1,4 +1,4 @@
-package com.wisdom.jsbridjetest;
+package com.wisdom.jssdk_basic;
 
 import org.junit.Test;
 

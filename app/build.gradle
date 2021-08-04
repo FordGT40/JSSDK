@@ -8,7 +8,7 @@ android {
     buildToolsVersion "29.0.0"
 
     defaultConfig {
-        applicationId "com.wisdom.jsbridjetest"
+        applicationId "com.wisdom.jssdk_basic"
         minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 29
