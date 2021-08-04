@@ -282,7 +282,7 @@ public class ImageUtil {
             try {
                 fOut.flush();
                 fOut.close();
-                compress(context,8,bitName);
+                compress(context,2,bitName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -314,7 +314,7 @@ public class ImageUtil {
                 flag = true;
                 fOut.flush();
                 fOut.close();
-                compress(context,8,bitName);
+                compress(context,0,bitName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -326,7 +326,7 @@ public class ImageUtil {
     public static String saveMyBitmapForCompress(Context context,String path) throws IOException {
         boolean flag = false;
         String pathResult="";
-        String sdpath =context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/";
+        String sdpath =context.getExternalCacheDir() + "/";
         File f = new File(sdpath, "Compress.jpg");
 //        if (Environment.getExternalStorageState().equals(Environment.DIRECTORY_PICTURES)) {
 
@@ -344,7 +344,7 @@ public class ImageUtil {
             try {
                 fOut.flush();
                 fOut.close();
-                pathResult=compress(context,8,"Compress.jpg");
+                pathResult=compress(context,2,"Compress.jpg");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -448,7 +448,7 @@ public class ImageUtil {
      * @param inSampleSize  可以根据需求计算出合理的inSampleSize
      */
     public static String compress(Context context,int inSampleSize, String fileName) {
-        File sdFile = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File sdFile = context.getExternalCacheDir();
         File originFile = new File(sdFile, fileName);
         BitmapFactory.Options options = new BitmapFactory.Options();
         //设置此参数是仅仅读取图片的宽高到options中，不会将整张图片读到内存中，防止oom

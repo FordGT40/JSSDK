@@ -179,7 +179,7 @@ public class ChooseImageHandler extends BridgeHandler {
                                             try {
                                                 List<String> list = new ArrayList<>();
                                                 //根据图片uri获得图片的绝对路径
-                                                String filePath=UriUtil.getFileAbsolutePath(context,finalImageUri);
+                                                String filePath=UriUtil.getRealFilePathForPhoto(context,finalImageUri);
                                                 //根据图片uri获得图片的bitmap
                                                 Bitmap bitmap=ImageUtil.getBitmapFromUri(context,finalImageUri);
                                                 //根据图片的绝对路径获得图片应该旋转的角度

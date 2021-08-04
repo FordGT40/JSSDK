@@ -25,7 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.mnnkit.actor.FaceDetector;
 import com.alibaba.android.mnnkit.entity.FaceDetectConfig;
@@ -38,7 +37,6 @@ import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.cunoraz.gifview.library.GifView;
 import com.wisdom.jsinterfacelib.R;
-import com.wisdom.jsinterfacelib.model.BaseModel;
 import com.wisdom.jsinterfacelib.utils.ImageUtil;
 
 import java.util.ArrayList;
@@ -212,7 +210,7 @@ public class FaceDetectionActivity extends VideoBaseActivity {
         }
         navigationbar.setTitle(title);
         actionCount = getIntent().getIntExtra("actionCount", 1);
-         second = getIntent().getIntExtra("second", 0);
+        second = getIntent().getIntExtra("second", 0);
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -359,7 +357,7 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                         setGif(action1);
                     }
 
-                    if (actionCount==2) {
+                    if (actionCount == 2) {
                         //监测第一个动作
                         if (isDetection) {
                             if (faceActionDesc(firstReport.faceActionMap).contains(action1)) {
@@ -379,10 +377,10 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                     }
 
                     //监听第二个动作
-                    if (actionCount==1?isDetection:isDetection2) {
-                        if (faceActionDesc(firstReport.faceActionMap).contains(actionCount==1?action1:action2)) {
+                    if (actionCount == 1 ? isDetection : isDetection2) {
+                        if (faceActionDesc(firstReport.faceActionMap).contains(actionCount == 1 ? action1 : action2)) {
                             isDetection2 = false;
-                            if (actionCount==1) {
+                            if (actionCount == 1) {
                                 isDetection = false;
                             }
                             playSound("正在识别");
@@ -418,7 +416,7 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                                 try {
                                     FileUtils.delete(Environment.getExternalStorageDirectory().toString() + "/faceInfo1.jpg");
                                     FileUtils.delete(Environment.getExternalStorageDirectory().toString() + "/faceInfo.jpg");
-                                    String filePath=ImageUtil.saveMyBitmapLocal(FaceDetectionActivity.this, bitmap, "faceInfo1.jpg");
+                                    String filePath = ImageUtil.saveMyBitmapLocal(FaceDetectionActivity.this, bitmap, "faceInfo.jpg");
                                     // 人脸识别完成
                                     Intent intent = new Intent();
                                     intent.putExtra("code", 0);
@@ -450,8 +448,8 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                     gif_view.pause();
                 }
 
-//TODO 注释掉绘制人脸框的代码
-//                DrawResult(scores, rects, keypts, faceCount, cameraOrientation, rotateDegree, data);
+//绘制人脸框的代码
+                DrawResult(scores, rects, keypts, faceCount, cameraOrientation, rotateDegree, data);
             }
 
         });
@@ -591,8 +589,8 @@ public class FaceDetectionActivity extends VideoBaseActivity {
  ToastUtils.showShort("人脸画完了");
  }
  **/
-//TODO 注释掉绘制人脸识别置信度、位置等信息的代码
-//                canvas.drawText(scores[i] + "", left * kx, top * ky - 10, ScorePaint);
+// 绘制人脸识别置信度、位置等信息的代码
+                canvas.drawText(scores[i] + "", left * kx, top * ky - 10, ScorePaint);
             }
 
 

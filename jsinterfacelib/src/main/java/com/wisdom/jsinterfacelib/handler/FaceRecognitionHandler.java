@@ -3,10 +3,12 @@ package com.wisdom.jsinterfacelib.handler;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.permissionx.guolindev.PermissionX;
 import com.smallbuer.jsbridge.core.BridgeHandler;
@@ -17,8 +19,9 @@ import com.wisdom.jsinterfacelib.model.FaceDetectionModel;
 import com.wisdom.jsinterfacelib.utils.ImageUtil;
 import com.wisdom.jsinterfacelib.utils.avoidonresult.AvoidOnResult;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static com.wisdom.jsinterfacelib.face.FaceDetectionActivity.RESULT_CODE_FACE_DETECTION;
@@ -61,9 +64,27 @@ public class FaceRecognitionHandler extends BridgeHandler {
                                                 if (code == 0) {
                                                     String filePath = data1.getStringExtra("filePath");
                                                     //人脸识别成功
-                                                    FaceDetectionModel faceDetectionModel=new FaceDetectionModel("data:image/png;base64,"+ImageUtil.ImageToBase64Compress(context, filePath));
-                                                    BaseModel baseModel = new BaseModel(msg, 0, faceDetectionModel);
-                                                    function.onCallBack(GsonUtils.toJson(baseModel));
+                                                    try {
+                                                        //根据图片的绝对路径获得图片应该旋转的角度
+                                                        int degree = 90;
+                                                        if (android.hardware.Camera.getNumberOfCameras() > 1) {
+                                                            //如果带前后摄像头的，那么计算图片旋转角度，否则只有一个摄像头固定顺时针旋转90度
+                                                            degree = ImageUtil.getBitmapDegree(filePath);
+                                                        }
+                                                        //对图片进行相应角度的旋转操作
+                                                        Bitmap roteBitmap = ImageUtil.rotateBitmap(ImageUtils.getBitmap(filePath), degree);
+                                                        //将旋转后的bitMap保存本地，并返回保存路径
+                                                        String filePathLocal = ImageUtil.saveMyBitmapLocal(context, roteBitmap, System.currentTimeMillis() + ".jpg");
+
+                                                        FaceDetectionModel faceDetectionModel = new FaceDetectionModel("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context, filePathLocal));
+                                                        BaseModel baseModel = new BaseModel(msg, 0, faceDetectionModel);
+                                                        function.onCallBack(GsonUtils.toJson(baseModel));
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                        //人脸识别失败
+                                                        BaseModel baseModel = new BaseModel("人脸识别失败", 70002, e.getMessage());
+                                                        function.onCallBack(GsonUtils.toJson(baseModel));
+                                                    }
                                                 } else {
                                                     //人脸识别失败
                                                     BaseModel baseModel = new BaseModel(msg, 70002, "人脸识别失败");

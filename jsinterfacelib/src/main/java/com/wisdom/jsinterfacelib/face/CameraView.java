@@ -22,7 +22,9 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
     private static final int MINIMUM_PREVIEW_SIZE = 320;
 
     private Camera mCamera;
-    private static int mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
+    private static int cameraCount=android.hardware.Camera.getNumberOfCameras();
+//    private static int mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
+    private static int mCameraId = cameraCount-1;
     private Camera.Parameters mParams;
     private Camera.Size mPreviewSize;
     private PreviewCallback mPreviewCallback;
@@ -71,6 +73,9 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
         return mPreviewSize;
     }
 
+    /**
+     * @param holder
+     */
     private void openCamera(SurfaceHolder holder) {
         // release Camera, if not release camera before call camera, it will be locked
         releaseCamera();
@@ -87,9 +92,11 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 
         // set format
         mParams.setPreviewFormat(ImageFormat.NV21);
-        if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
-            mParams.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-        }
+
+            if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
+//                mParams.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+            }
+
 
         mCamera.setParameters(mParams);
 

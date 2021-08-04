@@ -4,5 +4,10 @@
         <root-path
             name="camera_photos"
             path="" />
+        <cache-path name="jssdk_cache" path="jssdk/cache" />
+        <files-path name="jssdk_files" path="jssdk/files" />
+        <external-path name="jssdk_external" path="jssdk/external" />
+        <external-files-path name="jssdk_external_files" path="jssdk/external/files" />
+        <external-cache-path name="jssdk_external_cache" path="jssdk/external/cache" />
     </paths>
 </resources>
