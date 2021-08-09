@@ -13,7 +13,7 @@ import com.wisdom.jsinterfacelib.model.BaseModel;
 import org.json.JSONObject;
 
 /**
- *### 获取App版本号
+ *### 获取App的Token
  */
 public class GetTokenHandler extends BridgeHandler {
     @Override

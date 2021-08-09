@@ -42,4 +42,26 @@ public class Base64Util {
         }
         return base64;
     }
+
+    public static String videoToBase64(File file) {
+        String base64 = null;
+        InputStream in = null;
+        try {
+            in = new FileInputStream(file);
+            byte[] bytes = new byte[in.available()];
+            int length = in.read(bytes);
+            base64 = Base64.encodeToString(bytes, 0, length, Base64.NO_WRAP);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "data:video/mp4;base64,"+base64;
+    }
 }

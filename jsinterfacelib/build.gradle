@@ -87,6 +87,7 @@ dependencies {
     implementation 'com.github.Cutta:GifView:1.4'
 
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
 //    # 可选，使用exoplayer进行解码
 //    implementation 'xyz.doikki.android.dkplayer:player-exo:3.3.3'

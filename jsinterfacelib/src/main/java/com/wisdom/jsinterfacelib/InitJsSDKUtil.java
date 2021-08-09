@@ -5,6 +5,7 @@ import android.app.Application;
 import com.smallbuer.jsbridge.core.Bridge;
 import com.smallbuer.jsbridge.core.BridgeHandler;
 import com.wisdom.jsinterfacelib.handler.AppVersionHandler;
+import com.wisdom.jsinterfacelib.handler.CameraCustomHandler;
 import com.wisdom.jsinterfacelib.handler.ChooseImageHandler;
 import com.wisdom.jsinterfacelib.handler.ChooseVideoHandler;
 import com.wisdom.jsinterfacelib.handler.DeviceInfoHandler;
@@ -73,6 +74,7 @@ public class InitJsSDKUtil {
         bridgeHandlerMap.put("WISDOM.app.setToken", new SetTokenHandler());
         bridgeHandlerMap.put("WISDOM.app.getToken", new GetTokenHandler());
         bridgeHandlerMap.put("WISDOM.app.mnnFaceVerification", new FaceRecognitionHandler());
+        bridgeHandlerMap.put("WISDOM.app.recordVideo", new CameraCustomHandler());
         JsInterfaceBridge.init(application, bridgeHandlerMap);
     }
 }

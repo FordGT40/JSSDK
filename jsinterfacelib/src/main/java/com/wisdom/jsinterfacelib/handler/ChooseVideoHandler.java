@@ -20,6 +20,7 @@ import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.RequestCallback;
 import com.smallbuer.jsbridge.core.BridgeHandler;
 import com.smallbuer.jsbridge.core.CallBackFunction;
+import com.wisdom.jsinterfacelib.utils.Base64Util;
 import com.wisdom.jsinterfacelib.utils.GlideEngine;
 import com.wisdom.jsinterfacelib.utils.ImageUtil;
 import com.wisdom.jsinterfacelib.model.BaseModel;
@@ -31,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -212,7 +214,7 @@ public class ChooseVideoHandler extends BridgeHandler {
             videoBackModel.setSize(size);
             videoBackModel.setTempFilePath(path);
             //TODO 视频如果过长，转Base64会出问题暂时注释掉
-//            videoBackModel.setVideoData(Base64Util.fileToBase64(new File(path)));
+            videoBackModel.setVideoData(Base64Util.videoToBase64(new File(path)));
 
             return videoBackModel;
         } catch (Exception ex) {
