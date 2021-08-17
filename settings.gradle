@@ -1,5 +1,6 @@
+include ':app',':jsinterfacelib'
 include ':library'
 include ':sweetAlert'
-include ':jsinterfacelib'
-include ':app'
+
+
 rootProject.name = "JSSDK_Basic"

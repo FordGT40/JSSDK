@@ -83,6 +83,8 @@ dependencies {
 //    # 可选，包含StandardVideoController的实现
     implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //人脸识别----阿里
     implementation 'com.alibaba.android.mnnkit:facedetection:0.0.5'
     //加载gif图的控件
