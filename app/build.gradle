@@ -5,14 +5,14 @@ apply plugin: 'maven-publish'
 group = 'com.github.FordGT40 '
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+    compileSdkVersion 30
+//    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.wisdom.jssdk_basic"
         minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
