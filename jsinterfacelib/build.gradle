@@ -79,6 +79,7 @@ dependencies {
 //    implementation 'com.lzy.net:okserver:2.0.5'
 
 
+
 //    # 可选，包含StandardVideoController的实现
     implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
