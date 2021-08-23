@@ -73,6 +73,7 @@ public class FaceRecognitionHandler extends BridgeHandler {
                                                         }
                                                         //对图片进行相应角度的旋转操作
                                                         Bitmap roteBitmap = ImageUtil.rotateBitmap(ImageUtils.getBitmap(filePath), degree);
+
                                                         //将旋转后的bitMap保存本地，并返回保存路径
                                                         String filePathLocal = ImageUtil.saveMyBitmapLocal(context, roteBitmap, System.currentTimeMillis() + ".jpg",0);
 
