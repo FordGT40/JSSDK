@@ -187,7 +187,7 @@ public class ChooseImageHandler extends BridgeHandler {
                                                 //对图片进行相应角度的旋转操作
                                                 Bitmap roteBitmap=ImageUtil.rotateBitmap(bitmap,degree);
                                                 //将旋转后的bitMap保存本地，并返回保存路径
-                                                String filePathLocal= ImageUtil.saveMyBitmapLocal(context,roteBitmap,System.currentTimeMillis()+".jpg");
+                                                String filePathLocal= ImageUtil.saveMyBitmapLocal(context,roteBitmap,System.currentTimeMillis()+".jpg",0);
                                                 if (isCompressed) {
                                                     //压缩图片
                                                     list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,filePathLocal));

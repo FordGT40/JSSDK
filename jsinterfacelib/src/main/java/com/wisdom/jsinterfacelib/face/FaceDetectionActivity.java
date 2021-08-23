@@ -412,11 +412,10 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                                 Bitmap bitmap = ImageUtil.getBitmapView(mCameraView, data);
                                 bitmap = ImageUtil.rotateBitmap(bitmap, 270);
                                 tv_info.setText("正在识别，请稍后……");
-
                                 try {
                                     FileUtils.delete(Environment.getExternalStorageDirectory().toString() + "/faceInfo1.jpg");
                                     FileUtils.delete(Environment.getExternalStorageDirectory().toString() + "/faceInfo.jpg");
-                                    String filePath = ImageUtil.saveMyBitmapLocal(FaceDetectionActivity.this, bitmap, "faceInfo.jpg");
+                                    String filePath = ImageUtil.saveMyBitmapLocal(FaceDetectionActivity.this, bitmap, "faceInfo.jpg",2);
                                     // 人脸识别完成
                                     Intent intent = new Intent();
                                     intent.putExtra("code", 0);

@@ -300,7 +300,7 @@ public class ImageUtil {
      * @return
      * @throws IOException
      */
-    public static String saveMyBitmapLocal(Context context,Bitmap bmp, String bitName) throws IOException {
+    public static String saveMyBitmapLocal(Context context,Bitmap bmp, String bitName,int compressSize) throws IOException {
         boolean flag = false;
 
 // 获得存储卡的路径
@@ -314,7 +314,7 @@ public class ImageUtil {
                 flag = true;
                 fOut.flush();
                 fOut.close();
-                compress(context,0,bitName);
+                compress(context,compressSize,bitName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
