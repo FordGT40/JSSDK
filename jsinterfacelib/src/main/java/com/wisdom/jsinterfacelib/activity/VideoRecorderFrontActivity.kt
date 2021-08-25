@@ -4,6 +4,7 @@ package com.wisdom.jsinterfacelib.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.hardware.Camera
 import android.media.CamcorderProfile
 import android.media.MediaRecorder
@@ -16,21 +17,47 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.wisdom.jsinterfacelib.R
-import com.wisdom.jsinterfacelib.utils.avoidonresult.AvoidOnResult
 import java.io.File
 import java.util.*
+import kotlin.math.floor
 
 
 class VideoRecorderFrontActivity : AppCompatActivity() {
+    var h = Handler()
+    var i = 0
+    var r: Runnable = object : Runnable {
+        override fun run() {
+            val height: Int = tv_hint!!.height
+            val scrollY: Int =  tv_hint!!.scrollY
+            val lineHeight: Int =  tv_hint!!.lineHeight
+            val lineCount: Int =  tv_hint!!.lineCount //总行数
+            val maxY: Int =
+                ( tv_hint!!.lineCount *  tv_hint!!.lineHeight +  tv_hint!!.paddingTop +  tv_hint!!.paddingBottom
+                        -  tv_hint!!.height)
+//            Log.e("=maxY=", maxY.toString() + "")
+//            Log.e("=height=", height.toString() + "")
+//            Log.e("=lineCount=",  tv_hint!!.lineCount.toString() + "")
+            val viewCount = floor((height / lineHeight).toDouble()) //可见区域最大显示多少行
+            if (lineCount > viewCount) { //总行数大于可见区域显示的行数时则滚动
+                if (scrollY >= maxY) {
+                    tv_hint!!.scrollBy(0, maxY)
+                } else {
+                    tv_hint!!.scrollBy(0, lineHeight)
+                }
+                h.postDelayed(this, 2000)
+            }
+        }
+    }
+
 
     private var btn_stop: TextView? = null
-    private var tv_hint: TextView? = null
+    private var tv_hint:TextView? = null
+    private var tv_title:TextView? = null
     private var btn: Button? = null
     private var recLen = 11
     private var isRecording = false
@@ -39,12 +66,14 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
     private var mCamera: Camera? = null
     private var mVecordFilepath: String? = null
     private var notice: String? = ""
+    private var title: String? = ""
+    private var textColor: String? = ""
     private var intentNext: Intent? = null
     var timer: Timer = Timer()
 
-companion object{
-    const val RESULT_CODE_ERROR = 0x123
-}
+    companion object {
+        const val RESULT_CODE_ERROR = 0x123
+    }
 
     val handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -58,6 +87,8 @@ companion object{
             }
         }
     }
+
+
     var task: TimerTask = object : TimerTask() {
         override fun run() {
             recLen--
@@ -71,33 +102,58 @@ companion object{
                 stopCamera()
                 cancel()
                 //打开视频预览界面
-                AvoidOnResult(this@VideoRecorderFrontActivity).startForResult(
-                    intentNext
-                ) { resultCode, data ->
-                    if (resultCode == VideoPreviewActivity.RESULT_CODE_OK) {
-                        setResult(VideoPreviewActivity.RESULT_CODE_OK)
-                        finish()
-                    }
-                }
-
+                startActivityForResult(intentNext, 0x119)
             }
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == VideoPreviewActivity.RESULT_CODE_OK) {
+            setResult(VideoPreviewActivity.RESULT_CODE_OK)
+            finish()
+        }
+        if (resultCode == 0x111) {
+            //用户在预览页面取消了，希望从新拍摄
+            btn?.text = "拍摄"
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_recorder_front)
         recLen = intent.getIntExtra("duration", 11)
         notice = intent.getStringExtra("notice")
+        title = intent.getStringExtra("title")
+        textColor = intent.getStringExtra("textColor")
+
         intentNext = Intent(this, VideoPreviewActivity::class.java)
         btn_stop = findViewById<TextView>(R.id.luxiangtimer)
         tv_hint = findViewById<TextView>(R.id.tv_hint)
+        tv_title = findViewById<TextView>(R.id.tv_title)
         btn = findViewById<Button>(R.id.luxiangbtn)
+        //设置字体颜色
+        if (!textColor.isNullOrBlank()) {
+            Color.parseColor(textColor).apply {
+                btn_stop?.setTextColor(this)
+                tv_hint?.setTextColor(this)
+                tv_title?.setTextColor(this)
+            }
+        } else {
+            Color.parseColor("#333333").apply {
+                btn_stop?.setTextColor(this)
+                tv_hint?.setTextColor(this)
+                tv_title?.setTextColor(this)
+            }
+        }
+
+        tv_title?.text = title
         val mSurfaceview: SurfaceView = findViewById<View>(R.id.surfaceview_luxiang) as SurfaceView
         mSurfaceHolder = mSurfaceview.holder
         tv_hint?.text = notice
+
         tv_hint?.requestFocus()
+
 
 
         // 屏幕长宽
@@ -116,6 +172,7 @@ companion object{
         initCamera()
         btn?.setOnClickListener {
             recodeVideo()
+            h.postDelayed(r, 5000)
         }
 
     }
@@ -131,14 +188,15 @@ companion object{
             stopRecord()
             stopCamera()
             btn_stop?.visibility = View.GONE
-            AvoidOnResult(this@VideoRecorderFrontActivity).startForResult(
-                intentNext
-            ) { resultCode, data ->
-                if (resultCode == VideoPreviewActivity.RESULT_CODE_OK) {
-                    setResult(VideoPreviewActivity.RESULT_CODE_OK)
-                    finish()
-                }
-            }
+            startActivityForResult(intentNext, 0x119)
+//            AvoidOnResult(this@VideoRecorderFrontActivity).startForResult(
+//                intentNext
+//            ) { resultCode, data ->
+//                if (resultCode == VideoPreviewActivity.RESULT_CODE_OK) {
+//                    setResult(VideoPreviewActivity.RESULT_CODE_OK)
+//                    finish()
+//                }
+//            }
             task.cancel()
         } else {
             //开始录像
@@ -180,7 +238,7 @@ companion object{
                             stopCamera()
                             cancel()
                             //打开视频预览界面
-                            startActivity(intentNext)
+                            startActivityForResult(intentNext, 0x119)
                         }
                     }
                 }
@@ -264,7 +322,6 @@ companion object{
     }
 
     private fun createRecordDir(): Boolean {
-
         try {
             mVecordFilepath =
                 this@VideoRecorderFrontActivity.externalCacheDir?.path + "/recorder.mp4"
@@ -390,9 +447,9 @@ companion object{
             stopCamera()
             task.cancel()
         } catch (e: Exception) {
-            val intentErr=Intent()
-            intentErr.putExtra("msg","终止倒计时失败")
-            setResult(RESULT_CODE_ERROR,intentErr)
+            val intentErr = Intent()
+            intentErr.putExtra("msg", "终止倒计时失败")
+            setResult(RESULT_CODE_ERROR, intentErr)
             finish()
         }
     }
