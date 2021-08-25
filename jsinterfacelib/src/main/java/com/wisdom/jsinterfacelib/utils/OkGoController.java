@@ -1,9 +1,12 @@
 package com.wisdom.jsinterfacelib.utils;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.Callback;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.HttpParams;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -36,5 +39,10 @@ public class OkGoController {
                 .params(map)
                 .execute(stringCallBack);
     }
-
+    public  void postFile(String url, HttpParams map, StringCallback stringCallBack) {
+        OkGo.<String>post(url)
+                .headers("Content-Type", "multipart/form-data")
+                .params(map)
+                .execute(stringCallBack);
+    }
 }
