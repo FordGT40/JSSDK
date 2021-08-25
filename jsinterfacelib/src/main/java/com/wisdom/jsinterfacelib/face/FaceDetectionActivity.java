@@ -137,7 +137,7 @@ public class FaceDetectionActivity extends VideoBaseActivity {
             }
         }.start();
         //
-        KeyPointsPaint.setColor((Color.WHITE));
+        KeyPointsPaint.setColor((Color.GREEN));
         KeyPointsPaint.setStyle(Paint.Style.FILL);
         KeyPointsPaint.setStrokeWidth(2);
 
