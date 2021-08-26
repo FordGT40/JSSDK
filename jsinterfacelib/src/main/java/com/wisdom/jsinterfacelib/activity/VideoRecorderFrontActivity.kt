@@ -140,7 +140,7 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
                 tv_title?.setTextColor(this)
             }
         } else {
-            Color.parseColor("#333333").apply {
+            Color.parseColor("#e74c3c").apply {
                 btn_stop?.setTextColor(this)
                 tv_hint?.setTextColor(this)
                 tv_title?.setTextColor(this)
