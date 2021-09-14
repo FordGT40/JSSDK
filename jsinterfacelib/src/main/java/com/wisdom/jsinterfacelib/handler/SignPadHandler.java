@@ -57,12 +57,7 @@ public class SignPadHandler extends BridgeHandler {
         signViewDialog.getWindow().setAttributes(lp);
         signViewDialog.getWindow().setGravity(Gravity.BOTTOM);
 
-        signViewDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                EventBus.getDefault().unregister(SignPadHandler.this);
-            }
-        });
+        signViewDialog.setOnDismissListener(dialogInterface -> EventBus.getDefault().unregister(SignPadHandler.this));
         /**
          Intent intent = new Intent();
          intent.putExtra("color", "#ff0000");

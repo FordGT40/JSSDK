@@ -50,6 +50,12 @@ public abstract class SignViewDialog extends Dialog implements View.OnClickListe
 
     }
 
+    /**
+     * 隐藏打开全屏签名的按钮
+     */
+    public void hideFullScreenSign(){
+        ivScreen.setVisibility(View.GONE);
+    }
 
     public abstract void onComplete(String path);
 
