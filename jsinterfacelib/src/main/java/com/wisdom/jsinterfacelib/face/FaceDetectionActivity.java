@@ -35,6 +35,7 @@ import com.alibaba.android.mnnkit.intf.InstanceCreatedListener;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.cunoraz.gifview.library.GifView;
 import com.wisdom.jsinterfacelib.R;
 import com.wisdom.jsinterfacelib.utils.ImageUtil;
@@ -260,25 +261,29 @@ public class FaceDetectionActivity extends VideoBaseActivity {
 
                 RelativeLayout layoutVideo = findViewById(R.id.videoLayout);
                 FrameLayout frameLayout = layoutVideo.findViewById(R.id.videoContentLayout);
-                if (deviecAutoRotateAngle == 0 || deviecAutoRotateAngle == 180) {
+//                if (deviecAutoRotateAngle == 0 || deviecAutoRotateAngle == 180) {
+//                    ToastUtils.showShort("1");
+//                    int fixedScreenH = screenW * h / w;// 宽度不变，等比缩放的高度
+//
+//                    ViewGroup.LayoutParams params1 = frameLayout.getLayoutParams();
+//                    params1.height = fixedScreenH;
+//                    frameLayout.setLayoutParams(params1);
+//                    mActualPreviewWidth = screenW;
+//                    mActualPreviewHeight = fixedScreenH;
+//                } else {
 
-                    int fixedScreenH = screenW * h / w;// 宽度不变，等比缩放的高度
-
-                    ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
-                    params.height = fixedScreenH;
-                    frameLayout.setLayoutParams(params);
-                    mActualPreviewWidth = screenW;
-                    mActualPreviewHeight = fixedScreenH;
-                } else {
                     int previewHeight = screenH - contentTop - statusBarHeight;
-                    int fixedScreenW = previewHeight * h / w;// 高度不变，等比缩放的宽
+                    int fixedScreenW = previewHeight * (h) / w;// 高度不变，等比缩放的宽
 
                     ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
                     params.width = fixedScreenW;
+                    params.height=previewHeight-500;
+
                     frameLayout.setLayoutParams(params);
 
+
                     mActualPreviewWidth = fixedScreenW;
-                    mActualPreviewHeight = previewHeight;
+                    mActualPreviewHeight = previewHeight-500;
 
                     // re layout
                     RelativeLayout.LayoutParams componentLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -298,7 +303,7 @@ public class FaceDetectionActivity extends VideoBaseActivity {
 //                    mFaceAction.setLayoutParams(faceActionLayoutParams);
                 }
 
-            }
+//            }
 
             @Override
             public void onPreviewFrame(byte[] data, int width, int height, int cameraOrientation) {

@@ -66,7 +66,7 @@ public class FaceRecognitionHandler extends BridgeHandler {
                                                     //人脸识别成功
                                                     try {
                                                         //根据图片的绝对路径获得图片应该旋转的角度
-                                                        int degree = 90;
+                                                        int degree = 0;
                                                         if (android.hardware.Camera.getNumberOfCameras() > 1) {
                                                             //如果带前后摄像头的，那么计算图片旋转角度，否则只有一个摄像头固定顺时针旋转90度
                                                             degree = ImageUtil.getBitmapDegree(filePath);
