@@ -273,10 +273,10 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                     int fixedScreenW = previewHeight * (h) / w;// 高度不变，等比缩放的宽
                     ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
                     params.width = fixedScreenW;
-                    params.height=previewHeight;
+//                    params.height=previewHeight;
                     frameLayout.setLayoutParams(params);
                     mActualPreviewWidth = fixedScreenW;
-
+                    mActualPreviewHeight=screenH;
                     // re layout
                     RelativeLayout.LayoutParams componentLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     componentLayoutParams.addRule(RelativeLayout.RIGHT_OF, R.id.videoContentLayout);
