@@ -75,7 +75,7 @@ public class FaceRecognitionHandler extends BridgeHandler {
                                                         Bitmap roteBitmap = ImageUtil.rotateBitmap(ImageUtils.getBitmap(filePath), degree);
 
                                                         //将旋转后的bitMap保存本地，并返回保存路径
-                                                        String filePathLocal = ImageUtil.saveMyBitmapLocal(context, roteBitmap, System.currentTimeMillis() + ".jpg",0);
+                                                        String filePathLocal = ImageUtil.saveMyBitmapLocal(context, roteBitmap, System.currentTimeMillis() + ".jpg",2);
 
                                                         FaceDetectionModel faceDetectionModel = new FaceDetectionModel("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context, filePathLocal));
                                                         BaseModel baseModel = new BaseModel(msg, 0, faceDetectionModel);

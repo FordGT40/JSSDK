@@ -261,29 +261,23 @@ public class FaceDetectionActivity extends VideoBaseActivity {
 
                 RelativeLayout layoutVideo = findViewById(R.id.videoLayout);
                 FrameLayout frameLayout = layoutVideo.findViewById(R.id.videoContentLayout);
-//                if (deviecAutoRotateAngle == 0 || deviecAutoRotateAngle == 180) {
-//                    ToastUtils.showShort("1");
-//                    int fixedScreenH = screenW * h / w;// 宽度不变，等比缩放的高度
-//
-//                    ViewGroup.LayoutParams params1 = frameLayout.getLayoutParams();
-//                    params1.height = fixedScreenH;
-//                    frameLayout.setLayoutParams(params1);
-//                    mActualPreviewWidth = screenW;
-//                    mActualPreviewHeight = fixedScreenH;
-//                } else {
+                if (deviecAutoRotateAngle == 0 || deviecAutoRotateAngle == 180) {
+                    ToastUtils.showShort("1");
+                    int fixedScreenH = screenW * h / w;// 宽度不变，等比缩放的高度
 
+                    ViewGroup.LayoutParams params1 = frameLayout.getLayoutParams();
+                    params1.height = fixedScreenH;
+                    frameLayout.setLayoutParams(params1);
+                    mActualPreviewWidth = screenW;
+                    mActualPreviewHeight = fixedScreenH;
+                } else {
                     int previewHeight = screenH - contentTop - statusBarHeight;
                     int fixedScreenW = previewHeight * (h) / w;// 高度不变，等比缩放的宽
-
                     ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
                     params.width = fixedScreenW;
-                    params.height=previewHeight-500;
-
+                    params.height=previewHeight;
                     frameLayout.setLayoutParams(params);
-
-
                     mActualPreviewWidth = fixedScreenW;
-                    mActualPreviewHeight = previewHeight-500;
 
                     // re layout
                     RelativeLayout.LayoutParams componentLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -303,7 +297,7 @@ public class FaceDetectionActivity extends VideoBaseActivity {
 //                    mFaceAction.setLayoutParams(faceActionLayoutParams);
                 }
 
-//            }
+            }
 
             @Override
             public void onPreviewFrame(byte[] data, int width, int height, int cameraOrientation) {
@@ -420,7 +414,7 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                                 try {
                                     FileUtils.delete(Environment.getExternalStorageDirectory().toString() + "/faceInfo1.jpg");
                                     FileUtils.delete(Environment.getExternalStorageDirectory().toString() + "/faceInfo.jpg");
-                                    String filePath = ImageUtil.saveMyBitmapLocal(FaceDetectionActivity.this, bitmap, "faceInfo.jpg",0);
+                                    String filePath = ImageUtil.saveMyBitmapLocal(FaceDetectionActivity.this, bitmap, "faceInfo.jpg",2);
                                     // 人脸识别完成
                                     Intent intent = new Intent();
                                     intent.putExtra("code", 0);
