@@ -262,9 +262,7 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                 RelativeLayout layoutVideo = findViewById(R.id.videoLayout);
                 FrameLayout frameLayout = layoutVideo.findViewById(R.id.videoContentLayout);
                 if (deviecAutoRotateAngle == 0 || deviecAutoRotateAngle == 180) {
-                    ToastUtils.showShort("1");
                     int fixedScreenH = screenW * h / w;// 宽度不变，等比缩放的高度
-
                     ViewGroup.LayoutParams params1 = frameLayout.getLayoutParams();
                     params1.height = fixedScreenH;
                     frameLayout.setLayoutParams(params1);
