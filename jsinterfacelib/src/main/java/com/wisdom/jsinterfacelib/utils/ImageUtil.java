@@ -344,7 +344,7 @@ public class ImageUtil {
             try {
                 fOut.flush();
                 fOut.close();
-                pathResult=compress(context,2,"Compress.jpg");
+                pathResult=compress(context,0,"Compress.jpg");
             } catch (IOException e) {
                 e.printStackTrace();
             }
