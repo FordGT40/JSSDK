@@ -74,7 +74,6 @@ public class UpLoadFileHandler extends BridgeHandler {
      */
     private void analyticalDataAndUpLoad(String data, CallBackFunction function) {
         try {
-
             JSONObject jsonObject = new JSONObject(data);
             String url = jsonObject.optString("url");
             JSONArray files = jsonObject.optJSONArray("files");
@@ -95,7 +94,7 @@ public class UpLoadFileHandler extends BridgeHandler {
                 Iterator<String> it = ext.keys();
                 while (it.hasNext()) {
                     String key = it.next();
-                    String value = jsonObject.getString(key);
+                    String value = ext.getString(key);
                     params.put(key, value);
                 }
             }
@@ -115,6 +114,7 @@ public class UpLoadFileHandler extends BridgeHandler {
      * @param function 回调方法（结果回调给js端）
      */
     private void upLoadFiles(String url, HttpParams params, CallBackFunction function) {
+
         OkGoController.create().postFile(url, params, new StringCallback() {
             @Override
             public void onError(Response<String> response) {

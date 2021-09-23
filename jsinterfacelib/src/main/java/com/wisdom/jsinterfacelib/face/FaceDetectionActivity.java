@@ -263,20 +263,23 @@ public class FaceDetectionActivity extends VideoBaseActivity {
                 FrameLayout frameLayout = layoutVideo.findViewById(R.id.videoContentLayout);
                 if (deviecAutoRotateAngle == 0 || deviecAutoRotateAngle == 180) {
                     int fixedScreenH = screenW * h / w;// 宽度不变，等比缩放的高度
-                    ViewGroup.LayoutParams params1 = frameLayout.getLayoutParams();
-                    params1.height = fixedScreenH;
-                    frameLayout.setLayoutParams(params1);
+
+                    ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
+                    params.height = fixedScreenH;
+                    frameLayout.setLayoutParams(params);
                     mActualPreviewWidth = screenW;
                     mActualPreviewHeight = fixedScreenH;
                 } else {
                     int previewHeight = screenH - contentTop - statusBarHeight;
-                    int fixedScreenW = previewHeight * (h) / w;// 高度不变，等比缩放的宽
+                    int fixedScreenW = previewHeight * h / w;// 高度不变，等比缩放的宽
+
                     ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
                     params.width = fixedScreenW;
-//                    params.height=previewHeight;
                     frameLayout.setLayoutParams(params);
+
                     mActualPreviewWidth = fixedScreenW;
-                    mActualPreviewHeight=screenH;
+                    mActualPreviewHeight = previewHeight;
+
                     // re layout
                     RelativeLayout.LayoutParams componentLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     componentLayoutParams.addRule(RelativeLayout.RIGHT_OF, R.id.videoContentLayout);

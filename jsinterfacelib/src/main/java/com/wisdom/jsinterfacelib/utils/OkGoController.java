@@ -42,6 +42,7 @@ public class OkGoController {
     public  void postFile(String url, HttpParams map, StringCallback stringCallBack) {
         OkGo.<String>post(url)
                 .headers("Content-Type", "multipart/form-data")
+                .isMultipart(true)
                 .params(map)
                 .execute(stringCallBack);
     }
