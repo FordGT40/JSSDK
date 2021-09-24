@@ -10,7 +10,6 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpParams;
-import com.lzy.okgo.model.Response;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.RequestCallback;
 import com.smallbuer.jsbridge.core.BridgeHandler;
@@ -24,6 +23,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * |类型	|参数	|是否必须	|说明|
@@ -117,15 +119,15 @@ public class UpLoadFileHandler extends BridgeHandler {
 
         OkGoController.create().postFile(url, params, new StringCallback() {
             @Override
-            public void onError(Response<String> response) {
-                super.onError(response);
-                BaseModel baseModel = new BaseModel("上传失败", -1, response.body());
+            public void onSuccess(String s, Call call, okhttp3.Response response) {
+                BaseModel baseModel = new BaseModel("上传成功", 0, s);
                 function.onCallBack(GsonUtils.toJson(baseModel));
             }
 
             @Override
-            public void onSuccess(Response<String> response) {
-                BaseModel baseModel = new BaseModel("上传成功", 0, response.body());
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                BaseModel baseModel = new BaseModel("上传失败", -1, response.body());
                 function.onCallBack(GsonUtils.toJson(baseModel));
             }
         });

@@ -20,6 +20,7 @@ import com.lzy.okgo.model.Response
 import com.permissionx.guolindev.PermissionX.init
 import com.wisdom.jsinterfacelib.R
 import com.wisdom.jsinterfacelib.model.LocationInfoResultModel
+import okhttp3.Call
 import org.json.JSONObject
 
 
@@ -152,17 +153,19 @@ object LocationUtil {
                 Pair("locations", "$longitude,$latitude")
         )
         OkGoController.create().get(url, params, object : StringCallback() {
-            override fun onSuccess(response: Response<String>?) {
+
+
+            override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
                 try {
-                    val json = JSONObject(response!!.body())
+                    val json = JSONObject(t)
                     val status = json.optString("status")
                     if (status == "1") {
                         //坐标转换成功，将坐标回传给前台
                         val locations = json.optString("locations")
                         val locationPoint = locations.split(",")
                         listener.onLocationSuccess(
-                                locationPoint[1].toDouble(),
-                                locationPoint[0].toDouble()
+                            locationPoint[1].toDouble(),
+                            locationPoint[0].toDouble()
                         )
                     } else {
                         //坐标转换失败
@@ -171,11 +174,6 @@ object LocationUtil {
                 } catch (exception: java.lang.Exception) {
                     listener.onLocationFail("定位信息获取失败")
                 }
-            }
-
-            override fun onError(response: Response<String>?) {
-                super.onError(response)
-
             }
         })
     }
@@ -383,23 +381,27 @@ object LocationUtil {
         val url = "http://restapi.amap.com/v3/geocode/regeo?key=d575350e55b289b9babea2a3b605cd8a&location=${longitude},${latitude}&radius=1000&extensions=all&batch=false&roadlevel=0"
         val map = HashMap<String, String>()
         OkGoController.create().get(url, map, object : StringCallback() {
-            override fun onError(response: Response<String>?) {
-                super.onError(response)
+            override fun onError(
+                call: Call?,
+                response: okhttp3.Response?,
+                e: java.lang.Exception?
+            ) {
+                super.onError(call, response, e)
                 listener.onLocationInfoGetFail("反地理编码失败")
             }
 
-            override fun onSuccess(response: Response<String>?) {
+            override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
                 try {
                     val locationInfoModel=LocationInfoResultModel()
                     //解析高德返回的数据
-                    val jsonObject = JSONObject(response?.body())
+                    val jsonObject = JSONObject(t)
                     val dataJson = jsonObject.optJSONObject("regeocode")
                     dataJson.apply {
                         locationInfoModel.address=optString("formatted_address")
                         locationInfoModel.latitude=latitude
                         locationInfoModel.longitude=longitude
                         optJSONObject("addressComponent").apply {
-                           locationInfoModel.country = optString("country")
+                            locationInfoModel.country = optString("country")
                             locationInfoModel.city = optString("city")
                             locationInfoModel.province = optString("province")
                             locationInfoModel.adcode = optString("adcode")
