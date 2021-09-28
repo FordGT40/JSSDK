@@ -92,6 +92,41 @@ public class InitJsSDKUtil {
             initOkGo(application);
         }
     }
+    public static void init(Application application,Boolean initOkGoOrNot,String actionBarRGB) {
+        Bridge.INSTANCE.openLog();
+        ConstantString.ACTION_BAR_RGB=actionBarRGB;
+        Map<String, BridgeHandler> bridgeHandlerMap = new HashMap();
+        bridgeHandlerMap.put("WISDOM.app.toast", new ToastHandler());
+        bridgeHandlerMap.put("WISDOM.app.chooseImage", new ChooseImageHandler());
+        bridgeHandlerMap.put("WISDOM.app.isExistApi", new ExistApiHandler());
+        bridgeHandlerMap.put("WISDOM.app.isExistApis", new ExistApisHandler());
+        bridgeHandlerMap.put("WISDOM.app.toggleNavigationBar", new ToggleNavigationBarHandler());
+        bridgeHandlerMap.put("WISDOM.app.setNavigationBarTitle", new NavigationBarTitleHandler());
+        bridgeHandlerMap.put("WISDOM.app.chooseVideo", new ChooseVideoHandler());
+        bridgeHandlerMap.put("WISDOM.app.phoneCall", new PhoneCallHandler());
+        bridgeHandlerMap.put("WISDOM.app.getAppVersion", new AppVersionHandler());
+        bridgeHandlerMap.put("WISDOM.app.previewImages", new ImgePreviewHandler());
+        bridgeHandlerMap.put("WISDOM.app.playVideo", new PlayVideoHandler());
+        bridgeHandlerMap.put("WISDOM.app.authID", new FingerPrintCompareHandler());
+        bridgeHandlerMap.put("WISDOM.app.signature", new SignPadHandler());
+        bridgeHandlerMap.put("WISDOM.app.contact", new OpenContactHandler());
+        bridgeHandlerMap.put("WISDOM.app.getGpsInfo", new LocationHandler());
+        bridgeHandlerMap.put("WISDOM.app.getDeviceInfo", new DeviceInfoHandler());
+        bridgeHandlerMap.put("WISDOM.app.networkStatus", new NetworkStatusHandler());
+        bridgeHandlerMap.put("WISDOM.app.goback", new WebViewGoBackHandler());
+        bridgeHandlerMap.put("WISDOM.app.openNewWebView", new OpenNewWebViewHandler());
+        bridgeHandlerMap.put("WISDOM.app.close", new WebViewCloseHandler());
+        bridgeHandlerMap.put("WISDOM.app.setToken", new SetTokenHandler());
+        bridgeHandlerMap.put("WISDOM.app.getToken", new GetTokenHandler());
+        bridgeHandlerMap.put("WISDOM.app.mnnFaceVerification", new FaceRecognitionHandler());
+        bridgeHandlerMap.put("WISDOM.app.recordVideo", new CameraCustomHandler());
+        bridgeHandlerMap.put("WISDOM.app.uploadFiles", new UpLoadFileHandler());
+        JsInterfaceBridge.init(application, bridgeHandlerMap);
+        //初始化okgo
+        if (initOkGoOrNot) {
+            initOkGo(application);
+        }
+    }
 
     /**
     private static void initOkGo(Application application) {

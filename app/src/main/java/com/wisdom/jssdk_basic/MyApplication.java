@@ -15,6 +15,6 @@ public class MyApplication extends ZApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        InitJsSDKUtil.init(this,true);
+        InitJsSDKUtil.init(this, true);
     }
 }

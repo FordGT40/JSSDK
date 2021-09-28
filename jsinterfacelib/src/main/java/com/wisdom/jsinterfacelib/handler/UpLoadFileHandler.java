@@ -116,7 +116,6 @@ public class UpLoadFileHandler extends BridgeHandler {
      * @param function 回调方法（结果回调给js端）
      */
     private void upLoadFiles(String url, HttpParams params, CallBackFunction function) {
-
         OkGoController.create().postFile(url, params, new StringCallback() {
             @Override
             public void onSuccess(String s, Call call, okhttp3.Response response) {

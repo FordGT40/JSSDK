@@ -2,9 +2,18 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+        <item name="android:background">#ffffff</item>
     </style>
 
+    <style name="Theme.ActionBar" parent="Theme.AppCompat.Light">
+        <!-- 设置actionbar背景 -->
+        <item name="android:background">#ffffff</item>
+        <!-- 去掉acionbar的应用图标和标题 -->
+        <item name="android:displayOptions">showTitle</item>
+
+
+    </style>
 </resources>
