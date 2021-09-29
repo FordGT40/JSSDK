@@ -126,7 +126,7 @@ public class UpLoadFileHandler extends BridgeHandler {
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
-                BaseModel baseModel = new BaseModel("上传失败", -1, response.body());
+                BaseModel baseModel = new BaseModel("上传失败", -1, "上传失败返回结果："+response.body());
                 function.onCallBack(GsonUtils.toJson(baseModel));
             }
         });
