@@ -43,8 +43,9 @@ public class NavigationBarTitleHandler extends BridgeHandler {
             actionBar.setCustomView(view);
 
             if (actionBar != null) {
-                actionBar.setTitle(data);
-                tv_title.setText(data);
+                String titleStr=data.substring(1,data.length()-1);
+                actionBar.setTitle(titleStr);
+                tv_title.setText(titleStr);
                 baseModel = new BaseModel("导航栏标题设置成功", 0, "导航栏标题设置成功");
             } else {
                 baseModel = new BaseModel("导航栏标题设置失败", 0, "标题栏已经是隐藏状态");

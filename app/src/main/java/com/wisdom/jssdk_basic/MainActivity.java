@@ -11,7 +11,7 @@ import com.smallbuer.jsbridge.core.BridgeWebView;
 import com.wisdom.jsinterfacelib.activity.WebViewActivity;
 
 public class MainActivity extends WebViewActivity {
-    private BridgeWebView webView;
+
     private LinearLayout ll_parent;
 
 
@@ -63,10 +63,10 @@ public class MainActivity extends WebViewActivity {
 
 
         Intent intent=new Intent(this, WebViewActivity.class);
-        intent.putExtra("url","http://192.168.1.39:8090/jstest/index.html");
+//        intent.putExtra("url","http://192.168.1.39:8090/jstest/index.html");
 
 //        intent.putExtra("url","http://192.168.1.105:8080/");
-//        intent.putExtra("url","http://192.168.111.173:8000/index.html");
+        intent.putExtra("url","http://192.168.111.173:8000/index.html");
         startActivity(intent);
 
     }

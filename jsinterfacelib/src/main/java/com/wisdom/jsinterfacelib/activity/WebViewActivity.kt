@@ -2,24 +2,25 @@ package com.wisdom.jsinterfacelib.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.blankj.utilcode.util.LogUtils
 import com.smallbuer.jsbridge.core.BridgeWebView
+import com.wisdom.jsinterfacelib.ConstantString.CAN_BACK_KEY_USEFUL
+import com.wisdom.jsinterfacelib.ConstantString.JS_FUN_NAME
 import com.wisdom.jsinterfacelib.R
 
 open class WebViewActivity : AppCompatActivity() {
 
-    private var webView: BridgeWebView? = null
+    public var webView: BridgeWebView? = null
 
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
-
         //获得控件
         webView = findViewById<View>(R.id.wv_webview) as BridgeWebView
 
@@ -40,11 +41,10 @@ open class WebViewActivity : AppCompatActivity() {
             supportActionBar?.hide()
         }
 
-        if(!url.isNullOrBlank()){
+        if (!url.isNullOrBlank()) {
             webView!!.loadUrl(url)
         }
 //            //访问网页
-
 
 
         //系统默认会通过手机浏览器打开网页，为了能够直接通过WebView显示网页，则必须设置
@@ -68,4 +68,27 @@ open class WebViewActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * 屏蔽物理返回按键
+     * */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        return if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action != KeyEvent.ACTION_UP) {
+            //do something.
+            if (CAN_BACK_KEY_USEFUL) {
+                if (!JS_FUN_NAME.isNullOrBlank()) {
+                    webView?.loadUrl(JS_FUN_NAME)
+                }
+                CAN_BACK_KEY_USEFUL
+            } else {
+                super.dispatchKeyEvent(event)
+            }
+        } else {
+            super.dispatchKeyEvent(event)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        CAN_BACK_KEY_USEFUL = false
+    }
 }

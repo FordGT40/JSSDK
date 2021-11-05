@@ -19,6 +19,7 @@ import com.wisdom.jsinterfacelib.handler.ExistApisHandler;
 import com.wisdom.jsinterfacelib.handler.FaceRecognitionHandler;
 import com.wisdom.jsinterfacelib.handler.FingerPrintCompareHandler;
 import com.wisdom.jsinterfacelib.handler.GetTokenHandler;
+import com.wisdom.jsinterfacelib.handler.HookNavigationBackActionHandler;
 import com.wisdom.jsinterfacelib.handler.ImgePreviewHandler;
 import com.wisdom.jsinterfacelib.handler.LocationHandler;
 import com.wisdom.jsinterfacelib.handler.NavigationBarTitleHandler;
@@ -86,6 +87,7 @@ public class InitJsSDKUtil {
         bridgeHandlerMap.put("WISDOM.app.mnnFaceVerification", new FaceRecognitionHandler());
         bridgeHandlerMap.put("WISDOM.app.recordVideo", new CameraCustomHandler());
         bridgeHandlerMap.put("WISDOM.app.uploadFiles", new UpLoadFileHandler());
+        bridgeHandlerMap.put("WISDOM.app.hookNavigationBackAction", new HookNavigationBackActionHandler());
         JsInterfaceBridge.init(application, bridgeHandlerMap);
         //初始化okgo
         if (initOkGoOrNot) {

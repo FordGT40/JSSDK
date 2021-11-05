@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.smallbuer.jsbridge.core.BridgeHandler;
 import com.smallbuer.jsbridge.core.CallBackFunction;
 import com.wisdom.jsinterfacelib.model.BaseModel;
+import com.wisdom.jsinterfacelib.model.TokenModel;
 
 import org.json.JSONObject;
 
@@ -25,10 +26,11 @@ public class GetTokenHandler extends BridgeHandler {
                 BaseModel baseModel = new BaseModel("操作失败，请先设置token", -1, "请先设置token");
                 function.onCallBack(GsonUtils.toJson(baseModel));
             }else {
-                JSONObject jsonObject=new JSONObject();
-                jsonObject.put("token",token);
-                BaseModel baseModel = new BaseModel("操作成功", 0, jsonObject.toString());
-                function.onCallBack(GsonUtils.toJson(baseModel).replaceAll("\\\\",""));
+                TokenModel tokenModel=new TokenModel();
+                tokenModel.setToken(token);
+                BaseModel baseModel = new BaseModel("操作成功", 0, tokenModel);
+//                function.onCallBack(GsonUtils.toJson(baseModel).replaceAll("\\\\",""));
+                function.onCallBack(GsonUtils.toJson(baseModel));
             }
         }catch (Exception e){
             BaseModel baseModel = new BaseModel("操作失败", -1, "请先设置token");
