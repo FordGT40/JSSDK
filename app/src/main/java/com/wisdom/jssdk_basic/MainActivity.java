@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 
 import com.smallbuer.jsbridge.core.BridgeWebView;
+import com.wisdom.jsinterfacelib.ConstantString;
 import com.wisdom.jsinterfacelib.activity.WebViewActivity;
 
 public class MainActivity extends WebViewActivity {
@@ -22,6 +23,8 @@ public class MainActivity extends WebViewActivity {
         setContentView(R.layout.activity_main);
         ll_parent = findViewById(R.id.ll_parent);
         ll_parent.setBackgroundColor(Color.parseColor("#00ffffff"));
+
+
 
 //        WebViewActivity.Companion.setUrl("http://192.168.111.173:8000/index.html");
 

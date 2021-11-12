@@ -51,7 +51,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
     api 'com.smallbuer:jsbridge:1.0.3'
-    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
+//    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
+    implementation 'io.github.lucksiege:pictureselector:v2.7.3-rc09'
 
     api 'com.blankj:utilcodex:1.29.0'
     implementation 'com.github.HuanTanSheng:EasyPhotos:3.1.3'

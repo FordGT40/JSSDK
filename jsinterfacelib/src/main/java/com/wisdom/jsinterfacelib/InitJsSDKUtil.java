@@ -6,13 +6,13 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
-import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.smallbuer.jsbridge.core.Bridge;
 import com.smallbuer.jsbridge.core.BridgeHandler;
 import com.wisdom.jsinterfacelib.handler.AppVersionHandler;
 import com.wisdom.jsinterfacelib.handler.CameraCustomHandler;
 import com.wisdom.jsinterfacelib.handler.ChooseImageHandler;
 import com.wisdom.jsinterfacelib.handler.ChooseVideoHandler;
+import com.wisdom.jsinterfacelib.handler.InvokeMethodHandler;
 import com.wisdom.jsinterfacelib.handler.DeviceInfoHandler;
 import com.wisdom.jsinterfacelib.handler.ExistApiHandler;
 import com.wisdom.jsinterfacelib.handler.ExistApisHandler;
@@ -39,10 +39,7 @@ import com.wisdom.jsinterfacelib.utils.JsInterfaceBridge;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-
-import okhttp3.OkHttpClient;
 
 /**
  * @author HanXueFeng
@@ -88,6 +85,42 @@ public class InitJsSDKUtil {
         bridgeHandlerMap.put("WISDOM.app.recordVideo", new CameraCustomHandler());
         bridgeHandlerMap.put("WISDOM.app.uploadFiles", new UpLoadFileHandler());
         bridgeHandlerMap.put("WISDOM.app.hookNavigationBackAction", new HookNavigationBackActionHandler());
+        JsInterfaceBridge.init(application, bridgeHandlerMap);
+        //初始化okgo
+        if (initOkGoOrNot) {
+            initOkGo(application);
+        }
+    }
+    public static void init(Application application, Boolean initOkGoOrNot, JSCallInterface JSCallInterface) {
+        Bridge.INSTANCE.openLog();
+        Map<String, BridgeHandler> bridgeHandlerMap = new HashMap();
+        bridgeHandlerMap.put("WISDOM.app.toast", new ToastHandler());
+        bridgeHandlerMap.put("WISDOM.app.chooseImage", new ChooseImageHandler());
+        bridgeHandlerMap.put("WISDOM.app.isExistApi", new ExistApiHandler());
+        bridgeHandlerMap.put("WISDOM.app.isExistApis", new ExistApisHandler());
+        bridgeHandlerMap.put("WISDOM.app.toggleNavigationBar", new ToggleNavigationBarHandler());
+        bridgeHandlerMap.put("WISDOM.app.setNavigationBarTitle", new NavigationBarTitleHandler());
+        bridgeHandlerMap.put("WISDOM.app.chooseVideo", new ChooseVideoHandler());
+        bridgeHandlerMap.put("WISDOM.app.phoneCall", new PhoneCallHandler());
+        bridgeHandlerMap.put("WISDOM.app.getAppVersion", new AppVersionHandler());
+        bridgeHandlerMap.put("WISDOM.app.previewImages", new ImgePreviewHandler());
+        bridgeHandlerMap.put("WISDOM.app.playVideo", new PlayVideoHandler());
+        bridgeHandlerMap.put("WISDOM.app.authID", new FingerPrintCompareHandler());
+        bridgeHandlerMap.put("WISDOM.app.signature", new SignPadHandler());
+        bridgeHandlerMap.put("WISDOM.app.contact", new OpenContactHandler());
+        bridgeHandlerMap.put("WISDOM.app.getGpsInfo", new LocationHandler());
+        bridgeHandlerMap.put("WISDOM.app.getDeviceInfo", new DeviceInfoHandler());
+        bridgeHandlerMap.put("WISDOM.app.networkStatus", new NetworkStatusHandler());
+        bridgeHandlerMap.put("WISDOM.app.goback", new WebViewGoBackHandler());
+        bridgeHandlerMap.put("WISDOM.app.openNewWebView", new OpenNewWebViewHandler());
+        bridgeHandlerMap.put("WISDOM.app.close", new WebViewCloseHandler());
+        bridgeHandlerMap.put("WISDOM.app.setToken", new SetTokenHandler());
+        bridgeHandlerMap.put("WISDOM.app.getToken", new GetTokenHandler());
+        bridgeHandlerMap.put("WISDOM.app.mnnFaceVerification", new FaceRecognitionHandler());
+        bridgeHandlerMap.put("WISDOM.app.recordVideo", new CameraCustomHandler());
+        bridgeHandlerMap.put("WISDOM.app.uploadFiles", new UpLoadFileHandler());
+        bridgeHandlerMap.put("WISDOM.app.hookNavigationBackAction", new HookNavigationBackActionHandler());
+        bridgeHandlerMap.put("WISDOM.app.InvokeMethod", new InvokeMethodHandler(JSCallInterface));
         JsInterfaceBridge.init(application, bridgeHandlerMap);
         //初始化okgo
         if (initOkGoOrNot) {
