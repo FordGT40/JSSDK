@@ -53,6 +53,7 @@ public class ChooseImageHandler extends BridgeHandler {
         final int[] count = {0};
         final BaseModel[] baseModel = new BaseModel[1];
         final Boolean[] hasCamaro = {false};
+        final Boolean[] hasAlbum = {false};
         final Boolean[] isCompressed = {false};//是否压缩视频
         PermissionX.init(((AppCompatActivity) context))
                 .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -74,6 +75,11 @@ public class ChooseImageHandler extends BridgeHandler {
                                         hasCamaro[0] = true;
                                     }
                                 }
+                                for (int j = 0; j < sourceType.length(); j++) {
+                                    if (sourceType.getString(j).equals("album")) {
+                                        hasAlbum[0] = true;
+                                    }
+                                }
                                 for (int k = 0; k < sizeType.length(); k++) {
                                     if (sizeType.getString(k).equals("compressed")) {
                                         isCompressed[0] = true;
@@ -81,13 +87,22 @@ public class ChooseImageHandler extends BridgeHandler {
                                 }
                                 final Boolean finalIsCompressed = isCompressed[0];
                                 if (hasCamaro.length > 0) {
-                                    if (hasCamaro[0]) {
-                                        //打开相机拍照
-                                        openCamare(context, finalIsCompressed, function);
-                                    } else {
-                                        //相册选择
-                                        showImageSelect(context, hasCamaro[0], count[0], finalIsCompressed, baseModel, function);
+
+                                    if(hasCamaro[0]&&hasAlbum[0]){
+                                        //相册和相机都有
+                                        showImageSelect(context, true, count[0], finalIsCompressed, baseModel, function);
+                                    }else{
+                                        //只有相册或者相机
+                                        if (hasCamaro[0]) {
+                                            //打开相机拍照
+                                            openCamare(context, finalIsCompressed, function);
+                                        }
+                                        else {
+                                            //相册选择
+                                            showImageSelect(context, hasCamaro[0], count[0], finalIsCompressed, baseModel, function);
+                                        }
                                     }
+
                                 } else {
                                     //相册选择
                                     showImageSelect(context, hasCamaro[0], count[0], finalIsCompressed, baseModel, function);
