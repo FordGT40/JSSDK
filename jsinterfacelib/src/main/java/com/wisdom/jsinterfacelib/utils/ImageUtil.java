@@ -1,6 +1,7 @@
 package com.wisdom.jsinterfacelib.utils;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -172,12 +173,17 @@ public class ImageUtil {
     /* 本地图片转换Base64的方法
      * @param imgPath
      */
-    public static String ImageToBase64(String imgPath) {
+    public static String ImageToBase64(Context context,String imgPath) {
         InputStream in = null;
         byte[] data = null;
 // 读取图片字节数组
         try {
-            in = new FileInputStream(imgPath);
+            if(imgPath.startsWith("content://")){
+                in = new FileInputStream(getRealPathFromUri(context,imgPath));
+            }else{
+                in = new FileInputStream(imgPath);
+            }
+
             data = new byte[in.available()];
             in.read(data);
             in.close();
@@ -188,6 +194,29 @@ public class ImageUtil {
         String result = Base64.encodeToString(data, Base64.NO_WRAP);
         return result;
     }
+
+
+    /**
+     * 查询内容解析器，找到文件存储地址
+
+     */
+    public static String getRealPathFromUri(Context context, String myImageUrl) {
+        Uri contentUri = Uri.parse(myImageUrl);
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
     /* 本地图片转换Base64的方法
      * @param imgPath
      */
@@ -478,10 +507,15 @@ public class ImageUtil {
      * @param filePath
      * @return
      */
-    public static String file2Base64(String filePath) {
+    public static String file2Base64(Context context,String filePath) {
         FileInputStream objFileIS = null;
         try {
-            objFileIS = new FileInputStream(filePath);
+            if(filePath.startsWith("content://")){
+                objFileIS = new FileInputStream(getRealPathFromUri(context,filePath));
+            }else{
+                objFileIS = new FileInputStream(filePath);
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

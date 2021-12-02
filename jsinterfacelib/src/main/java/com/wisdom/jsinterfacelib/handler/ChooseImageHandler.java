@@ -139,7 +139,7 @@ public class ChooseImageHandler extends BridgeHandler {
                                 if (finalIsCompressed) {
                                     list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context, result.get(i).getPath()));
                                 } else {
-                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64(result.get(i).getPath()));
+                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64(context,result.get(i).getPath()));
                                 }
                             }
                             baseModel[0] = new BaseModel("获取成功", 0, list);
@@ -208,7 +208,7 @@ public class ChooseImageHandler extends BridgeHandler {
                                                     list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context,filePathLocal));
                                                 } else {
                                                     //不压缩图片
-                                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64(filePathLocal));
+                                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64(context,filePathLocal));
                                                 }
                                                 BaseModel baseModel = new BaseModel("拍照成功", 0, list);
                                                 function.onCallBack(GsonUtils.toJson(baseModel));

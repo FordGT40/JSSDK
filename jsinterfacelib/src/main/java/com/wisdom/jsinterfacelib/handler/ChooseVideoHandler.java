@@ -48,6 +48,7 @@ public class ChooseVideoHandler extends BridgeHandler {
 //        {"maxDuration":0,"sourceType":["album","camera"],"camera":"front"}
         final BaseModel[] baseModel = new BaseModel[1];
         final Boolean[] hasCamaro = {false};//选择图片是否带有拍照功能
+        final Boolean[] hasAlubm = {false};//选择图片是否带选择
         PermissionX.init(((AppCompatActivity) context))
                 .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .request(new RequestCallback() {
@@ -63,8 +64,17 @@ public class ChooseVideoHandler extends BridgeHandler {
                                     if (sourceType.getString(j).equals("camera")) {
                                         hasCamaro[0] = true;
                                     }
+                                    if (sourceType.getString(j).equals("album")) {
+                                        hasAlubm[0] = true;
+                                    }
                                 }
-                                showVideoSelect(context, hasCamaro[0], 1, baseModel, maxDuration * 1000, function, camera);
+                               if(hasCamaro[0]&&hasAlubm[0]){
+                                   showVideoSelect(context, true, 1, baseModel, maxDuration * 1000, function, camera);
+                               }else if (!hasCamaro[0]&&hasAlubm[0]){
+                                   showVideoSelect(context, false, 1, baseModel, maxDuration * 1000, function, camera);
+                               }else{
+                                   showVideoSelect(context, true, 1, baseModel, maxDuration * 1000, function, camera);
+                               }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 baseModel[0] = new BaseModel("获取失败", -1, "js入参格式解析失败，请参考文档传参");
@@ -170,8 +180,12 @@ public class ChooseVideoHandler extends BridgeHandler {
                                     videoBackModel.setHeight(result.get(0).getHeight());
                                     videoBackModel.setWidth(result.get(0).getWidth());
                                     videoBackModel.setSize(result.get(0).getSize());
-                                    videoBackModel.setTempFilePath(result.get(0).getPath());
-                                    videoBackModel.setVideoData(ImageUtil.file2Base64(result.get(0).getPath()));
+                                    String filePath=result.get(0).getPath();
+                                    if(filePath.startsWith("content://")){
+                                        filePath=ImageUtil.getRealPathFromUri(context,filePath);
+                                    }
+                                    videoBackModel.setTempFilePath(filePath);
+                                    videoBackModel.setVideoData(ImageUtil.file2Base64(context,result.get(0).getPath()));
                                     baseModel[0] = new BaseModel("获取成功", 0, videoBackModel);
                                 }
                             } else {
