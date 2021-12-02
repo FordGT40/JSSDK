@@ -170,8 +170,8 @@ public class ChooseVideoHandler extends BridgeHandler {
                                     videoBackModel.setHeight(result.get(0).getHeight());
                                     videoBackModel.setWidth(result.get(0).getWidth());
                                     videoBackModel.setSize(result.get(0).getSize());
-                                    videoBackModel.setTempFilePath(result.get(0).getRealPath());
-                                    videoBackModel.setVideoData(ImageUtil.file2Base64(result.get(0).getRealPath()));
+                                    videoBackModel.setTempFilePath(result.get(0).getPath());
+                                    videoBackModel.setVideoData(ImageUtil.file2Base64(result.get(0).getPath()));
                                     baseModel[0] = new BaseModel("获取成功", 0, videoBackModel);
                                 }
                             } else {
