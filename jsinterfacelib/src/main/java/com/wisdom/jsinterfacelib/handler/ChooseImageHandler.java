@@ -137,9 +137,9 @@ public class ChooseImageHandler extends BridgeHandler {
                             for (int i = 0; i < result.size(); i++) {
                                 //是否压缩
                                 if (finalIsCompressed) {
-                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context, result.get(i).getRealPath()));
+                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context, result.get(i).getPath()));
                                 } else {
-                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64(result.get(i).getRealPath()));
+                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64(result.get(i).getPath()));
                                 }
                             }
                             baseModel[0] = new BaseModel("获取成功", 0, list);
