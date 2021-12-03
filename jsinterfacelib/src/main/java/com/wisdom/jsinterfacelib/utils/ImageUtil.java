@@ -481,12 +481,17 @@ public class ImageUtil {
         File originFile = new File(sdFile, fileName);
         BitmapFactory.Options options = new BitmapFactory.Options();
         //设置此参数是仅仅读取图片的宽高到options中，不会将整张图片读到内存中，防止oom
+        String path="";
+        if("".equals(originFile.getAbsolutePath()) && originFile.getAbsolutePath()!=null){
+            path=originFile.getPath();
+        }else{
+            path=originFile.getAbsolutePath();
+        }
         options.inJustDecodeBounds = true;
-        Bitmap emptyBitmap = BitmapFactory.decodeFile(originFile.getAbsolutePath(), options);
-
+        Bitmap emptyBitmap = BitmapFactory.decodeFile(path, options);
         options.inJustDecodeBounds = false;
         options.inSampleSize = inSampleSize;
-        Bitmap resultBitmap = BitmapFactory.decodeFile(originFile.getAbsolutePath(), options);
+        Bitmap resultBitmap = BitmapFactory.decodeFile(path, options);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         resultBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
         try {
