@@ -479,6 +479,7 @@ public class ImageUtil {
     public static String compress(Context context,int inSampleSize, String fileName) {
         File sdFile = context.getExternalCacheDir();
         File originFile = new File(sdFile, fileName);
+        try {
         BitmapFactory.Options options = new BitmapFactory.Options();
         //设置此参数是仅仅读取图片的宽高到options中，不会将整张图片读到内存中，防止oom
         String path="";
@@ -494,14 +495,12 @@ public class ImageUtil {
         Bitmap resultBitmap = BitmapFactory.decodeFile(path, options);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         resultBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-        try {
+
             FileOutputStream fos = new FileOutputStream(new File(sdFile, fileName));
             fos.write(bos.toByteArray());
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new File(sdFile, fileName).getPath();
