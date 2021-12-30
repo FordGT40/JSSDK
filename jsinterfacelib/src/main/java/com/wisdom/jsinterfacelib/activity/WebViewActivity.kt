@@ -1,16 +1,23 @@
 package com.wisdom.jsinterfacelib.activity
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.ImageView
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.smallbuer.jsbridge.core.BridgeWebView
+import com.wisdom.jsinterfacelib.ConstantString
 import com.wisdom.jsinterfacelib.ConstantString.CAN_BACK_KEY_USEFUL
 import com.wisdom.jsinterfacelib.ConstantString.JS_FUN_NAME
 import com.wisdom.jsinterfacelib.R
+import com.wisdom.jsinterfacelib.model.BaseModel
+import java.lang.Exception
 
 open class WebViewActivity : AppCompatActivity() {
 
@@ -36,6 +43,27 @@ open class WebViewActivity : AppCompatActivity() {
 
         val url = intent.getStringExtra("url")
         val hideNavBar = intent.getBooleanExtra("hideNavBar", false)
+        //展示出自定义actionbar
+        try {
+            val actionBar = supportActionBar
+            if (actionBar != null) {
+                actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+                val view = LayoutInflater.from(this).inflate(R.layout.action_bar, null, false)
+                val back = view.findViewById<View>(R.id.back) as ImageView
+                back.setOnClickListener { view1: View? ->finish() }
+                if ("" != ConstantString.ACTION_BAR_RGB) {
+                    view.setBackgroundColor(Color.parseColor(ConstantString.ACTION_BAR_RGB))
+                }
+                actionBar.customView = view
+                actionBar.show()
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+
+
         if (hideNavBar) {
             //是否隐藏actionBar
             supportActionBar?.hide()

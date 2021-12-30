@@ -21,7 +21,7 @@
 
     <application>
         <activity android:name=".activity.VideoRecorderFrontActivity"/>
-        <activity android:name=".activity.WebViewActivity" />
+        <activity android:name=".activity.WebViewActivity" android:theme="@style/lightAcionBar"/>
         <activity android:name=".activity.VideoPlayActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:screenOrientation="portrait" />
         <activity android:name=".activity.VideoPreviewActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:screenOrientation="portrait" />
         <activity
