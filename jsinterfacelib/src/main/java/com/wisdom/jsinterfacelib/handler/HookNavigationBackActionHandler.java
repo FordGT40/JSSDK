@@ -34,6 +34,9 @@ public class HookNavigationBackActionHandler extends BridgeHandler {
                     function.onCallBack(GsonUtils.toJson(baseModel));
                     ((AppCompatActivity) context).finish();
                 } else {
+                    String newData = data.substring(1, data.length() - 1);
+                    String jsFunction = "javascript:" + newData + "()";
+                    ConstantString.JS_FUN_NAME = jsFunction;
                     //获取页面的webView
                     BridgeWebView webView = ((AppCompatActivity) context).findViewById(R.id.wv_webview);
                     //屏蔽上导航的返回按钮
@@ -41,9 +44,6 @@ public class HookNavigationBackActionHandler extends BridgeHandler {
                     View customView = actionBar.getCustomView();
                     if (customView != null) {
                         ImageView back = ((ImageView) customView.findViewById(R.id.back));
-                        String newData = data.substring(1, data.length() - 1);
-                        String jsFunction = "javascript:" + newData + "()";
-                        ConstantString.JS_FUN_NAME = jsFunction;
                         back.setOnClickListener(view -> {
                             //什么都不做
 //                           交给js方法处理，后面调用了指定的js方法
