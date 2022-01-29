@@ -25,6 +25,7 @@ public class MyApplication extends ZApplication {
 
 
         JSCallInterface JSCallInterface = new JSCallInterface() {
+
             @Override
             public void onFunctionCompleted(Context context, String methodName, String args, MainFunctionCallback callback) {
                 super.onFunctionCompleted(context, methodName, args, callback);

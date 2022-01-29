@@ -14,5 +14,6 @@ import com.smallbuer.jsbridge.core.CallBackFunction;
  */
 public class JSCallInterface {
 public void onFunctionCompleted(Context context, String funName,String arg, MainFunctionCallback callback){}
+public void onFunctionCompleted(Context context, String funName,Object arg, MainFunctionCallback callback){}
 
 }

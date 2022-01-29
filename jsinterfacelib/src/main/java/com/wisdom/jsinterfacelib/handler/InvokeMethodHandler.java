@@ -32,9 +32,20 @@ public class InvokeMethodHandler extends BridgeHandler {
             JSONObject jsonObject=new JSONObject(data);
             String methodName=jsonObject.getString("methodName");
             JSONObject jsonObjectData=jsonObject.optJSONObject("data");
+           Object object = jsonObject.opt("data");
 
 
             JSCallInterface.onFunctionCompleted(context, methodName,jsonObjectData.toString() , new MainFunctionCallback(){
+                @Override
+                public void functionCallBack(Object obj) {
+                    super.functionCallBack(obj);
+                    LogUtils.i("收到主工程回调："+obj.toString());
+                    BaseModel baseModel = new BaseModel("调用成功", 0, obj);
+                    function.onCallBack(GsonUtils.toJson(baseModel));
+                }
+            });
+
+            JSCallInterface.onFunctionCompleted(context, methodName,object, new MainFunctionCallback(){
                 @Override
                 public void functionCallBack(Object obj) {
                     super.functionCallBack(obj);
