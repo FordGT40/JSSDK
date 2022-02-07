@@ -25,6 +25,7 @@ open class WebViewFragment : Fragment() {
 
     public var webView: BridgeWebView? = null
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,15 +64,6 @@ open class WebViewFragment : Fragment() {
         }
 
 
-
-        if (hideNavBar == true) {
-            //是否隐藏actionBar
-            (activity as AppCompatActivity).supportActionBar?.hide()
-        }
-
-        if (!url.isNullOrBlank()) {
-            webView!!.loadUrl(url)
-        }
 //            //访问网页
 
 
@@ -92,6 +84,14 @@ open class WebViewFragment : Fragment() {
                 //返回true
                 return true
             }
+        }
+        if (hideNavBar == true) {
+            //是否隐藏actionBar
+            (activity as AppCompatActivity).supportActionBar?.hide()
+        }
+
+        if (!url.isNullOrBlank()) {
+            webView!!.loadUrl(url)
         }
 
         return rootView

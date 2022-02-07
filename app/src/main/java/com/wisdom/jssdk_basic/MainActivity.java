@@ -70,6 +70,7 @@ public class MainActivity extends WebViewActivity {
 
 //        intent.putExtra("url","http://192.168.1.105:8080/");
         intent.putExtra("url","http://192.168.111.173:8000/index.html");
+//        intent.putExtra("url","http://36.134.125.179:8989/xyh-app/alumniGarden?xyhId=b4ac393dbb8c4858b681d28b2bd0890a&schoolId=af8a2c81af3e45359da274b290d898c2");
         startActivity(intent);
 
     }

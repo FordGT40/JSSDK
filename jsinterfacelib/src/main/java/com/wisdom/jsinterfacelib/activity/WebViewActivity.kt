@@ -69,9 +69,7 @@ open class WebViewActivity : AppCompatActivity() {
             supportActionBar?.hide()
         }
 
-        if (!url.isNullOrBlank()) {
-            webView!!.loadUrl(url)
-        }
+
 //            //访问网页
 
 
@@ -92,6 +90,11 @@ open class WebViewActivity : AppCompatActivity() {
                 //返回true
                 return true
             }
+        }
+
+
+        if (!url.isNullOrBlank()) {
+            webView!!.loadUrl(url)
         }
     }
 
