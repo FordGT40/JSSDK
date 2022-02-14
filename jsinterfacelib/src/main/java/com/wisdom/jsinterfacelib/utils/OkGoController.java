@@ -32,7 +32,7 @@ public class OkGoController {
 //    }
     public void get(String url, Map<String, String> map, StringCallback stringCallBack) {
         OkGo.<String>get(url)
-                .headers("Content-Type", "multipart/form-data")
+//                .headers("Content-Type", "multipart/form-data")
                 .params(map)
                 .execute(stringCallBack);
     }
