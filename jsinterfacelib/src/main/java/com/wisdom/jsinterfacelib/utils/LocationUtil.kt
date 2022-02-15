@@ -464,8 +464,10 @@ object LocationUtil {
      */
     @JvmStatic
     fun getLocationInfo(longitude: Double, latitude: Double, listener: OnLocationInfoGetListener) {
+
         val url =
             "http://restapi.amap.com/v3/geocode/regeo?key=d575350e55b289b9babea2a3b605cd8a&location=${longitude},${latitude}&radius=1000&extensions=all&batch=false&roadlevel=0"
+        /**
         val map = HashMap<String, String>()
         OkGoController.create().get(url, map, object : StringCallback() {
             override fun onError(
@@ -503,6 +505,78 @@ object LocationUtil {
                 }
             }
         })
+        **/
+        val SHOW_RESPONSE = 1002
+        var handler: Handler? = object : Handler() {
+            //handleMessage方法运行在主线程，处理子线程发送回来的数据。
+            override fun handleMessage(msg: Message) {
+                super.handleMessage(msg)
+
+                when (msg.what) {
+                    SHOW_RESPONSE -> {
+                        val response = msg.obj as String
+                        try {
+                            val locationInfoModel = LocationInfoResultModel()
+                            //解析高德返回的数据
+                            val jsonObject = JSONObject(response)
+                            val dataJson = jsonObject.optJSONObject("regeocode")
+                            dataJson.apply {
+                                locationInfoModel.address = optString("formatted_address")
+                                locationInfoModel.latitude = latitude
+                                locationInfoModel.longitude = longitude
+                                optJSONObject("addressComponent").apply {
+                                    locationInfoModel.country = optString("country")
+                                    locationInfoModel.city = optString("city")
+                                    locationInfoModel.province = optString("province")
+                                    locationInfoModel.adcode = optString("adcode")
+                                    locationInfoModel.district = optString("district")
+                                    locationInfoModel.cityCode = optString("citycode")
+                                }
+                            }
+                            listener.onLocationInfoGetSuccess(locationInfoModel)
+                        } catch (exception: Exception) {
+                            listener.onLocationInfoGetFail("反地理编码数据解析失败")
+                        }
+
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
+
+
+        //开启线程来发起网络请求
+        Thread {
+            var connection: HttpURLConnection? = null
+            try {
+                val url = URL(url)
+                connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+                connection.connectTimeout = 5000
+                connection.readTimeout = 5000
+                val `in`: InputStream = connection.inputStream
+                //下面对获取到的输入流进行读取
+                val reader = BufferedReader(InputStreamReader(`in`))
+                val response = StringBuilder()
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    response.append(line)
+                }
+                //实例化Message对象
+                val message = Message()
+                message.what = SHOW_RESPONSE
+                //将服务器返回的结果存放到Message中
+                message.obj = response.toString()
+                //sendMessage方法运行在子线程
+                handler!!.sendMessage(message)
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            } finally {
+                connection?.disconnect()
+            }
+        }.start()
     }
 
     interface OnLocationInfoGetListener {
