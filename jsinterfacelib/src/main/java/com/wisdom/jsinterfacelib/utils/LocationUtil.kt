@@ -203,7 +203,24 @@ object LocationUtil {
                 when (msg.what) {
                     SHOW_RESPONSE -> {
                         val response = msg.obj as String
-
+                        try {
+                            val json = JSONObject(response)
+                            val status = json.optString("status")
+                            if (status == "1") {
+                                //坐标转换成功，将坐标回传给前台
+                                val locations = json.optString("locations")
+                                val locationPoint = locations.split(",")
+                                listener.onLocationSuccess(
+                                    locationPoint[1].toDouble(),
+                                    locationPoint[0].toDouble()
+                                )
+                            } else {
+                                //坐标转换失败
+                                listener.onLocationFail("定位信息获取失败")
+                            }
+                        } catch (exception: Exception) {
+                            listener.onLocationFail("定位信息获取失败")
+                        }
 
                     }
                     else -> {
