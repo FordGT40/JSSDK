@@ -159,8 +159,7 @@ object LocationUtil {
 //            put("locations", "$longitude,$latitude")
 //        }
 
-        OkGo.get(url) //                .headers("Content-Type", "multipart/form-data")
-            .headers("Content-Type", "none")
+        OkGo.get(url)
             .params("key", "d575350e55b289b9babea2a3b605cd8a")
             .params("coordsys", "gps")
             .params("locations", "$longitude,$latitude")
