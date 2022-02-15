@@ -52,89 +52,89 @@ object LocationUtil {
     @JvmStatic
     fun getLocationData(activity: FragmentActivity?, listener: OnLocationCompleteListener) {
         init(activity!!)
-                .permissions(
+            .permissions(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            .explainReasonBeforeRequest()
+            .onExplainRequestReason { scop, deniedList ->
+                listener.onLocationFail("获取定位权限失败")
+                scop.showRequestReasonDialog(
+                    listOf(
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION
+                    ), "获取位置信息需要授权获取定位权限", "允许", "拒绝"
                 )
-                .explainReasonBeforeRequest()
-                .onExplainRequestReason { scop, deniedList ->
-                    listener.onLocationFail("获取定位权限失败")
-                    scop.showRequestReasonDialog(
-                            listOf(
-                                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                                    Manifest.permission.ACCESS_FINE_LOCATION
-                            ), "获取位置信息需要授权获取定位权限", "允许", "拒绝"
-                    )
-                }
-                .onForwardToSettings { scop, deniedList ->
-                    listener.onLocationFail("获取定位权限失败，需手动开启定位权限")
-                    scop.showForwardToSettingsDialog(
-                            listOf(
-                                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                                    Manifest.permission.ACCESS_FINE_LOCATION
-                            ), "您需要去应用程序设置当中手动开启权限", "去开启", "取消"
-                    )
+            }
+            .onForwardToSettings { scop, deniedList ->
+                listener.onLocationFail("获取定位权限失败，需手动开启定位权限")
+                scop.showForwardToSettingsDialog(
+                    listOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ), "您需要去应用程序设置当中手动开启权限", "去开启", "取消"
+                )
 
-                }
-                .request { allGranted, grantedList, deniedList ->
-                    val map = if (allGranted) {
-                        //开始定位
-                        val locationManager =
-                                activity.getSystemService(LOCATION_SERVICE) as LocationManager
-                        val criteria = Criteria()
-                        criteria.accuracy = Criteria.ACCURACY_FINE
-                        criteria.isAltitudeRequired = false
-                        criteria.isBearingRequired = true
-                        criteria.isCostAllowed = true
-                        criteria.isSpeedRequired = true
-                        criteria.powerRequirement = Criteria.POWER_LOW
-                        criteria.bearingAccuracy = Criteria.ACCURACY_HIGH
-                        criteria.speedAccuracy = Criteria.ACCURACY_HIGH
-                        criteria.horizontalAccuracy = Criteria.ACCURACY_HIGH
-                        criteria.verticalAccuracy = Criteria.ACCURACY_HIGH
-                        val bestProvider = locationManager.getBestProvider(criteria, true)
-                        val locationListener = object : LocationListener {
-                            override fun onLocationChanged(location: Location) {
-                                currentLocation = location
-                            }
+            }
+            .request { allGranted, grantedList, deniedList ->
+                val map = if (allGranted) {
+                    //开始定位
+                    val locationManager =
+                        activity.getSystemService(LOCATION_SERVICE) as LocationManager
+                    val criteria = Criteria()
+                    criteria.accuracy = Criteria.ACCURACY_FINE
+                    criteria.isAltitudeRequired = false
+                    criteria.isBearingRequired = true
+                    criteria.isCostAllowed = true
+                    criteria.isSpeedRequired = true
+                    criteria.powerRequirement = Criteria.POWER_LOW
+                    criteria.bearingAccuracy = Criteria.ACCURACY_HIGH
+                    criteria.speedAccuracy = Criteria.ACCURACY_HIGH
+                    criteria.horizontalAccuracy = Criteria.ACCURACY_HIGH
+                    criteria.verticalAccuracy = Criteria.ACCURACY_HIGH
+                    val bestProvider = locationManager.getBestProvider(criteria, true)
+                    val locationListener = object : LocationListener {
+                        override fun onLocationChanged(location: Location) {
+                            currentLocation = location
+                        }
 
-                            override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}
-                            override fun onProviderEnabled(s: String) {}
-                            override fun onProviderDisabled(s: String) {}
-                        }
-                        locationManager.requestLocationUpdates(
-                                bestProvider!!,
-                                10.toLong(),
-                                0.toFloat(),
-                                locationListener
-                        )
-                        val gsLocation =
-                                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                        val netLocation =
-                                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                        var bestLocation = gsLocation
-                        bestLocation = if (isBetterLocation(
-                                        netLocation!!,
-                                        bestLocation
-                                )
-                        ) netLocation else bestLocation
-                        if (currentLocation != null) {
-                            bestLocation = if (isBetterLocation(
-                                            currentLocation!!,
-                                            bestLocation
-                                    )
-                            ) currentLocation!! else bestLocation
-                        }
-                        with(bestLocation) {
-//                        listener.onLocationSuccess(latitude, longitude)
-                            locationConvert(this!!.longitude, latitude, listener)
-                        }
-                    } else {
-                        listener.onLocationFail("您未授权获取位置信息权限，定位失败")
-                        LogUtils.i("您拒绝了如下权限：$deniedList")
+                        override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}
+                        override fun onProviderEnabled(s: String) {}
+                        override fun onProviderDisabled(s: String) {}
                     }
-
+                    locationManager.requestLocationUpdates(
+                        bestProvider!!,
+                        10.toLong(),
+                        0.toFloat(),
+                        locationListener
+                    )
+                    val gsLocation =
+                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    val netLocation =
+                        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                    var bestLocation = gsLocation
+                    bestLocation = if (isBetterLocation(
+                            netLocation!!,
+                            bestLocation
+                        )
+                    ) netLocation else bestLocation
+                    if (currentLocation != null) {
+                        bestLocation = if (isBetterLocation(
+                                currentLocation!!,
+                                bestLocation
+                            )
+                        ) currentLocation!! else bestLocation
+                    }
+                    with(bestLocation) {
+//                        listener.onLocationSuccess(latitude, longitude)
+                        locationConvert(this!!.longitude, latitude, listener)
+                    }
+                } else {
+                    listener.onLocationFail("您未授权获取位置信息权限，定位失败")
+                    LogUtils.i("您拒绝了如下权限：$deniedList")
                 }
+
+            }
 
     }
 
@@ -146,17 +146,18 @@ object LocationUtil {
      *  @time 2021/2/18 0018  10:23
      */
     private fun locationConvert(
-            longitude: Double,
-            latitude: Double,
-            listener: OnLocationCompleteListener
+        longitude: Double,
+        latitude: Double,
+        listener: OnLocationCompleteListener
     ) {
 //https://restapi.amap.com/v3/geocode/regeo?location=126.694041883681,45.694532877605&key=d575350e55b289b9babea2a3b605cd8a
         //https://restapi.amap.com/v3/assistant/coordinate/convert?key=d575350e55b289b9babea2a3b605cd8a&locations=126.687954,45.69248&coordsys=gps
         var url = "https://restapi.amap.com/v3/assistant/coordinate/convert"
-        val urlPara="${url}?key=d575350e55b289b9babea2a3b605cd8a&coordsys=gps&locations=$longitude,$latitude"
-
+        val urlPara =
+            "${url}?coordsys=gps&key=d575350e55b289b9babea2a3b605cd8a&locations=$longitude,$latitude"
+        LogUtils.i("定位请求的地址：$urlPara")
 //        val params = mapOf(
-//                Pair("key", "d575350e55b289b9babea2a3b605cd8a"),
+//                Pair("key", "d575350e55b289b9baba2a3b605cd8a"),
 //                Pair("coordsys", "gps"),
 //                Pair("locations", "$longitude,$latitude")
 //        )
@@ -168,31 +169,30 @@ object LocationUtil {
 //        }
 
 
-
         /**
         OkGoController.create().get(url, params, object : StringCallback() {
-            override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
-                try {
-                    val json = JSONObject(t)
-                    val status = json.optString("status")
-                    if (status == "1") {
-                        //坐标转换成功，将坐标回传给前台
-                        val locations = json.optString("locations")
-                        val locationPoint = locations.split(",")
-                        listener.onLocationSuccess(
-                            locationPoint[1].toDouble(),
-                            locationPoint[0].toDouble()
-                        )
-                    } else {
-                        //坐标转换失败
-                        listener.onLocationFail("定位信息获取失败")
-                    }
-                } catch (exception: Exception) {
-                    listener.onLocationFail("定位信息获取失败")
-                }
-            }
+        override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
+        try {
+        val json = JSONObject(t)
+        val status = json.optString("status")
+        if (status == "1") {
+        //坐标转换成功，将坐标回传给前台
+        val locations = json.optString("locations")
+        val locationPoint = locations.split(",")
+        listener.onLocationSuccess(
+        locationPoint[1].toDouble(),
+        locationPoint[0].toDouble()
+        )
+        } else {
+        //坐标转换失败
+        listener.onLocationFail("定位信息获取失败")
+        }
+        } catch (exception: Exception) {
+        listener.onLocationFail("定位信息获取失败")
+        }
+        }
         })
-        **/
+         **/
         //实例化Handler对象，用于在子线程发送消息到主线程，并在主线程进行消息处理
         val SHOW_RESPONSE = 1001
         var handler: Handler? = object : Handler() {
@@ -206,7 +206,7 @@ object LocationUtil {
                         try {
                             val json = JSONObject(response)
                             val status = json.optString("status")
-                            LogUtils.i("获得的地理坐标转换结果："+response)
+                            LogUtils.i("获得的地理坐标转换结果：" + response)
                             if (status == "1") {
                                 //坐标转换成功，将坐标回传给前台
                                 val locations = json.optString("locations")
@@ -232,12 +232,11 @@ object LocationUtil {
         }
 
 
-
         //开启线程来发起网络请求
         Thread {
             var connection: HttpURLConnection? = null
             try {
-                val url = URL(url)
+                val url = URL(urlPara)
                 connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
                 connection.connectTimeout = 5000
@@ -297,8 +296,8 @@ object LocationUtil {
         val isSignificantlyLessAccurate = accuracyDelta > 200
         // Check if the old and new location are from the same provider
         val isFromSameProvider = isSameProvider(
-                location.provider,
-                currentBestLocation.provider
+            location.provider,
+            currentBestLocation.provider
         )
         // Determine location quality using a combination of timeliness and accuracy
         if (isMoreAccurate) {
@@ -380,10 +379,10 @@ object LocationUtil {
             intent.setPackage("com.autonavi.minimap")
             intent.addCategory("android.intent.category.DEFAULT")
             intent.data = Uri.parse(
-                    "androidamap://route?sourceApplication=" + R.string.app_name
-                            .toString() + "&sname=我的位置&dlat=" + dlat
-                            .toString() + "&dlon=" + dlon
-                            .toString() + "&dname=" + dname + "&dev=0&m=0&t=1"
+                "androidamap://route?sourceApplication=" + R.string.app_name
+                    .toString() + "&sname=我的位置&dlat=" + dlat
+                    .toString() + "&dlon=" + dlon
+                    .toString() + "&dname=" + dname + "&dev=0&m=0&t=1"
             )
             context.startActivity(intent)
         } else {
@@ -405,10 +404,10 @@ object LocationUtil {
         if (checkMapAppsIsExist(context, "com.baidu.BaiduMap")) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(
-                    "baidumap://map/direction?origin=我的位置&destination=name:"
-                            + dname
-                            + "|latlng:" + dlat + "," + dlon
-                            + "&mode=transit&sy=3&index=0&target=1"
+                "baidumap://map/direction?origin=我的位置&destination=name:"
+                        + dname
+                        + "|latlng:" + dlat + "," + dlon
+                        + "&mode=transit&sy=3&index=0&target=1"
             )
             context.startActivity(intent)
         } else {
@@ -434,10 +433,10 @@ object LocationUtil {
         if (checkMapAppsIsExist(context, "com.tencent.map")) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(
-                    "qqmap://map/routeplan?type=bus&from=我的位置&fromcoord=0,0"
-                            + "&to=" + dname
-                            + "&tocoord=" + dlat + "," + dlon
-                            + "&policy=1&referer=myapp"
+                "qqmap://map/routeplan?type=bus&from=我的位置&fromcoord=0,0"
+                        + "&to=" + dname
+                        + "&tocoord=" + dlat + "," + dlon
+                        + "&policy=1&referer=myapp"
             )
             context.startActivity(intent)
         } else {
@@ -465,7 +464,8 @@ object LocationUtil {
      */
     @JvmStatic
     fun getLocationInfo(longitude: Double, latitude: Double, listener: OnLocationInfoGetListener) {
-        val url = "http://restapi.amap.com/v3/geocode/regeo?key=d575350e55b289b9babea2a3b605cd8a&location=${longitude},${latitude}&radius=1000&extensions=all&batch=false&roadlevel=0"
+        val url =
+            "http://restapi.amap.com/v3/geocode/regeo?key=d575350e55b289b9babea2a3b605cd8a&location=${longitude},${latitude}&radius=1000&extensions=all&batch=false&roadlevel=0"
         val map = HashMap<String, String>()
         OkGoController.create().get(url, map, object : StringCallback() {
             override fun onError(
@@ -479,14 +479,14 @@ object LocationUtil {
 
             override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
                 try {
-                    val locationInfoModel=LocationInfoResultModel()
+                    val locationInfoModel = LocationInfoResultModel()
                     //解析高德返回的数据
                     val jsonObject = JSONObject(t)
                     val dataJson = jsonObject.optJSONObject("regeocode")
                     dataJson.apply {
-                        locationInfoModel.address=optString("formatted_address")
-                        locationInfoModel.latitude=latitude
-                        locationInfoModel.longitude=longitude
+                        locationInfoModel.address = optString("formatted_address")
+                        locationInfoModel.latitude = latitude
+                        locationInfoModel.longitude = longitude
                         optJSONObject("addressComponent").apply {
                             locationInfoModel.country = optString("country")
                             locationInfoModel.city = optString("city")
