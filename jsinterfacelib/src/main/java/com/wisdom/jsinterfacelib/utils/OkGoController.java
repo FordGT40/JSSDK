@@ -31,12 +31,16 @@ public class OkGoController {
 //                .params(map)
 //                .execute(callback);
 //    }
-    public void get(String url, HashMap<String, String> map, StringCallback stringCallBack) {
+    public void get(String url, Map<String, String> map, StringCallback stringCallBack) {
         OkGo.get(url)
 //                .headers("Content-Type", "multipart/form-data")
+                .headers("Content-Type", "none")
                 .params(map)
                 .execute(stringCallBack);
     }
+
+
+
     public  void postFile(String url, HttpParams map, StringCallback stringCallBack) {
         OkGo.post(url)
                 .headers("Content-Type", "multipart/form-data")
