@@ -146,11 +146,17 @@ object LocationUtil {
 //https://restapi.amap.com/v3/geocode/regeo?location=126.694041883681,45.694532877605&key=d575350e55b289b9babea2a3b605cd8a
         //https://restapi.amap.com/v3/assistant/coordinate/convert?key=d575350e55b289b9babea2a3b605cd8a&locations=126.687954,45.69248&coordsys=gps
         val url = "https://restapi.amap.com/v3/assistant/coordinate/convert"
-        val params = mapOf(
-                Pair("key", "d575350e55b289b9babea2a3b605cd8a"),
-                Pair("coordsys", "gps"),
-                Pair("locations", "$longitude,$latitude")
-        )
+//        val params = mapOf(
+//                Pair("key", "d575350e55b289b9babea2a3b605cd8a"),
+//                Pair("coordsys", "gps"),
+//                Pair("locations", "$longitude,$latitude")
+//        )
+
+        val params=HashMap<String,String>().apply {
+            put("key", "d575350e55b289b9babea2a3b605cd8a")
+            put("coordsys", "gps")
+            put("locations", "$longitude,$latitude")
+        }
         OkGoController.create().get(url, params, object : StringCallback() {
             override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
                 try {

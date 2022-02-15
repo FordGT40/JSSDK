@@ -4,6 +4,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpParams;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,7 +31,7 @@ public class OkGoController {
 //                .params(map)
 //                .execute(callback);
 //    }
-    public void get(String url, Map<String, String> map, StringCallback stringCallBack) {
+    public void get(String url, HashMap<String, String> map, StringCallback stringCallBack) {
         OkGo.<String>get(url)
 //                .headers("Content-Type", "multipart/form-data")
                 .params(map)
