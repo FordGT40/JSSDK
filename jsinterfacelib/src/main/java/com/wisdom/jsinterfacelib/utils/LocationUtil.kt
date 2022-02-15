@@ -206,6 +206,7 @@ object LocationUtil {
                         try {
                             val json = JSONObject(response)
                             val status = json.optString("status")
+                            LogUtils.i("获得的地理坐标转换结果："+response)
                             if (status == "1") {
                                 //坐标转换成功，将坐标回传给前台
                                 val locations = json.optString("locations")
