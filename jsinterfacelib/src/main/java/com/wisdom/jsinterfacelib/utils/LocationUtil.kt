@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.lzy.okgo.callback.StringCallback
-import com.lzy.okgo.model.Response
 import com.permissionx.guolindev.PermissionX.init
 import com.wisdom.jsinterfacelib.R
 import com.wisdom.jsinterfacelib.model.LocationInfoResultModel
@@ -147,19 +146,12 @@ object LocationUtil {
 //https://restapi.amap.com/v3/geocode/regeo?location=126.694041883681,45.694532877605&key=d575350e55b289b9babea2a3b605cd8a
         //https://restapi.amap.com/v3/assistant/coordinate/convert?key=d575350e55b289b9babea2a3b605cd8a&locations=126.687954,45.69248&coordsys=gps
         val url = "https://restapi.amap.com/v3/assistant/coordinate/convert"
-//        val params = mapOf(
-//                Pair("key", "d575350e55b289b9babea2a3b605cd8a"),
-//                Pair("coordsys", "gps"),
-//                Pair("locations", "$longitude,$latitude")
-//        )
-
-        val map=HashMap<String,String>().apply {
-            put("key", "d575350e55b289b9babea2a3b605cd8a")
-            put("coordsys", "gps")
-            put("locations", "$longitude,$latitude")
-        }
-
-        OkGoController.create().get(url, map, object : StringCallback() {
+        val params = mapOf(
+                Pair("key", "d575350e55b289b9babea2a3b605cd8a"),
+                Pair("coordsys", "gps"),
+                Pair("locations", "$longitude,$latitude")
+        )
+        OkGoController.create().get(url, params, object : StringCallback() {
             override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
                 try {
                     val json = JSONObject(t)
@@ -176,7 +168,7 @@ object LocationUtil {
                         //坐标转换失败
                         listener.onLocationFail("定位信息获取失败")
                     }
-                } catch (exception: java.lang.Exception) {
+                } catch (exception: Exception) {
                     listener.onLocationFail("定位信息获取失败")
                 }
             }
