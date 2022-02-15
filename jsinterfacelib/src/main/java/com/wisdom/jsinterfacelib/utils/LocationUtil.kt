@@ -12,16 +12,22 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.permissionx.guolindev.PermissionX.init
 import com.wisdom.jsinterfacelib.R
 import com.wisdom.jsinterfacelib.model.LocationInfoResultModel
 import okhttp3.Call
 import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 
 /**
@@ -146,7 +152,9 @@ object LocationUtil {
     ) {
 //https://restapi.amap.com/v3/geocode/regeo?location=126.694041883681,45.694532877605&key=d575350e55b289b9babea2a3b605cd8a
         //https://restapi.amap.com/v3/assistant/coordinate/convert?key=d575350e55b289b9babea2a3b605cd8a&locations=126.687954,45.69248&coordsys=gps
-        val url = "https://restapi.amap.com/v3/assistant/coordinate/convert"
+        var url = "https://restapi.amap.com/v3/assistant/coordinate/convert"
+        val urlPara="${url}?key=d575350e55b289b9babea2a3b605cd8a&coordsys=gps&locations=$longitude,$latitude"
+
 //        val params = mapOf(
 //                Pair("key", "d575350e55b289b9babea2a3b605cd8a"),
 //                Pair("coordsys", "gps"),
@@ -159,32 +167,7 @@ object LocationUtil {
 //            put("locations", "$longitude,$latitude")
 //        }
 
-        OkGo.get(url)
-            .params("key", "d575350e55b289b9babea2a3b605cd8a")
-            .params("coordsys", "gps")
-            .params("locations", "$longitude,$latitude")
-            .execute<String>(object : StringCallback() {
-                override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
-                    try {
-                        val json = JSONObject(t)
-                        val status = json.optString("status")
-                        if (status == "1") {
-                            //坐标转换成功，将坐标回传给前台
-                            val locations = json.optString("locations")
-                            val locationPoint = locations.split(",")
-                            listener.onLocationSuccess(
-                                locationPoint[1].toDouble(),
-                                locationPoint[0].toDouble()
-                            )
-                        } else {
-                            //坐标转换失败
-                            listener.onLocationFail("定位信息获取失败")
-                        }
-                    } catch (exception: Exception) {
-                        listener.onLocationFail("定位信息获取失败")
-                    }
-                }
-            })
+
 
         /**
         OkGoController.create().get(url, params, object : StringCallback() {
@@ -210,6 +193,58 @@ object LocationUtil {
             }
         })
         **/
+        //实例化Handler对象，用于在子线程发送消息到主线程，并在主线程进行消息处理
+        val SHOW_RESPONSE = 1001
+        var handler: Handler? = object : Handler() {
+            //handleMessage方法运行在主线程，处理子线程发送回来的数据。
+            override fun handleMessage(msg: Message) {
+                super.handleMessage(msg)
+
+                when (msg.what) {
+                    SHOW_RESPONSE -> {
+                        val response = msg.obj as String
+
+
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
+
+
+
+        //开启线程来发起网络请求
+        Thread {
+            var connection: HttpURLConnection? = null
+            try {
+                val url = URL(url)
+                connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+                connection.connectTimeout = 5000
+                connection.readTimeout = 5000
+                val `in`: InputStream = connection.inputStream
+                //下面对获取到的输入流进行读取
+                val reader = BufferedReader(InputStreamReader(`in`))
+                val response = StringBuilder()
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    response.append(line)
+                }
+                //实例化Message对象
+                val message = Message()
+                message.what = SHOW_RESPONSE
+                //将服务器返回的结果存放到Message中
+                message.obj = response.toString()
+                //sendMessage方法运行在子线程
+                handler!!.sendMessage(message)
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            } finally {
+                connection?.disconnect()
+            }
+        }.start()
     }
 
 
