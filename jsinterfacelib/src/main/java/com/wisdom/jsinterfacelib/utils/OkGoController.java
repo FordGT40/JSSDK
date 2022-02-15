@@ -32,13 +32,13 @@ public class OkGoController {
 //                .execute(callback);
 //    }
     public void get(String url, HashMap<String, String> map, StringCallback stringCallBack) {
-        OkGo.<String>get(url)
+        OkGo.get(url)
 //                .headers("Content-Type", "multipart/form-data")
                 .params(map)
                 .execute(stringCallBack);
     }
     public  void postFile(String url, HttpParams map, StringCallback stringCallBack) {
-        OkGo.<String>post(url)
+        OkGo.post(url)
                 .headers("Content-Type", "multipart/form-data")
                 .isMultipart(true)
                 .params(map)
