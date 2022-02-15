@@ -15,6 +15,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.permissionx.guolindev.PermissionX.init
 import com.wisdom.jsinterfacelib.R
@@ -152,11 +153,41 @@ object LocationUtil {
 //                Pair("locations", "$longitude,$latitude")
 //        )
 
-        val params=HashMap<String,String>().apply {
-            put("key", "d575350e55b289b9babea2a3b605cd8a")
-            put("coordsys", "gps")
-            put("locations", "$longitude,$latitude")
-        }
+//        val params=HashMap<String,String>().apply {
+//            put("key", "d575350e55b289b9babea2a3b605cd8a")
+//            put("coordsys", "gps")
+//            put("locations", "$longitude,$latitude")
+//        }
+
+        OkGo.get(url) //                .headers("Content-Type", "multipart/form-data")
+            .headers("Content-Type", "none")
+            .params("key", "d575350e55b289b9babea2a3b605cd8a")
+            .params("coordsys", "gps")
+            .params("locations", "$longitude,$latitude")
+            .execute<String>(object : StringCallback() {
+                override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
+                    try {
+                        val json = JSONObject(t)
+                        val status = json.optString("status")
+                        if (status == "1") {
+                            //坐标转换成功，将坐标回传给前台
+                            val locations = json.optString("locations")
+                            val locationPoint = locations.split(",")
+                            listener.onLocationSuccess(
+                                locationPoint[1].toDouble(),
+                                locationPoint[0].toDouble()
+                            )
+                        } else {
+                            //坐标转换失败
+                            listener.onLocationFail("定位信息获取失败")
+                        }
+                    } catch (exception: Exception) {
+                        listener.onLocationFail("定位信息获取失败")
+                    }
+                }
+            })
+
+        /**
         OkGoController.create().get(url, params, object : StringCallback() {
             override fun onSuccess(t: String?, call: Call?, response: okhttp3.Response?) {
                 try {
@@ -179,6 +210,7 @@ object LocationUtil {
                 }
             }
         })
+        **/
     }
 
 
