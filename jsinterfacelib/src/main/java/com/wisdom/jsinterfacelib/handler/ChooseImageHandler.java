@@ -24,6 +24,7 @@ import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.RequestCallback;
 import com.smallbuer.jsbridge.core.BridgeHandler;
 import com.smallbuer.jsbridge.core.CallBackFunction;
+import com.wisdom.jsinterfacelib.activity.ClipImageJSActivity;
 import com.wisdom.jsinterfacelib.model.BaseModel;
 import com.wisdom.jsinterfacelib.utils.Base64Util;
 import com.wisdom.jsinterfacelib.utils.GlideEngine;
@@ -41,12 +42,14 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.wisdom.jsinterfacelib.utils.FileUtilCustom.getRealFilePathFromUri;
 
 /**
  * 选择图片
  */
 public class ChooseImageHandler extends BridgeHandler {
-
+    final int[] width = {0};
+    final int[] height = {0};
     @Override
     public void handler(final Context context, final String data, final CallBackFunction function) {
         LogUtils.i("接到的json：" + data);
@@ -55,6 +58,8 @@ public class ChooseImageHandler extends BridgeHandler {
         final Boolean[] hasCamaro = {false};
         final Boolean[] hasAlbum = {false};
         final Boolean[] isCompressed = {false};//是否压缩视频
+
+
         PermissionX.init(((AppCompatActivity) context))
                 .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .request(new RequestCallback() {
@@ -63,6 +68,19 @@ public class ChooseImageHandler extends BridgeHandler {
                         if (allGranted) {
                             try {
                                 JSONObject json = new JSONObject(data);
+                                String widthStr=json.optString("width");
+                                String heightStr=json.optString("height");
+                                if(width!=null){
+                                    if(!"".equals(width)){
+                                        width[0] = Integer.parseInt(widthStr);
+                                    }
+                                }
+                                if(height!=null){
+                                    if(!"".equals(height)){
+                                        height[0] =Integer.parseInt(heightStr);
+                                    }
+                                }
+
                                 count[0] = json.optInt("count");
                                 JSONArray sizeType = json.optJSONArray("sizeType");
                                 JSONArray sourceType = json.optJSONArray("sourceType");
@@ -133,20 +151,59 @@ public class ChooseImageHandler extends BridgeHandler {
                     @Override
                     public void onResult(List<LocalMedia> result) {
                         if (result.size() > 0) {
-                            List<String> list = new ArrayList<>();
-                            for (int i = 0; i < result.size(); i++) {
-                                //是否压缩
-                                if (finalIsCompressed) {
-                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context, result.get(i).getRealPath()));
-                                } else {
-                                    list.add("data:image/png;base64," + ImageUtil.ImageToBase64(context,result.get(i).getRealPath()));
+                            if(result.size()==1 && width.length>0&&height.length>0){
+                                //选了一张图片并且要剪裁到指定宽高，打开剪裁页面
+                                /**
+                                 *  intent.putExtra("type", 2); // 1: qq, 2: weixin
+                                 *         intent.putExtra("width", width);
+                                 *         intent.putExtra("height", height);
+                                 * */
+
+                                Intent intentNext=new Intent(context, ClipImageJSActivity.class);
+                                intentNext.putExtra("type",2);
+                                intentNext.putExtra("width",width[0]);
+                                intentNext.putExtra("height",height[0]);
+                                intentNext.setData(Uri.parse(result.get(0).getRealPath()));
+                              new  AvoidOnResult(((AppCompatActivity) context))
+                                      .startForResult(intentNext, (resultCode, data) -> {
+                                          //剪裁完图片后返回的图片地址
+                                          if (resultCode == RESULT_OK) {
+                                              final Uri uri = data.getData();
+                                              if (uri == null) {
+                                                  return;
+                                              }
+                                              String cropImagePath = getRealFilePathFromUri( context.getApplicationContext(), uri);
+                                              /**
+                                              Bitmap bitMap = BitmapFactory.decodeFile(cropImagePath);
+                                              File file = new File(cropImagePath);
+                                              uploadfile(file);
+                                              GlideUtils.showAvatar(this, file, photoView);
+                                               **/
+                                              List<String> list = new ArrayList<>();
+                                              list.add("data:image/png;base64," + ImageUtil.ImageToBase64(context,cropImagePath));
+                                              baseModel[0] = new BaseModel("获取成功", 0, list);
+                                              function.onCallBack(GsonUtils.toJson(baseModel[0]));
+                                          }
+                                      });
+                            }else{
+                                List<String> list = new ArrayList<>();
+                                for (int i = 0; i < result.size(); i++) {
+                                    //是否压缩
+                                    if (finalIsCompressed) {
+                                        list.add("data:image/png;base64," + ImageUtil.ImageToBase64Compress(context, result.get(i).getRealPath()));
+                                    } else {
+                                        list.add("data:image/png;base64," + ImageUtil.ImageToBase64(context,result.get(i).getRealPath()));
+                                    }
                                 }
+                                baseModel[0] = new BaseModel("获取成功", 0, list);
+                                function.onCallBack(GsonUtils.toJson(baseModel[0]));
                             }
-                            baseModel[0] = new BaseModel("获取成功", 0, list);
+
                         } else {
                             baseModel[0] = new BaseModel("获取失败", -1, "获取失败，返回的图片数组为空");
+                            function.onCallBack(GsonUtils.toJson(baseModel[0]));
                         }
-                        function.onCallBack(GsonUtils.toJson(baseModel[0]));
+
                     }
 
                     @Override

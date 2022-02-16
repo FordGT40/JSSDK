@@ -30,7 +30,7 @@
         <activity
             android:name=".weight.SignViewActivity"
             android:screenOrientation="landscape" />
-
+<activity android:name=".activity.ClipImageJSActivity" android:screenOrientation="portrait"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.wisdom.jsinterfacelib.fileprovider"
