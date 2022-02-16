@@ -67,11 +67,11 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
      * 初始化组件
      */
     public void initView() {
-        clipViewLayoutJS1 = (ClipViewLayoutJS) findViewById(R.id.clipViewLayout1);
-        clipViewLayoutJS2 = (ClipViewLayoutJS) findViewById(R.id.clipViewLayout2);
-        back = (ImageView) findViewById(R.id.iv_back);
-        btnCancel = (TextView) findViewById(R.id.btn_cancel);
-        btnOk = (TextView) findViewById(R.id.bt_ok);
+        clipViewLayoutJS1 = (ClipViewLayoutJS) findViewById(R.id.clipViewLayout1_js);
+        clipViewLayoutJS2 = (ClipViewLayoutJS) findViewById(R.id.clipViewLayout2_js);
+        back = (ImageView) findViewById(R.id.iv_back_js);
+        btnCancel = (TextView) findViewById(R.id.btn_cancel_js);
+        btnOk = (TextView) findViewById(R.id.bt_ok_js);
         //设置点击事件监听器
         back.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
@@ -101,9 +101,9 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.iv_back || id == R.id.btn_cancel) {
+        if (id == R.id.iv_back_js || id == R.id.btn_cancel_js) {
             finish();
-        } else if (id == R.id.bt_ok) {
+        } else if (id == R.id.bt_ok_js) {
             generateUriAndReturn();
         }
     }
