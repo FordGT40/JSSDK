@@ -56,7 +56,7 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clip_image);
+        setContentView(R.layout.activity_clip_image_js);
         type = getIntent().getIntExtra("type", 1);
         width = getIntent().getIntExtra("width", 200);
         height = getIntent().getIntExtra("height", 200);

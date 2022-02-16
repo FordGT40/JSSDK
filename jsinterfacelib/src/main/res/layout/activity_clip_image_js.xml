@@ -79,6 +79,8 @@
             android:textColor="#ffffff"
             android:textSize="16sp" />
 
+
+
         <TextView
             android:id="@+id/bt_ok_js"
             android:layout_width="80dp"
