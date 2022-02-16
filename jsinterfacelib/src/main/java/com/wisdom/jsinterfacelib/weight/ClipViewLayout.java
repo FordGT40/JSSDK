@@ -82,20 +82,21 @@ public class ClipViewLayout extends RelativeLayout {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ClipViewLayoutJS);
 
         //获取剪切框距离左右的边距, 默认为50dp
-        mHorizontalPadding = array.getDimensionPixelSize(R.styleable.ClipViewLayoutJS_mHorizontalPadding,
+        mHorizontalPadding = array.getDimensionPixelSize(R.styleable.ClipViewLayoutJS_mHorizontalPaddingJS,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()));
         //获取裁剪框边框宽度，默认1dp
-        int clipBorderWidth = array.getDimensionPixelSize(R.styleable.ClipViewLayoutJS_clipBorderWidth,
+        int clipBorderWidth = array.getDimensionPixelSize(R.styleable.ClipViewLayoutJS_clipBorderWidthJS,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
         //裁剪框类型(圆或者矩形)
-        int clipType = array.getInt(R.styleable.ClipViewLayoutJS_clipType, 1);
+        int clipType = array.getInt(R.styleable.ClipViewLayoutJS_clipTypeJS, 2);
         //回收
         array.recycle();
 //        if (clipView==null) {
             clipView = new ClipView(context);
 //        }
         //设置裁剪框类型
-        clipView.setClipType(clipType == 1 ? ClipView.ClipType.CIRCLE : ClipView.ClipType.RECTANGLE);
+        clipView.setClipType(ClipView.ClipType.RECTANGLE);
+//        clipView.setClipType(clipType == 1 ? ClipView.ClipType.CIRCLE : ClipView.ClipType.RECTANGLE);
         //设置剪切框边框
         clipView.setClipBorderWidth(clipBorderWidth);
 ////        设置剪切框水平间距

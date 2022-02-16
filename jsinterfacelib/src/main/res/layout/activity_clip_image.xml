@@ -43,10 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:clipBorderWidth="2dp"
-        app:clipType="circle"
+        app:clipBorderWidthJS="2dp"
         android:visibility="gone"
-        app:mHorizontalPadding="30dp" />
+        app:mHorizontalPaddingJS="30dp" />
 
     <!--矩形裁剪框示例 -->
     <com.wisdom.jsinterfacelib.weight.ClipViewLayout
@@ -54,9 +53,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:clipBorderWidth="2dp"
+        app:clipBorderWidthJS="2dp"
         android:layout_gravity="center_horizontal"
-        app:clipType="rectangle"
+
         />
 
     <RelativeLayout
