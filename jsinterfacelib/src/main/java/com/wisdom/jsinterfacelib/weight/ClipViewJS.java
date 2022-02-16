@@ -17,7 +17,7 @@ import android.view.WindowManager;
 /**
  * 头像上传裁剪框
  */
-public class ClipView extends View {
+public class ClipViewJS extends View {
     private Paint paint = new Paint();
     //画裁剪区域边框的画笔
     private Paint borderPaint = new Paint();
@@ -35,15 +35,15 @@ public class ClipView extends View {
     private int localWidth;
     private int localHeight;
 
-    public ClipView(Context context) {
+    public ClipViewJS(Context context) {
         this(context, null);
     }
 
-    public ClipView(Context context, AttributeSet attrs) {
+    public ClipViewJS(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ClipView(Context context, AttributeSet attrs, int defStyle) {
+    public ClipViewJS(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         //去锯齿
         paint.setAntiAlias(true);

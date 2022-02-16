@@ -30,11 +30,11 @@ import java.io.IOException;
 /**
  * 头像上传原图裁剪容器
  */
-public class ClipViewLayout extends RelativeLayout {
+public class ClipViewLayoutJS extends RelativeLayout {
     //裁剪原图
     private ImageView imageView;
     //裁剪框
-    private ClipView clipView;
+    private ClipViewJS clipViewJS;
     //裁剪框水平方向间距，xml布局文件中指定
     private float mHorizontalPadding;
     //裁剪框垂直方向间距，计算得出
@@ -64,15 +64,15 @@ public class ClipViewLayout extends RelativeLayout {
     private float maxScale = 4;
 
 
-    public ClipViewLayout(Context context) {
+    public ClipViewLayoutJS(Context context) {
         this(context, null);
     }
 
-    public ClipViewLayout(Context context, AttributeSet attrs) {
+    public ClipViewLayoutJS(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ClipViewLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ClipViewLayoutJS(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -91,51 +91,51 @@ public class ClipViewLayout extends RelativeLayout {
         int clipType = array.getInt(R.styleable.ClipViewLayoutJS_clipTypeJS, 2);
         //回收
         array.recycle();
-//        if (clipView==null) {
-            clipView = new ClipView(context);
+//        if (clipViewJS==null) {
+            clipViewJS = new ClipViewJS(context);
 //        }
         //设置裁剪框类型
-        clipView.setClipType(ClipView.ClipType.RECTANGLE);
-//        clipView.setClipType(clipType == 1 ? ClipView.ClipType.CIRCLE : ClipView.ClipType.RECTANGLE);
+        clipViewJS.setClipType(ClipViewJS.ClipType.RECTANGLE);
+//        clipViewJS.setClipType(clipType == 1 ? ClipViewJS.ClipType.CIRCLE : ClipViewJS.ClipType.RECTANGLE);
         //设置剪切框边框
-        clipView.setClipBorderWidth(clipBorderWidth);
+        clipViewJS.setClipBorderWidth(clipBorderWidth);
 ////        设置剪切框水平间距
-////        clipView.setmHorizontalPadding(mHorizontalPadding);
+////        clipViewJS.setmHorizontalPadding(mHorizontalPadding);
 //
 //        //设置裁剪框的宽高，现在注释掉由外界调用并设置
-        clipView.setClipBorderSize(200,100);
+        clipViewJS.setClipBorderSize(200,100);
         imageView = new ImageView(context);
         //相对布局布局参数
         android.view.ViewGroup.LayoutParams lp = new LayoutParams(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT);
         this.addView(imageView, lp);
-//        this.addView(clipView, lp);
+//        this.addView(clipViewJS, lp);
     }
 
     public void addClipView(int w, int h){
-        if (clipView==null) {
-        clipView = new ClipView(getContext());
+        if (clipViewJS ==null) {
+        clipViewJS = new ClipViewJS(getContext());
         }
         //设置裁剪框类型
-        clipView.setClipType(ClipView.ClipType.RECTANGLE);
+        clipViewJS.setClipType(ClipViewJS.ClipType.RECTANGLE);
         //设置剪切框边框
-        clipView.setClipBorderWidth(2);
+        clipViewJS.setClipBorderWidth(2);
 //        设置剪切框水平间距
-//        clipView.setmHorizontalPadding(mHorizontalPadding);
+//        clipViewJS.setmHorizontalPadding(mHorizontalPadding);
 
         //设置裁剪框的宽高，现在注释掉由外界调用并设置
-        clipView.setClipBorderSize(w,h);
+        clipViewJS.setClipBorderSize(w,h);
 
-        this.addView(clipView, new LayoutParams(
+        this.addView(clipViewJS, new LayoutParams(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT));
         postInvalidate();
     }
 
-    public ClipView getClipView(){
-        if(clipView!=null){
-            return clipView;
+    public ClipViewJS getClipView(){
+        if(clipViewJS !=null){
+            return clipViewJS;
         }else{
             return null;
         }
@@ -188,7 +188,7 @@ public class ClipViewLayout extends RelativeLayout {
         if (bitmap.getWidth() >= bitmap.getHeight()) {//宽图
             scale = (float) imageView.getWidth() / bitmap.getWidth();
             //如果高缩放后小于裁剪区域 则将裁剪区域与高的缩放比作为最终的缩放比
-            Rect rect = clipView.getClipRect();
+            Rect rect = clipViewJS.getClipRect();
             //高的最小缩放比
             minScale = rect.height() / (float) bitmap.getHeight();
             if (scale < minScale) {
@@ -198,7 +198,7 @@ public class ClipViewLayout extends RelativeLayout {
             //高的缩放比
             scale = (float) imageView.getHeight() / bitmap.getHeight();
             //如果宽缩放后小于裁剪区域 则将裁剪区域与宽的缩放比作为最终的缩放比
-            Rect rect = clipView.getClipRect();
+            Rect rect = clipViewJS.getClipRect();
             //宽的最小缩放比
             minScale = rect.width() / (float) bitmap.getWidth();
             if (scale < minScale) {
@@ -282,7 +282,7 @@ public class ClipViewLayout extends RelativeLayout {
                     matrix.set(savedMatrix);
                     float dx = event.getX() - start.x;
                     float dy = event.getY() - start.y;
-                    mVerticalPadding = clipView.getClipRect().top;
+                    mVerticalPadding = clipViewJS.getClipRect().top;
                     matrix.postTranslate(dx, dy);
                     //检查边界
                     checkBorder();
@@ -295,7 +295,7 @@ public class ClipViewLayout extends RelativeLayout {
                         if (scale < 1) { //缩小
                             if (getScale() > minScale) {
                                 matrix.set(savedMatrix);
-                                mVerticalPadding = clipView.getClipRect().top;
+                                mVerticalPadding = clipViewJS.getClipRect().top;
                                 matrix.postScale(scale, scale, mid.x, mid.y);
                                 //缩放到最小范围下面去了，则返回到最小范围大小
                                 while (getScale() < minScale) {
@@ -309,7 +309,7 @@ public class ClipViewLayout extends RelativeLayout {
                         } else { //放大
                             if (getScale() <= maxScale) {
                                 matrix.set(savedMatrix);
-                                mVerticalPadding = clipView.getClipRect().top;
+                                mVerticalPadding = clipViewJS.getClipRect().top;
                                 matrix.postScale(scale, scale, mid.x, mid.y);
                             }
                         }
@@ -397,7 +397,7 @@ public class ClipViewLayout extends RelativeLayout {
     public Bitmap clip(int width, int height) {
         imageView.setDrawingCacheEnabled(true);
         imageView.buildDrawingCache();
-        Rect rect = clipView.getClipRect();
+        Rect rect = clipViewJS.getClipRect();
         Bitmap cropBitmap = null;
         Bitmap zoomedCropBitmap = null;
         try {

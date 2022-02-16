@@ -8,15 +8,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.wisdom.jsinterfacelib.R;
-import com.wisdom.jsinterfacelib.weight.ClipView;
-import com.wisdom.jsinterfacelib.weight.ClipViewLayout;
+import com.wisdom.jsinterfacelib.weight.ClipViewLayoutJS;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +25,8 @@ import java.io.OutputStream;
  */
 public class ClipImageJSActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ClipImclipViewLayout2ageActivity";
-    private ClipViewLayout clipViewLayout1;
-    private ClipViewLayout clipViewLayout2;
+    private ClipViewLayoutJS clipViewLayoutJS1;
+    private ClipViewLayoutJS clipViewLayoutJS2;
     private ImageView back;
     private TextView btnCancel;
     private TextView btnOk;
@@ -69,8 +67,8 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
      * 初始化组件
      */
     public void initView() {
-        clipViewLayout1 = (ClipViewLayout) findViewById(R.id.clipViewLayout1);
-        clipViewLayout2 = (ClipViewLayout) findViewById(R.id.clipViewLayout2);
+        clipViewLayoutJS1 = (ClipViewLayoutJS) findViewById(R.id.clipViewLayout1);
+        clipViewLayoutJS2 = (ClipViewLayoutJS) findViewById(R.id.clipViewLayout2);
         back = (ImageView) findViewById(R.id.iv_back);
         btnCancel = (TextView) findViewById(R.id.btn_cancel);
         btnOk = (TextView) findViewById(R.id.bt_ok);
@@ -79,7 +77,7 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         btnCancel.setOnClickListener(this);
         btnOk.setOnClickListener(this);
         //设置裁剪框
-        clipViewLayout2.addClipView(width,height);
+        clipViewLayoutJS2.addClipView(width,height);
 
 
     }
@@ -88,15 +86,15 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         if (type == 1) {
-            clipViewLayout1.setVisibility(View.VISIBLE);
-            clipViewLayout2.setVisibility(View.GONE);
+            clipViewLayoutJS1.setVisibility(View.VISIBLE);
+            clipViewLayoutJS2.setVisibility(View.GONE);
             //设置图片资源
-            clipViewLayout1.setImageSrc(getIntent().getData());
+            clipViewLayoutJS1.setImageSrc(getIntent().getData());
         } else {
-            clipViewLayout2.setVisibility(View.VISIBLE);
-            clipViewLayout1.setVisibility(View.GONE);
+            clipViewLayoutJS2.setVisibility(View.VISIBLE);
+            clipViewLayoutJS1.setVisibility(View.GONE);
             //设置图片资源
-            clipViewLayout2.setImageSrc(getIntent().getData());
+            clipViewLayoutJS2.setImageSrc(getIntent().getData());
         }
     }
 
@@ -118,9 +116,9 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         //调用返回剪切图
         Bitmap zoomedCropBitmap;
         if (type == 1) {
-            zoomedCropBitmap = clipViewLayout1.clip(width, height);
+            zoomedCropBitmap = clipViewLayoutJS1.clip(width, height);
         } else {
-            zoomedCropBitmap = clipViewLayout2.clip(width, height);
+            zoomedCropBitmap = clipViewLayoutJS2.clip(width, height);
         }
         if (zoomedCropBitmap == null) {
             Log.e("android", "zoomedCropBitmap == null");
