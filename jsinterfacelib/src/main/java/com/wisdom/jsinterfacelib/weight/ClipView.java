@@ -32,6 +32,8 @@ public class ClipView extends View {
     //裁剪框类别，（圆形、矩形），默认为圆形
     private ClipType clipType = ClipType.CIRCLE;
     private Xfermode xfermode;
+    private int localWidth;
+    private int localHeight;
 
     public ClipView(Context context) {
         this(context, null);
@@ -67,12 +69,18 @@ public class ClipView extends View {
             //白色的圆边框
             canvas.drawCircle(this.getWidth() / 2, this.getHeight() / 2, clipRadiusWidth, borderPaint);
         } else if (clipType == ClipType.RECTANGLE) { //绘制矩形裁剪框
+            /**
             //绘制中间的矩形
             canvas.drawRect(mHorizontalPadding, this.getHeight() / 2 - clipWidth / 2,
                     this.getWidth() - mHorizontalPadding, this.getHeight() / 2 + clipWidth / 2, paint);
             //绘制白色的矩形边框
             canvas.drawRect(mHorizontalPadding, this.getHeight() / 2 - clipWidth / 2,
                     this.getWidth() - mHorizontalPadding, this.getHeight() / 2 + clipWidth / 2, borderPaint);
+       **/
+            canvas.drawRect((getScreenWidth(getContext())/2)-(localWidth/2), this.getHeight() / 2 - localHeight / 2,
+                    (getScreenWidth(getContext())/2)+(localWidth/2), this.getHeight() / 2 + localHeight / 2, paint);
+            canvas.drawRect((getScreenWidth(getContext())/2)-(localWidth/2), this.getHeight() / 2 - localHeight / 2,
+                    (getScreenWidth(getContext())/2)+(localWidth/2), this.getHeight() / 2 + localHeight / 2, borderPaint);
         }
         //出栈，恢复到之前的图层，意味着新建的图层会被删除，新建图层上的内容会被绘制到canvas (or the previous layer)
         canvas.restore();
@@ -85,6 +93,7 @@ public class ClipView extends View {
      */
     public Rect getClipRect() {
         Rect rect = new Rect();
+        /**
         //宽度的一半 - 圆的半径
         rect.left = (this.getWidth() / 2 - clipRadiusWidth);
         //宽度的一半 + 圆的半径
@@ -93,6 +102,15 @@ public class ClipView extends View {
         rect.top = (this.getHeight() / 2 - clipRadiusWidth);
         //高度的一半 + 圆的半径
         rect.bottom = (this.getHeight() / 2 + clipRadiusWidth);
+         **/
+        //宽度的一半 - 圆的半径
+        rect.left = (getScreenWidth(getContext())/2)-(localWidth/2);
+        //宽度的一半 + 圆的半径
+        rect.right = (getScreenWidth(getContext())/2)+(localWidth/2);
+        //高度的一半 - 圆的半径
+        rect.top = this.getHeight() / 2 - localHeight / 2;
+        //高度的一半 + 圆的半径
+        rect.bottom = this.getHeight() / 2 + localHeight / 2;
         return rect;
     }
 
@@ -113,9 +131,17 @@ public class ClipView extends View {
      * @param mHorizontalPadding
      */
     public void setmHorizontalPadding(float mHorizontalPadding) {
+
         this.mHorizontalPadding = mHorizontalPadding;
         this.clipRadiusWidth = (int) (getScreenWidth(getContext()) - 2 * mHorizontalPadding) / 2;
         this.clipWidth = clipRadiusWidth * 2;
+
+    }
+    
+    public void setClipBorderSize(int width,int height){
+        this.localWidth=width;
+        this.localHeight=height;
+
     }
 
     /**
@@ -130,7 +156,18 @@ public class ClipView extends View {
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.widthPixels;
     }
-
+    /**
+     * 获得屏幕高度
+     *
+     * @param context
+     * @return
+     */
+    public static int getScreenHeight(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.heightPixels;
+    }
 
     /**
      * 设置裁剪框类别

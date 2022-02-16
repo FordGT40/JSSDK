@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 
+import com.blankj.utilcode.util.LogUtils;
 import com.wisdom.jsinterfacelib.R;
 import com.wisdom.jsinterfacelib.utils.FileUtilCustom;
 
@@ -88,25 +89,56 @@ public class ClipViewLayout extends RelativeLayout {
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
         //裁剪框类型(圆或者矩形)
         int clipType = array.getInt(R.styleable.ClipViewLayoutJS_clipType, 1);
-
         //回收
         array.recycle();
-        clipView = new ClipView(context);
+//        if (clipView==null) {
+            clipView = new ClipView(context);
+//        }
         //设置裁剪框类型
         clipView.setClipType(clipType == 1 ? ClipView.ClipType.CIRCLE : ClipView.ClipType.RECTANGLE);
         //设置剪切框边框
         clipView.setClipBorderWidth(clipBorderWidth);
-        //设置剪切框水平间距
-        clipView.setmHorizontalPadding(mHorizontalPadding);
+////        设置剪切框水平间距
+////        clipView.setmHorizontalPadding(mHorizontalPadding);
+//
+//        //设置裁剪框的宽高，现在注释掉由外界调用并设置
+        clipView.setClipBorderSize(200,100);
         imageView = new ImageView(context);
         //相对布局布局参数
         android.view.ViewGroup.LayoutParams lp = new LayoutParams(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT);
         this.addView(imageView, lp);
-        this.addView(clipView, lp);
+//        this.addView(clipView, lp);
     }
 
+    public void addClipView(int w, int h){
+        if (clipView==null) {
+        clipView = new ClipView(getContext());
+        }
+        //设置裁剪框类型
+        clipView.setClipType(ClipView.ClipType.RECTANGLE);
+        //设置剪切框边框
+        clipView.setClipBorderWidth(2);
+//        设置剪切框水平间距
+//        clipView.setmHorizontalPadding(mHorizontalPadding);
+
+        //设置裁剪框的宽高，现在注释掉由外界调用并设置
+        clipView.setClipBorderSize(w,h);
+
+        this.addView(clipView, new LayoutParams(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+        postInvalidate();
+    }
+
+    public ClipView getClipView(){
+        if(clipView!=null){
+            return clipView;
+        }else{
+            return null;
+        }
+    }
 
     /**
      * 初始化图片
@@ -370,6 +402,8 @@ public class ClipViewLayout extends RelativeLayout {
         try {
             cropBitmap = Bitmap.createBitmap(imageView.getDrawingCache(), rect.left, rect.top, rect.width(), rect.height());
             zoomedCropBitmap = zoomBitmap(cropBitmap, width, height);
+            LogUtils.i("图片宽度："+zoomedCropBitmap.getWidth());
+            LogUtils.i("图片高度："+zoomedCropBitmap.getHeight());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.wisdom.jsinterfacelib.R;
+import com.wisdom.jsinterfacelib.weight.ClipView;
 import com.wisdom.jsinterfacelib.weight.ClipViewLayout;
 
 import java.io.File;
@@ -30,17 +32,16 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
     private ImageView back;
     private TextView btnCancel;
     private TextView btnOk;
-    private int width=200;
-    private int height=200;
+    private int width = 200;
+    private int height = 200;
     //类别 1: qq, 2: weixin
     private int type;
-
 
 
     /**
      * 打开截图界面
      */
-    public static void gotoClipActivity(Activity activity, Uri uri,int width,int height,int requestCode) {
+    public static void gotoClipActivity(Activity activity, Uri uri, int width, int height, int requestCode) {
         if (uri == null) {
             return;
         }
@@ -59,8 +60,8 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clip_image);
         type = getIntent().getIntExtra("type", 1);
-        width=getIntent().getIntExtra("width",200);
-        height=getIntent().getIntExtra("height",200);
+        width = getIntent().getIntExtra("width", 200);
+        height = getIntent().getIntExtra("height", 200);
         initView();
     }
 
@@ -77,6 +78,10 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         back.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         btnOk.setOnClickListener(this);
+        //设置裁剪框
+        clipViewLayout2.addClipView(width,height);
+
+
     }
 
     @Override
@@ -113,9 +118,9 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         //调用返回剪切图
         Bitmap zoomedCropBitmap;
         if (type == 1) {
-            zoomedCropBitmap = clipViewLayout1.clip(width,height);
+            zoomedCropBitmap = clipViewLayout1.clip(width, height);
         } else {
-            zoomedCropBitmap = clipViewLayout2.clip(width,height);
+            zoomedCropBitmap = clipViewLayout2.clip(width, height);
         }
         if (zoomedCropBitmap == null) {
             Log.e("android", "zoomedCropBitmap == null");
