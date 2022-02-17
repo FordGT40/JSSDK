@@ -1,18 +1,22 @@
 package com.wisdom.jsinterfacelib.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.blankj.utilcode.util.LogUtils;
 import com.wisdom.jsinterfacelib.R;
 import com.wisdom.jsinterfacelib.weight.ClipViewLayoutJS;
 
@@ -58,8 +62,8 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clip_image_js);
         type = getIntent().getIntExtra("type", 1);
-        width = getIntent().getIntExtra("width", 200);
-        height = getIntent().getIntExtra("height", 200);
+        width = getIntent().getIntExtra("width", 800);
+        height = getIntent().getIntExtra("height", 800);
         initView();
     }
 
@@ -77,9 +81,11 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         btnCancel.setOnClickListener(this);
         btnOk.setOnClickListener(this);
         //设置裁剪框
-        clipViewLayoutJS2.addClipView(width,height);
-
-
+        //计算裁剪框的大小，按照比例计算
+        int screenW = getScreenWidth(this);
+        int screenH = (screenW * height) / width;
+        LogUtils.i("剪裁框宽高：" + screenW + "*" + screenH);
+        clipViewLayoutJS2.addClipView(screenW, screenH);
     }
 
     @Override
@@ -148,5 +154,18 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
             setResult(RESULT_OK, intent);
             finish();
         }
+    }
+
+    /**
+     * 获得屏幕高度
+     *
+     * @param context
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.widthPixels;
     }
 }
