@@ -82,7 +82,7 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         btnOk.setOnClickListener(this);
         //设置裁剪框
         //计算裁剪框的大小，按照比例计算
-        int screenW = getScreenWidth(this);
+        int screenW = getScreenWidth(this)-100;//两边各留50
         int screenH = (screenW * height) / width;
         LogUtils.i("剪裁框宽高：" + screenW + "*" + screenH);
         LogUtils.i("传进来的高度：" + width + "*" + height);
