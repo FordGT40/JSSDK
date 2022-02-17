@@ -85,6 +85,8 @@ public class ClipImageJSActivity extends AppCompatActivity implements View.OnCli
         int screenW = getScreenWidth(this);
         int screenH = (screenW * height) / width;
         LogUtils.i("剪裁框宽高：" + screenW + "*" + screenH);
+        LogUtils.i("传进来的高度：" + width + "*" + height);
+
         clipViewLayoutJS2.addClipView(screenW, screenH);
     }
 

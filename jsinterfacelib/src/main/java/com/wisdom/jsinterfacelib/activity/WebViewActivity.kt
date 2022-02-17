@@ -9,6 +9,7 @@ import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.smallbuer.jsbridge.core.BridgeWebView
@@ -43,6 +44,7 @@ open class WebViewActivity : AppCompatActivity() {
 
         val url = intent.getStringExtra("url")
         val hideNavBar = intent.getBooleanExtra("hideNavBar", false)
+        var tv_title:TextView?=null
         //展示出自定义actionbar
         try {
             val actionBar = supportActionBar
@@ -50,6 +52,7 @@ open class WebViewActivity : AppCompatActivity() {
                 actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
                 val view = LayoutInflater.from(this).inflate(R.layout.action_bar, null, false)
                 val back = view.findViewById<View>(R.id.back) as ImageView
+                tv_title = view.findViewById(R.id.tv_title) as TextView
                 back.setOnClickListener { view1: View? ->finish() }
                 if ("" != ConstantString.ACTION_BAR_RGB) {
                     view.setBackgroundColor(Color.parseColor(ConstantString.ACTION_BAR_RGB))
@@ -84,6 +87,14 @@ open class WebViewActivity : AppCompatActivity() {
         //参数1：Javascript对象名
         //参数2：Java对象名
         webView!!.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                if(tv_title!=null){
+                    if(!view?.title.isNullOrBlank()){
+                        tv_title.text=view?.title.toString()
+                    }
+                }
+            }
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 //使用WebView加载显示url
                 view.loadUrl(url)
