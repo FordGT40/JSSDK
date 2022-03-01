@@ -258,7 +258,7 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
         }
 
         //录像角度
-        mediaRecorder!!.setOrientationHint(270)
+        mediaRecorder!!.setOrientationHint(0)
         //使用SurfaceView预览
         mediaRecorder!!.setPreviewDisplay(mSurfaceHolder!!.surface)
         //1.设置采集声音

@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.draggable.library.extension.ImageViewerHelper;
 import com.smallbuer.jsbridge.core.BridgeHandler;
 import com.smallbuer.jsbridge.core.CallBackFunction;
+import com.wisdom.jsinterfacelib.activity.ImagePreviewActivityJs;
 import com.wisdom.jsinterfacelib.model.BaseModel;
 
 import org.json.JSONArray;
@@ -31,14 +32,19 @@ public class ImgePreviewHandler extends BridgeHandler {
             JSONObject jsonObject = new JSONObject(data);
             JSONArray jsonArray = jsonObject.optJSONArray("urls");
             int index = jsonObject.optInt("index");
+            Boolean download = jsonObject.optBoolean("download");
+            Boolean rotate = jsonObject.optBoolean("rotate");
             if (jsonArray.length() > 0) {
 //                整理图片数据
-                List<String> imageList = new ArrayList();
+                ArrayList<String> imageList = new ArrayList();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     imageList.add(jsonArray.optString(i));
                 }
+                /**
 //                预览图片开始
                 ImageViewerHelper.INSTANCE.showImages(context,imageList,index,true);
+               **/
+                ImagePreviewActivityJs.goImagePreview(context,download,rotate,index,imageList);
                 BaseModel baseModel = new BaseModel("预览图片成功", 0, "预览图片成功");
                 function.onCallBack(GsonUtils.toJson(baseModel));
             } else {
