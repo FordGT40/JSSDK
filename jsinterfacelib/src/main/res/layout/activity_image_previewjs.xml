@@ -9,17 +9,17 @@
         android:src="@drawable/back"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
-        android:id="@+id/iv_back"
+        android:id="@+id/iv_backjs"
         android:padding="10dp"/>
 
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
+        android:id="@+id/viewpagerjs"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <TextView
-        android:id="@+id/tv_indicator"
+        android:id="@+id/tv_indicatorjs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -30,13 +30,13 @@
 
     <ProgressBar
         android:visibility="gone"
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarjs"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <ImageButton
-        android:id="@+id/ib"
+        android:id="@+id/ibjs"
         android:layout_margin="10dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
@@ -46,9 +46,9 @@
         android:layout_height="30dp"/>
 
     <ImageButton
-        android:id="@+id/ic_rotate"
+        android:id="@+id/ic_rotatejs"
         android:layout_margin="10dp"
-        android:layout_toRightOf="@+id/ib"
+        android:layout_toRightOf="@+id/ibjs"
         android:layout_alignParentBottom="true"
         android:background="@drawable/p_rotate"
         android:layout_width="30dp"

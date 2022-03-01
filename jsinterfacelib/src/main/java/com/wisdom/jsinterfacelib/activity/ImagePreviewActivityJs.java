@@ -63,12 +63,12 @@ public class ImagePreviewActivityJs extends AppCompatActivity implements View.On
     }
 
     public void initView() {
-        viewpager = findViewById(R.id.viewpager);
-        tv_indicator = findViewById(R.id.tv_indicator);
-        progressBar = findViewById(R.id.progressBar);
-        ib = findViewById(R.id.ib);
-        ic_rotate = findViewById(R.id.ic_rotate);
-        iv_back = findViewById(R.id.iv_back);
+        viewpager = findViewById(R.id.viewpagerjs);
+        tv_indicator = findViewById(R.id.tv_indicatorjs);
+        progressBar = findViewById(R.id.progressBarjs);
+        ib = findViewById(R.id.ibjs);
+        ic_rotate = findViewById(R.id.ic_rotatejs);
+        iv_back = findViewById(R.id.iv_backjs);
         iv_back.setOnClickListener(this);
         ic_rotate.setOnClickListener(this);
         ib.setOnClickListener(this);
@@ -133,12 +133,12 @@ public class ImagePreviewActivityJs extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.iv_back) {
+        if (id == R.id.iv_backjs) {
             finish();
-        } else if (id == R.id.ic_rotate) {
+        } else if (id == R.id.ic_rotatejs) {
             PhotoView photoView = viewpager.findViewWithTag(viewpager.getCurrentItem());
             photoView.setRotation(rotation -= 90);
-        } else if (id == R.id.ib) {
+        } else if (id == R.id.ibjs) {
             Glide.with(getApplicationContext())
                     .asBitmap()
                     .load(local ? new File(imgs.get(index)) : imgs.get(index))
