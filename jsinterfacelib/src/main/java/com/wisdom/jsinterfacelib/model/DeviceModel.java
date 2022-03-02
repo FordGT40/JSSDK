@@ -21,6 +21,15 @@ public class DeviceModel implements Serializable {
     private String	IMEI;//	|否	|设备唯一标识，手机恢复出厂设置后，这个值会变
     private String	hybridVersion;//	|否	|Hybrid 框架版本，如：1.0.0
     private String	channelID;//	|否	|渠道号，如：iOS：App Store, Android：待定
+    private String	mac;//	mac地址，可能为空
+
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
 
     public String getDeviceName() {
         return deviceName;
