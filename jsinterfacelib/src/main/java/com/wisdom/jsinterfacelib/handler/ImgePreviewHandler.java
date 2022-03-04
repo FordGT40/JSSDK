@@ -53,6 +53,7 @@ public class ImgePreviewHandler extends BridgeHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w("图片解析预览异常："+e.getMessage());
             BaseModel baseModel = new BaseModel("参数解析错误", -1, e.getMessage());
             function.onCallBack(GsonUtils.toJson(baseModel));
         }
