@@ -34,6 +34,7 @@ import com.wisdom.jsinterfacelib.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -77,7 +78,7 @@ public class ImagePreviewActivityJs extends AppCompatActivity implements View.On
         index = getIntent().getIntExtra("index", 0);
         download = getIntent().getBooleanExtra("download", false);
         rotate = getIntent().getBooleanExtra("rotate", false);
-        imgs = getIntent().getStringArrayListExtra("imgs");
+        imgs = (ArrayList<String>) getIntent().getSerializableExtra("imgs");
 
 
         tv_indicator.setVisibility(View.VISIBLE);
@@ -125,7 +126,7 @@ public class ImagePreviewActivityJs extends AppCompatActivity implements View.On
         intent.putExtra("index", index);
         intent.putExtra("download", download);
         intent.putExtra("rotate", rotate);
-        intent.putStringArrayListExtra("imgs", imgs);
+        intent.putExtra("imgs", imgs);
         context.startActivity(intent);
     }
 
