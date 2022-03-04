@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application>
+        <activity android:name=".activity.ImagePreviewActivityJs"/>
         <activity android:name=".activity.VideoRecorderFrontActivity"/>
         <activity android:name=".activity.WebViewActivity" android:theme="@style/lightAcionBar"/>
         <activity android:name=".activity.VideoPlayActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:screenOrientation="portrait" />
