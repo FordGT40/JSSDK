@@ -32,11 +32,11 @@ public class ImgePreviewHandler extends BridgeHandler {
             JSONObject jsonObject = new JSONObject(data);
             JSONArray jsonArray = jsonObject.optJSONArray("urls");
             int index = jsonObject.optInt("index");
-            Boolean download = jsonObject.optBoolean("download");
-            Boolean rotate = jsonObject.optBoolean("rotate");
+            boolean download = jsonObject.optBoolean("download",false);
+            boolean rotate = jsonObject.optBoolean("rotate",false);
             if (jsonArray.length() > 0) {
 //                整理图片数据
-                ArrayList<String> imageList = new ArrayList();
+                ArrayList<String> imageList = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     imageList.add(jsonArray.optString(i));
                 }

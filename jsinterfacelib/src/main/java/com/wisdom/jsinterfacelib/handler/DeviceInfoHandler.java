@@ -47,7 +47,7 @@ public class DeviceInfoHandler extends BridgeHandler {
                                 model.setHybridVersion(DeviceUtils.getManufacturer());
                                 model.setIMEI(PhoneUtils.getIMEI());
                                 model.setChannelID("");
-                                model.setSysType(2);
+                                model.setSysType(1);
                                 try {
                                     //获取MAC地址可能会出问题，所以单独拦截处理。
                                     WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
