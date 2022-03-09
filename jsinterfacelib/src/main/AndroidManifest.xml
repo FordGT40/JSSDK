@@ -3,13 +3,13 @@
     package="com.wisdom.jsinterfacelib">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -20,18 +20,29 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application>
-        <activity android:name=".activity.ImagePreviewActivityJs"/>
-        <activity android:name=".activity.VideoRecorderFrontActivity"/>
-        <activity android:name=".activity.WebViewActivity" android:theme="@style/lightAcionBar"/>
-        <activity android:name=".activity.VideoPlayActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:screenOrientation="portrait" />
-        <activity android:name=".activity.VideoPreviewActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:screenOrientation="portrait" />
+        <activity android:name=".activity.ImagePreviewActivityJs" />
+        <activity android:name=".activity.VideoRecorderFrontActivity" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:theme="@style/lightAcionBar" />
+        <activity
+            android:name=".activity.VideoPlayActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.VideoPreviewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".weight.DrawingBoardActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".weight.SignViewActivity"
             android:screenOrientation="landscape" />
-<activity android:name=".activity.ClipImageJSActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ClipImageJSActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.wisdom.jsinterfacelib.fileprovider"
@@ -44,8 +55,7 @@
 
         <activity
             android:name=".face.FaceDetectionActivity"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

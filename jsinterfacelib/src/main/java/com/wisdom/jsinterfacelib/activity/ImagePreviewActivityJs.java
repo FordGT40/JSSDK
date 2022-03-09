@@ -4,6 +4,7 @@ package com.wisdom.jsinterfacelib.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
@@ -64,6 +66,7 @@ public class ImagePreviewActivityJs extends AppCompatActivity implements View.On
     }
 
     public void initView() {
+        BarUtils.setStatusBarColor(this, Color.parseColor("#000000"));
         viewpager = findViewById(R.id.viewpagerjs);
         tv_indicator = findViewById(R.id.tv_indicatorjs);
         progressBar = findViewById(R.id.progressBarjs);
@@ -135,7 +138,7 @@ public class ImagePreviewActivityJs extends AppCompatActivity implements View.On
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.iv_backjs) {
-            finish();
+            ImagePreviewActivityJs.this.finish();
         } else if (id == R.id.ic_rotatejs) {
             PhotoView photoView = viewpager.findViewWithTag(viewpager.getCurrentItem());
             photoView.setRotation(rotation -= 90);
@@ -147,13 +150,13 @@ public class ImagePreviewActivityJs extends AppCompatActivity implements View.On
                               @Override
                               public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                   ImageUtils.save2Album(resource, Bitmap.CompressFormat.JPEG);
-                                  runOnUiThread(() -> Toast.makeText(ImagePreviewActivityJs.this,"图片保存成功,请到相册查看",Toast.LENGTH_SHORT).show());
+                                  runOnUiThread(() -> Toast.makeText(ImagePreviewActivityJs.this, "图片保存成功,请到相册查看", Toast.LENGTH_SHORT).show());
                               }
 
                               @Override
                               public void onLoadFailed(@Nullable Drawable errorDrawable) {
                                   super.onLoadFailed(errorDrawable);
-                                  runOnUiThread(() -> Toast.makeText(ImagePreviewActivityJs.this,"图片保存失败",Toast.LENGTH_SHORT).show());
+                                  runOnUiThread(() -> Toast.makeText(ImagePreviewActivityJs.this, "图片保存失败", Toast.LENGTH_SHORT).show());
                               }
 
                               @Override
