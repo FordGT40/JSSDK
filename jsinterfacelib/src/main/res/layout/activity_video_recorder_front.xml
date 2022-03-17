@@ -26,10 +26,10 @@
             android:id="@+id/tv_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxHeight="350dp"
             android:layout_marginTop="20dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:maxHeight="350dp"
             android:scrollHorizontally="true"
             android:textColor="#e74c3c"
             android:textSize="23sp" />

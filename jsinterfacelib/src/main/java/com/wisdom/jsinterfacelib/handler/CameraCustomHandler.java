@@ -55,8 +55,11 @@ public class CameraCustomHandler extends BridgeHandler {
                             String notice = jsonObject.optString("notice");
                             String title = jsonObject.optString("title");
                             String textColor = jsonObject.optString("textColor");
+                            String textBackColor = jsonObject.optString("textBackColor");
+                            int font = jsonObject.optInt("font");
                             int duration = jsonObject.optInt("duration", 30);
-                            getVideoData(context, duration, notice,title,textColor, function);
+
+                            getVideoData(context, duration, notice,title,textColor,font,textBackColor, function);
                         } catch (Exception e) {
                             e.printStackTrace();
                             BaseModel baseModel = new BaseModel("数据解析异常", -1, "数据解析异常");
@@ -81,13 +84,15 @@ public class CameraCustomHandler extends BridgeHandler {
      * @param textColor
      * @param function
      */
-    private void getVideoData(Context context, int duration, String notice, String title, String textColor, CallBackFunction function) {
+    private void getVideoData(Context context, int duration, String notice, String title, String textColor,int fontSize,String textBackColor, CallBackFunction function) {
 
         Intent intentNext = new Intent(context, VideoRecorderFrontActivity.class);
         intentNext.putExtra("duration", duration);
         intentNext.putExtra("notice", notice);
         intentNext.putExtra("title", title);
         intentNext.putExtra("textColor", textColor);
+        intentNext.putExtra("fontSize", fontSize);
+        intentNext.putExtra("textBackColor", textBackColor);
         new AvoidOnResult(((AppCompatActivity) context)).startForResult(intentNext, (resultCode, data1) -> {
             //判断返回码
             BaseModel baseModel;

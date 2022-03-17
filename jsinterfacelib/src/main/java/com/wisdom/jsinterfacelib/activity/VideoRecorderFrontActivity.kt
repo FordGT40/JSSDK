@@ -33,12 +33,12 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
     var r: Runnable = object : Runnable {
         override fun run() {
             val height: Int = tv_hint!!.height
-            val scrollY: Int =  tv_hint!!.scrollY
-            val lineHeight: Int =  tv_hint!!.lineHeight
-            val lineCount: Int =  tv_hint!!.lineCount //总行数
+            val scrollY: Int = tv_hint!!.scrollY
+            val lineHeight: Int = tv_hint!!.lineHeight
+            val lineCount: Int = tv_hint!!.lineCount //总行数
             val maxY: Int =
-                ( tv_hint!!.lineCount *  tv_hint!!.lineHeight +  tv_hint!!.paddingTop +  tv_hint!!.paddingBottom
-                        -  tv_hint!!.height)
+                (tv_hint!!.lineCount * tv_hint!!.lineHeight + tv_hint!!.paddingTop + tv_hint!!.paddingBottom
+                        - tv_hint!!.height)
 //            Log.e("=maxY=", maxY.toString() + "")
 //            Log.e("=height=", height.toString() + "")
 //            Log.e("=lineCount=",  tv_hint!!.lineCount.toString() + "")
@@ -56,10 +56,11 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
 
 
     private var btn_stop: TextView? = null
-    private var tv_hint:TextView? = null
-    private var tv_title:TextView? = null
+    private var tv_hint: TextView? = null
+    private var tv_title: TextView? = null
     private var btn: Button? = null
     private var recLen = 11
+    private var fontSize = 25
     private var isRecording = false
     private var mSurfaceHolder: SurfaceHolder? = null
     private var mediaRecorder: MediaRecorder? = null
@@ -68,6 +69,7 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
     private var notice: String? = ""
     private var title: String? = ""
     private var textColor: String? = ""
+    private var textBackColor: String? = ""
     private var intentNext: Intent? = null
     var timer: Timer = Timer()
 
@@ -123,9 +125,11 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_recorder_front)
         recLen = intent.getIntExtra("duration", 11)
+        fontSize = intent.getIntExtra("fontSize", 25)
         notice = intent.getStringExtra("notice")
         title = intent.getStringExtra("title")
         textColor = intent.getStringExtra("textColor")
+        textBackColor = intent.getStringExtra("textBackColor")
 
         intentNext = Intent(this, VideoPreviewActivity::class.java)
         btn_stop = findViewById<TextView>(R.id.luxiangtimer)
@@ -146,6 +150,13 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
                 tv_title?.setTextColor(this)
             }
         }
+        //设置字号
+        if (fontSize > 0) {
+            tv_hint?.textSize = fontSize.toFloat()
+        }
+        if (!textBackColor.isNullOrBlank()) {
+            tv_hint?.setBackgroundColor(Color.parseColor(textBackColor))
+        }
 
         tv_title?.text = title
         val mSurfaceview: SurfaceView = findViewById<View>(R.id.surfaceview_luxiang) as SurfaceView
@@ -153,7 +164,6 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
         tv_hint?.text = notice
 
         tv_hint?.requestFocus()
-
 
 
         // 屏幕长宽
@@ -258,7 +268,7 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
         }
 
         //录像角度
-        mediaRecorder!!.setOrientationHint(0)
+        mediaRecorder!!.setOrientationHint(270)
         //使用SurfaceView预览
         mediaRecorder!!.setPreviewDisplay(mSurfaceHolder!!.surface)
         //1.设置采集声音
