@@ -9,6 +9,9 @@ import android.hardware.Camera
 import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.os.*
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.BackgroundColorSpan
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.SurfaceHolder
@@ -154,14 +157,26 @@ class VideoRecorderFrontActivity : AppCompatActivity() {
         if (fontSize > 0) {
             tv_hint?.textSize = fontSize.toFloat()
         }
+
         if (!textBackColor.isNullOrBlank()) {
-            tv_hint?.setBackgroundColor(Color.parseColor(textBackColor))
+            val style = SpannableStringBuilder(notice)
+            notice?.length?.let {
+                style.setSpan(
+                    BackgroundColorSpan(Color.parseColor(textBackColor)),
+                    0,
+                    it,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            tv_hint?.text = style
+        } else {
+            tv_hint?.text = notice
         }
 
         tv_title?.text = title
         val mSurfaceview: SurfaceView = findViewById<View>(R.id.surfaceview_luxiang) as SurfaceView
         mSurfaceHolder = mSurfaceview.holder
-        tv_hint?.text = notice
+
 
         tv_hint?.requestFocus()
 
