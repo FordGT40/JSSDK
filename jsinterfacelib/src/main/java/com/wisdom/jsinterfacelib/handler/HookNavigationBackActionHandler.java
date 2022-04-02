@@ -40,10 +40,8 @@ public class HookNavigationBackActionHandler extends BridgeHandler {
                     //获取页面的webView
                     BridgeWebView webView = ((AppCompatActivity) context).findViewById(R.id.wv_webview);
                     //屏蔽上导航的返回按钮
-                    ActionBar actionBar = ((AppCompatActivity) context).getSupportActionBar();
-                    View customView = actionBar.getCustomView();
-                    if (customView != null) {
-                        ImageView back = ((ImageView) customView.findViewById(R.id.back));
+                    ImageView back = ((AppCompatActivity) context).findViewById(R.id.back);
+                    if (back != null) {
                         back.setOnClickListener(view -> {
                             //什么都不做
 //                           交给js方法处理，后面调用了指定的js方法
