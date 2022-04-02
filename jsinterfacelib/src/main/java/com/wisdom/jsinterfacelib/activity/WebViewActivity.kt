@@ -120,7 +120,7 @@ open class WebViewActivity : AppCompatActivity() {
                 if (!JS_FUN_NAME.isNullOrBlank()) {
                     webView?.loadUrl(JS_FUN_NAME)
                 }
-                !CAN_BACK_KEY_USEFUL
+                CAN_BACK_KEY_USEFUL
             } else {
                 super.dispatchKeyEvent(event)
             }
