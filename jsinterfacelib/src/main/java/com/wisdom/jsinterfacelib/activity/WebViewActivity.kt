@@ -9,6 +9,7 @@ import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -44,28 +45,27 @@ open class WebViewActivity : AppCompatActivity() {
 
         val url = intent.getStringExtra("url")
         val hideNavBar = intent.getBooleanExtra("hideNavBar", false)
-        var tv_title:TextView?=null
+        var tv_title: TextView? = null
         //展示出自定义actionbar
         try {
             val actionBar = supportActionBar
+            /***
             if (actionBar != null) {
-                actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-                val view = LayoutInflater.from(this).inflate(R.layout.action_bar, null, false)
-                val back = view.findViewById<View>(R.id.back) as ImageView
-                tv_title = view.findViewById(R.id.tv_title) as TextView
-                back.setOnClickListener { view1: View? ->finish() }
-                if ("" != ConstantString.ACTION_BAR_RGB) {
-                    view.setBackgroundColor(Color.parseColor(ConstantString.ACTION_BAR_RGB))
-                }
-                actionBar.customView = view
-                actionBar.show()
-
+            actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            val view = LayoutInflater.from(this).inflate(R.layout.action_bar, null, false)
+            val back = view.findViewById<View>(R.id.back) as ImageView
+            tv_title = view.findViewById(R.id.tv_title) as TextView
+            back.setOnClickListener { view1: View? ->finish() }
+            if ("" != ConstantString.ACTION_BAR_RGB) {
+            view.setBackgroundColor(Color.parseColor(ConstantString.ACTION_BAR_RGB))
             }
+            actionBar.customView = view
+            actionBar.show()
+            }
+             ***/
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-
 
         if (hideNavBar) {
             //是否隐藏actionBar
@@ -89,12 +89,13 @@ open class WebViewActivity : AppCompatActivity() {
         webView!!.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                if(tv_title!=null){
-                    if(!view?.title.isNullOrBlank()){
-                        tv_title.text=view?.title.toString()
+                if (tv_title != null) {
+                    if (!view?.title.isNullOrBlank()) {
+                        tv_title.text = view?.title.toString()
                     }
                 }
             }
+
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 //使用WebView加载显示url
                 view.loadUrl(url)
@@ -109,6 +110,9 @@ open class WebViewActivity : AppCompatActivity() {
         }
     }
 
+    public fun hideParentActionBar() {
+        findViewById<RelativeLayout>(R.id.ll_bg).visibility = View.GONE
+    }
 
     /**
      * 屏蔽物理返回按键

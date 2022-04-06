@@ -22,21 +22,23 @@
 
         <ImageView
             android:id="@+id/head_close"
-            android:layout_marginTop="40dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="45dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             android:layout_toRightOf="@+id/back"
             android:src="@drawable/close_js" />
 
         <TextView
             android:id="@+id/tv_main_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="middle"
             android:gravity="center"
             android:singleLine="true"
-            android:text=""
+            tools:text="测试标题测试标题"
             android:textColor="#333333"
             android:textSize="16sp"
             android:visibility="visible" />
