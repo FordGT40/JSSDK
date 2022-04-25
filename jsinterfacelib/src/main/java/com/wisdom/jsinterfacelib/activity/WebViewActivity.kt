@@ -70,6 +70,9 @@ open class WebViewActivity : AppCompatActivity() {
         if (hideNavBar) {
             //是否隐藏actionBar
             supportActionBar?.hide()
+            findViewById<RelativeLayout>(R.id.ll_bg).visibility=View.GONE
+        }else{
+            findViewById<RelativeLayout>(R.id.ll_bg).visibility=View.VISIBLE
         }
 
 
