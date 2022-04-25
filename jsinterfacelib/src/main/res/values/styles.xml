@@ -16,7 +16,7 @@
         <!-- 遮罩层 -->
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
-    <style name="Theme.ActionBar" parent="Theme.AppCompat.Light">
+    <style name="Theme.ActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 设置actionbar背景 -->
         <item name="android:background">#ffffff</item>
         <!-- 去掉acionbar的应用图标和标题 -->
