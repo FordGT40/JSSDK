@@ -122,7 +122,7 @@ open class WebViewActivity : AppCompatActivity() {
      * 屏蔽物理返回按键
      * */
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        return if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action != KeyEvent.ACTION_UP) {
+        return if (event.keyCode == KeyEvent.KEYCODE_BACK) {
             //do something.
             if (CAN_BACK_KEY_USEFUL) {
                 if (!JS_FUN_NAME.isNullOrBlank()) {
