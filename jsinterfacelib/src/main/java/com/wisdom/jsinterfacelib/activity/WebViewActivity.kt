@@ -122,6 +122,24 @@ open class WebViewActivity : AppCompatActivity() {
      * 屏蔽物理返回按键
      * */
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        when(event.keyCode){
+             KeyEvent.KEYCODE_ENTER->
+             {
+                 if (CAN_BACK_KEY_USEFUL) {
+                     if (!JS_FUN_NAME.isNullOrBlank()) {
+                         LogUtils.i("屏蔽1：")
+                         webView?.loadUrl(JS_FUN_NAME)
+                     }
+                     LogUtils.i("屏蔽2：")
+                     return true
+                 }
+             }
+        }
+        LogUtils.i("屏蔽3：")
+        return super.dispatchKeyEvent(event)
+
+
+    /**
         return if (event.keyCode == KeyEvent.KEYCODE_BACK) {
             //do something.
             if (CAN_BACK_KEY_USEFUL) {
@@ -141,6 +159,7 @@ open class WebViewActivity : AppCompatActivity() {
             LogUtils.i("屏蔽4：")
             CAN_BACK_KEY_USEFUL
         }
+        **/
     }
 
     override fun onDestroy() {
