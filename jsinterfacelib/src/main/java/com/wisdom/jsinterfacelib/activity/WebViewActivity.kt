@@ -64,7 +64,15 @@ open class WebViewActivity : AppCompatActivity() {
                 if (CAN_BACK_KEY_USEFUL) {
                     //屏蔽了返回键，返回事件交给js处理
                     LogUtils.i("屏蔽了返回键，返回事件交给js处理")
-                    webView?.loadUrl(JS_FUN_NAME)
+                    if(JS_FUN_NAME.isNullOrBlank()||webView==null){
+                        if (webView!!.canGoBack()) {
+                            webView!!.goBack()
+                        } else {
+                            finish()
+                        }
+                    }else{
+                        webView?.loadUrl(JS_FUN_NAME)
+                    }
                 } else {
                     //没有屏蔽返回键
                     if (webView!!.canGoBack()) {
