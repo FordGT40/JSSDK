@@ -1,26 +1,20 @@
 package com.wisdom.jsinterfacelib.activity
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.blankj.utilcode.util.LogUtils
 import com.smallbuer.jsbridge.core.BridgeWebView
-import com.wisdom.jsinterfacelib.ConstantString
 import com.wisdom.jsinterfacelib.ConstantString.CAN_BACK_KEY_USEFUL
 import com.wisdom.jsinterfacelib.ConstantString.JS_FUN_NAME
 import com.wisdom.jsinterfacelib.R
-import com.wisdom.jsinterfacelib.model.BaseModel
-import java.lang.Exception
 
 open class WebViewActivity : AppCompatActivity() {
 
@@ -50,6 +44,7 @@ open class WebViewActivity : AppCompatActivity() {
         //展示出自定义actionbar
         try {
             val actionBar = supportActionBar
+
             /***
             if (actionBar != null) {
             actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
@@ -64,6 +59,22 @@ open class WebViewActivity : AppCompatActivity() {
             actionBar.show()
             }
              ***/
+            val back = findViewById<View>(R.id.back) as ImageView
+            back.setOnClickListener {
+                if (CAN_BACK_KEY_USEFUL) {
+                    //屏蔽了返回键，返回事件交给js处理
+                    LogUtils.i("屏蔽了返回键，返回事件交给js处理")
+                    webView?.loadUrl(JS_FUN_NAME)
+                } else {
+                    //没有屏蔽返回键
+                    if (webView!!.canGoBack()) {
+                        webView!!.goBack()
+                    } else {
+                        finish()
+                    }
+                }
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -71,9 +82,9 @@ open class WebViewActivity : AppCompatActivity() {
         if (hideNavBar) {
             //是否隐藏actionBar
             supportActionBar?.hide()
-            findViewById<RelativeLayout>(R.id.ll_bg).visibility=View.GONE
-        }else{
-            findViewById<RelativeLayout>(R.id.ll_bg).visibility=View.VISIBLE
+            findViewById<RelativeLayout>(R.id.ll_bg).visibility = View.GONE
+        } else {
+            findViewById<RelativeLayout>(R.id.ll_bg).visibility = View.VISIBLE
         }
 
 
@@ -122,46 +133,22 @@ open class WebViewActivity : AppCompatActivity() {
      * 屏蔽物理返回按键
      * */
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        when(event.keyCode){
-             KeyEvent.KEYCODE_BACK->
-             {
-                 if (CAN_BACK_KEY_USEFUL) {
-                     if (!JS_FUN_NAME.isNullOrBlank()) {
-                         LogUtils.i("屏蔽1：JS_FUN_NAME:$JS_FUN_NAME")
-                         runOnUiThread {
-                             webView?.loadUrl(JS_FUN_NAME)
-                         }
-                     }
-                     LogUtils.i("屏蔽2：")
-                     return true
-                 }
-             }
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_BACK -> {
+                if (CAN_BACK_KEY_USEFUL) {
+                    if (!JS_FUN_NAME.isNullOrBlank()) {
+                        LogUtils.i("屏蔽1：JS_FUN_NAME:$JS_FUN_NAME")
+                        runOnUiThread {
+                            webView?.loadUrl(JS_FUN_NAME)
+                        }
+                    }
+                    LogUtils.i("屏蔽2：")
+                    return true
+                }
+            }
         }
         LogUtils.i("屏蔽3：")
         return super.dispatchKeyEvent(event)
-
-
-    /**
-        return if (event.keyCode == KeyEvent.KEYCODE_BACK) {
-            //do something.
-            if (CAN_BACK_KEY_USEFUL) {
-                if (!JS_FUN_NAME.isNullOrBlank()) {
-                    LogUtils.i("屏蔽1：")
-                    webView?.loadUrl(JS_FUN_NAME)
-                }
-                LogUtils.i("屏蔽2：")
-                !CAN_BACK_KEY_USEFUL
-            } else {
-                super.dispatchKeyEvent(event)
-                LogUtils.i("屏蔽3：")
-                CAN_BACK_KEY_USEFUL
-            }
-        } else {
-            super.dispatchKeyEvent(event)
-            LogUtils.i("屏蔽4：")
-            CAN_BACK_KEY_USEFUL
-        }
-        **/
     }
 
     override fun onDestroy() {
