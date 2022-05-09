@@ -13,6 +13,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import com.blankj.utilcode.util.LogUtils
 import com.smallbuer.jsbridge.core.BridgeWebView
 import com.wisdom.jsinterfacelib.ConstantString
 import com.wisdom.jsinterfacelib.ConstantString.CAN_BACK_KEY_USEFUL
@@ -125,15 +126,19 @@ open class WebViewActivity : AppCompatActivity() {
             //do something.
             if (CAN_BACK_KEY_USEFUL) {
                 if (!JS_FUN_NAME.isNullOrBlank()) {
+                    LogUtils.i("屏蔽1：")
                     webView?.loadUrl(JS_FUN_NAME)
                 }
+                LogUtils.i("屏蔽2：")
                 !CAN_BACK_KEY_USEFUL
             } else {
                 super.dispatchKeyEvent(event)
+                LogUtils.i("屏蔽3：")
                 CAN_BACK_KEY_USEFUL
             }
         } else {
             super.dispatchKeyEvent(event)
+            LogUtils.i("屏蔽4：")
             CAN_BACK_KEY_USEFUL
         }
     }
