@@ -123,7 +123,7 @@ open class WebViewActivity : AppCompatActivity() {
      * */
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         when(event.keyCode){
-             KeyEvent.KEYCODE_ENTER->
+             KeyEvent.KEYCODE_BACK->
              {
                  if (CAN_BACK_KEY_USEFUL) {
                      if (!JS_FUN_NAME.isNullOrBlank()) {
