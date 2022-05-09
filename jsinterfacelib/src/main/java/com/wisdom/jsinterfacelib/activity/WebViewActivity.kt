@@ -127,7 +127,7 @@ open class WebViewActivity : AppCompatActivity() {
              {
                  if (CAN_BACK_KEY_USEFUL) {
                      if (!JS_FUN_NAME.isNullOrBlank()) {
-                         LogUtils.i("屏蔽1：")
+                         LogUtils.i("屏蔽1：JS_FUN_NAME:$JS_FUN_NAME")
                          webView?.loadUrl(JS_FUN_NAME)
                      }
                      LogUtils.i("屏蔽2：")
