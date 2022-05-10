@@ -26,6 +26,8 @@ open class WebViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
+        //重置这个变量
+        CAN_BACK_KEY_USEFUL=false
         //获得控件
         webView = findViewById<View>(R.id.wv_webview) as BridgeWebView
 
