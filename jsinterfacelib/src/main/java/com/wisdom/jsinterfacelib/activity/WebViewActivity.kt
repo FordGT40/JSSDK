@@ -143,8 +143,10 @@ open class WebViewActivity : AppCompatActivity() {
     /**
      * 屏蔽物理返回按键
      * */
+    /**
     @SuppressLint("SetJavaScriptEnabled")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+
         when (event.keyCode) {
             KeyEvent.KEYCODE_BACK -> {
                 if (CAN_BACK_KEY_USEFUL) {
@@ -175,8 +177,9 @@ open class WebViewActivity : AppCompatActivity() {
         }
         LogUtils.i("屏蔽3：")
         return super.dispatchKeyEvent(event)
-    }
 
+    }
+         **/
     override fun onDestroy() {
         super.onDestroy()
         CAN_BACK_KEY_USEFUL = false
