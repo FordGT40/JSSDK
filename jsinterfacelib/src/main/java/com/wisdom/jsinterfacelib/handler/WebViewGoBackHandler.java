@@ -24,18 +24,22 @@ public class WebViewGoBackHandler extends BridgeHandler {
     public void handler(Context context, String data, CallBackFunction function) {
         LogUtils.i("接到的json：" + data);
         try{
+            LogUtils.i("返回1");
              WebView webView = ((AppCompatActivity) context).findViewById(R.id.wv_webview);
              if(webView.canGoBack()){
                  webView.canGoBack();
+                 LogUtils.i("返回2");
              }else{
                  ((AppCompatActivity) context).finish();
+                 LogUtils.i("返回3");
              }
             BaseModel baseModel = new BaseModel("Api调用成功", 0, "Api调用成功");
             function.onCallBack(GsonUtils.toJson(baseModel));
-
+            LogUtils.i("返回4");
         }catch (Exception e){
             BaseModel baseModel = new BaseModel("Api调用失败", -1, "Api调用失败，控件实例化失败");
             function.onCallBack(GsonUtils.toJson(baseModel));
+            LogUtils.i("返回5:"+e.getMessage());
         }
     }
 
