@@ -33,7 +33,7 @@ public class NavigationBarTitleHandler extends BridgeHandler {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             View view = LayoutInflater.from(context).inflate(R.layout.action_bar, null, false);
             ImageView back = ((ImageView) view.findViewById(R.id.back));
-            TextView tv_title = ((TextView) view.findViewById(R.id.tv_title));
+            TextView tv_title = ((TextView) view.findViewById(R.id.tv_title_js));
             if(!"".equals(ConstantString.ACTION_BAR_RGB)){
                 view.setBackgroundColor(Color.parseColor(ConstantString.ACTION_BAR_RGB));
             }

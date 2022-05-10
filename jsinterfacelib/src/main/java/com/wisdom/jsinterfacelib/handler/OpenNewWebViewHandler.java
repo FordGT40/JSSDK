@@ -34,6 +34,7 @@ public class OpenNewWebViewHandler extends BridgeHandler {
             } else {
                 Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("titleJs", titleJs);
+                LogUtils.i("接到的标题："+titleJs);
                 intent.putExtra("url", url);
                 intent.putExtra("hideNavBar", hideNavBar);
                 context.startActivity(intent);

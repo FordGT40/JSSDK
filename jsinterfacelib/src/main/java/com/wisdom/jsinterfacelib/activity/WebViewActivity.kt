@@ -2,7 +2,6 @@ package com.wisdom.jsinterfacelib.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -43,6 +42,7 @@ open class WebViewActivity : AppCompatActivity() {
 
         val url = intent.getStringExtra("url")
         titleJs = intent.getStringExtra("titleJs").toString()
+        LogUtils.i("接到的标题2：$titleJs")
         val hideNavBar = intent.getBooleanExtra("hideNavBar", false)
         var tv_title: TextView? = null
         //访问网页
@@ -64,7 +64,8 @@ open class WebViewActivity : AppCompatActivity() {
                         tv_title.text = view?.title.toString()
                     }
                     if(titleJs.isNotBlank()){
-                        findViewById<TextView>(R.id.tv_title).text =titleJs
+                        LogUtils.i("接到的标题3：$titleJs")
+                        findViewById<TextView>(R.id.tv_title_js).text = titleJs
                     }
                 }
                 val back = findViewById<View>(R.id.back) as ImageView

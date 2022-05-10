@@ -54,13 +54,12 @@
 
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_title_js"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:text=""
         android:textColor="#333333"
         android:textSize="16sp"
         android:visibility="visible" />
