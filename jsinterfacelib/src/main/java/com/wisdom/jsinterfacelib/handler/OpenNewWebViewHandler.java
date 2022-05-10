@@ -33,7 +33,7 @@ public class OpenNewWebViewHandler extends BridgeHandler {
                 function.onCallBack(GsonUtils.toJson(baseModel));
             } else {
                 Intent intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra("title", title);
+                intent.putExtra("titleJs", title);
                 intent.putExtra("url", url);
                 intent.putExtra("hideNavBar", hideNavBar);
                 context.startActivity(intent);
