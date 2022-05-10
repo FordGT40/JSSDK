@@ -61,6 +61,37 @@ open class WebViewActivity : AppCompatActivity() {
                         tv_title.text = view?.title.toString()
                     }
                 }
+                val back = findViewById<View>(R.id.back) as ImageView
+                val head_close = findViewById<View>(R.id.head_close) as ImageView
+                back.setOnClickListener {
+                    if (CAN_BACK_KEY_USEFUL) {
+                        //屏蔽了返回键，返回事件交给js处理
+                        LogUtils.i("屏蔽了返回键，返回事件交给js处理")
+                        val webSettings = webView!!.settings
+                        // 设置与Js交互的权限
+                        webSettings.javaScriptEnabled = true
+                        if(JS_FUN_NAME.isNullOrBlank()||webView==null){
+                            if (webView!!.canGoBack()) {
+                                webView!!.goBack()
+                            } else {
+                                finish()
+                            }
+                        }else{
+                            webView?.loadUrl(JS_FUN_NAME)
+                        }
+                    } else {
+                        //没有屏蔽返回键
+                        if (webView!!.canGoBack()) {
+                            webView!!.goBack()
+                        } else {
+                            finish()
+                        }
+                    }
+                }
+                head_close.setOnClickListener {
+                    this@WebViewActivity.finish()
+                }
+
             }
 
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -88,32 +119,7 @@ open class WebViewActivity : AppCompatActivity() {
             actionBar.show()
             }
              ***/
-            val back = findViewById<View>(R.id.back) as ImageView
-            back.setOnClickListener {
-                if (CAN_BACK_KEY_USEFUL) {
-                    //屏蔽了返回键，返回事件交给js处理
-                    LogUtils.i("屏蔽了返回键，返回事件交给js处理")
-                    val webSettings = webView!!.settings
-                    // 设置与Js交互的权限
-                    webSettings.javaScriptEnabled = true
-                    if(JS_FUN_NAME.isNullOrBlank()||webView==null){
-                        if (webView!!.canGoBack()) {
-                            webView!!.goBack()
-                        } else {
-                            finish()
-                        }
-                    }else{
-                        webView?.loadUrl(JS_FUN_NAME)
-                    }
-                } else {
-                    //没有屏蔽返回键
-                    if (webView!!.canGoBack()) {
-                        webView!!.goBack()
-                    } else {
-                        finish()
-                    }
-                }
-            }
+
 
         } catch (e: Exception) {
             e.printStackTrace()

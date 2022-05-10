@@ -44,11 +44,11 @@
         android:id="@+id/head_close"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/back"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/back"
         android:src="@drawable/close_js" />
 
 
