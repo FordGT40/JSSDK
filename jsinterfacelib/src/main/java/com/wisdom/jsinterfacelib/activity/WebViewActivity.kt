@@ -19,7 +19,7 @@ import com.wisdom.jsinterfacelib.R
 open class WebViewActivity : AppCompatActivity() {
 
     public var webView: BridgeWebView? = null
-
+    var title=""
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -42,6 +42,7 @@ open class WebViewActivity : AppCompatActivity() {
 //        tv_2.setText(screenHeight+"");
 
         val url = intent.getStringExtra("url")
+         title = intent.getStringExtra("title").toString()
         val hideNavBar = intent.getBooleanExtra("hideNavBar", false)
         var tv_title: TextView? = null
         //访问网页
@@ -61,6 +62,9 @@ open class WebViewActivity : AppCompatActivity() {
                 if (tv_title != null) {
                     if (!view?.title.isNullOrBlank()) {
                         tv_title.text = view?.title.toString()
+                    }
+                    if(!title.isNullOrBlank()){
+                        tv_title.text =title
                     }
                 }
                 val back = findViewById<View>(R.id.back) as ImageView

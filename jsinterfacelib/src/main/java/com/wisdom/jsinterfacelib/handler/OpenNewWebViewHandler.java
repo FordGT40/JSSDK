@@ -26,12 +26,14 @@ public class OpenNewWebViewHandler extends BridgeHandler {
             JSONObject jsonObject = new JSONObject(data);
             String url = jsonObject.optString("url");
             Boolean hideNavBar = jsonObject.optBoolean("hideNavBar");
+            String title = jsonObject.optString("title");
             Boolean closeCurWeb = jsonObject.optBoolean("closeCurWeb");
             if ("".equals(url)) {
                 BaseModel baseModel = new BaseModel("url不能为空", -1, "Api调用失败，url不能为空");
                 function.onCallBack(GsonUtils.toJson(baseModel));
             } else {
                 Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra("title", title);
                 intent.putExtra("url", url);
                 intent.putExtra("hideNavBar", hideNavBar);
                 context.startActivity(intent);
