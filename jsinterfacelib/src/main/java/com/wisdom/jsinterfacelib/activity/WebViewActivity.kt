@@ -153,8 +153,13 @@ open class WebViewActivity : AppCompatActivity() {
                     webSettings.javaScriptEnabled = true
                     if (!JS_FUN_NAME.isNullOrBlank()) {
                         LogUtils.i("屏蔽1：JS_FUN_NAME:$JS_FUN_NAME")
-                        runOnUiThread {
-                            webView?.loadUrl("javascript:back()")
+//                        runOnUiThread {
+//                            webView?.loadUrl("javascript:back()")
+//                        }
+                        if(webView?.canGoBack() == true){
+                            webView!!.goBack()
+                        }else{
+                            finish()
                         }
                     }else{
                         if(webView?.canGoBack() == true){
