@@ -43,6 +43,9 @@ open class WebViewActivity : AppCompatActivity() {
         val url = intent.getStringExtra("url")
         titleJs = intent.getStringExtra("titleJs").toString()
         LogUtils.i("接到的标题2：$titleJs")
+        if(titleJs.isNotBlank()){
+            findViewById<TextView>(R.id.tv_title_js).text = titleJs
+        }
         val hideNavBar = intent.getBooleanExtra("hideNavBar", false)
         var tv_title: TextView? = null
         //访问网页
@@ -63,10 +66,7 @@ open class WebViewActivity : AppCompatActivity() {
                     if (!view?.title.isNullOrBlank()) {
                         tv_title.text = view?.title.toString()
                     }
-                    if(titleJs.isNotBlank()){
-                        LogUtils.i("接到的标题3：$titleJs")
-                        findViewById<TextView>(R.id.tv_title_js).text = titleJs
-                    }
+
                 }
                 val back = findViewById<View>(R.id.back) as ImageView
                 val head_close = findViewById<View>(R.id.head_close) as ImageView
