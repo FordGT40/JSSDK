@@ -21,6 +21,7 @@ open class WebViewActivity : AppCompatActivity() {
     public var webView: BridgeWebView? = null
 
 
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,34 @@ open class WebViewActivity : AppCompatActivity() {
         val url = intent.getStringExtra("url")
         val hideNavBar = intent.getBooleanExtra("hideNavBar", false)
         var tv_title: TextView? = null
+        //访问网页
+        //系统默认会通过手机浏览器打开网页，为了能够直接通过WebView显示网页，则必须设置
+        val webSettings = webView!!.settings
+        // 设置与Js交互的权限
+        webSettings.javaScriptEnabled = true
+        val ua = webView!!.settings.userAgentString
+        webSettings.userAgentString = "$ua/openweb=wisdomhybrid/HRBZWFW_ANDROID,VERSION:1.1.0"
+        //        Bridge.INSTANCE.registerHandler("toast", new ToastHandler());
+        // 通过addJavascriptInterface()将Java对象映射到JS对象
+        //参数1：Javascript对象名
+        //参数2：Java对象名
+        webView!!.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                if (tv_title != null) {
+                    if (!view?.title.isNullOrBlank()) {
+                        tv_title.text = view?.title.toString()
+                    }
+                }
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                //使用WebView加载显示url
+                view.loadUrl(url)
+                //返回true
+                return true
+            }
+        }
         //展示出自定义actionbar
         try {
             val actionBar = supportActionBar
@@ -64,6 +93,9 @@ open class WebViewActivity : AppCompatActivity() {
                 if (CAN_BACK_KEY_USEFUL) {
                     //屏蔽了返回键，返回事件交给js处理
                     LogUtils.i("屏蔽了返回键，返回事件交给js处理")
+                    val webSettings = webView!!.settings
+                    // 设置与Js交互的权限
+                    webSettings.javaScriptEnabled = true
                     if(JS_FUN_NAME.isNullOrBlank()||webView==null){
                         if (webView!!.canGoBack()) {
                             webView!!.goBack()
@@ -96,36 +128,7 @@ open class WebViewActivity : AppCompatActivity() {
         }
 
 
-//            //访问网页
 
-
-        //系统默认会通过手机浏览器打开网页，为了能够直接通过WebView显示网页，则必须设置
-        val webSettings = webView!!.settings
-        // 设置与Js交互的权限
-        webSettings.javaScriptEnabled = true
-        val ua = webView!!.settings.userAgentString
-        webSettings.userAgentString = "$ua/openweb=wisdomhybrid/HRBZWFW_ANDROID,VERSION:1.1.0"
-        //        Bridge.INSTANCE.registerHandler("toast", new ToastHandler());
-        // 通过addJavascriptInterface()将Java对象映射到JS对象
-        //参数1：Javascript对象名
-        //参数2：Java对象名
-        webView!!.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                if (tv_title != null) {
-                    if (!view?.title.isNullOrBlank()) {
-                        tv_title.text = view?.title.toString()
-                    }
-                }
-            }
-
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                //使用WebView加载显示url
-                view.loadUrl(url)
-                //返回true
-                return true
-            }
-        }
 
 
         if (!url.isNullOrBlank()) {
@@ -140,14 +143,24 @@ open class WebViewActivity : AppCompatActivity() {
     /**
      * 屏蔽物理返回按键
      * */
+    @SuppressLint("SetJavaScriptEnabled")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         when (event.keyCode) {
             KeyEvent.KEYCODE_BACK -> {
                 if (CAN_BACK_KEY_USEFUL) {
+                    val webSettings = webView!!.settings
+                    // 设置与Js交互的权限
+                    webSettings.javaScriptEnabled = true
                     if (!JS_FUN_NAME.isNullOrBlank()) {
                         LogUtils.i("屏蔽1：JS_FUN_NAME:$JS_FUN_NAME")
                         runOnUiThread {
-                            webView?.loadUrl(JS_FUN_NAME)
+                            webView?.loadUrl("javascript:back()")
+                        }
+                    }else{
+                        if(webView?.canGoBack() == true){
+                            webView!!.goBack()
+                        }else{
+                            finish()
                         }
                     }
                     LogUtils.i("屏蔽2：")
