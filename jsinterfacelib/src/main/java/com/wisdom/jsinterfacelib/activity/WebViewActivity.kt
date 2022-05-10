@@ -63,8 +63,8 @@ open class WebViewActivity : AppCompatActivity() {
                     if (!view?.title.isNullOrBlank()) {
                         tv_title.text = view?.title.toString()
                     }
-                    if(!titleJs.isNullOrBlank()){
-                        tv_title.text =title
+                    if(titleJs.isNotBlank()){
+                        findViewById<TextView>(R.id.tv_title).text =titleJs
                     }
                 }
                 val back = findViewById<View>(R.id.back) as ImageView
