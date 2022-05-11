@@ -102,6 +102,8 @@ open class WebViewActivity : AppCompatActivity() {
             }
 
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                //重置这个变量
+                CAN_BACK_KEY_USEFUL=false
                 //使用WebView加载显示url
                 view.loadUrl(url)
                 //返回true

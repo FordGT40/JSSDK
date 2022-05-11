@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.0"
-
     task makeJar(type: Copy) {
         //删除存在的
         delete 'build/libs/jsSDK.jar'
@@ -94,7 +92,7 @@ dependencies {
     implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     // kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //人脸识别----阿里
     implementation 'com.alibaba.android.mnnkit:facedetection:0.0.5'
     //加载gif图的控件
