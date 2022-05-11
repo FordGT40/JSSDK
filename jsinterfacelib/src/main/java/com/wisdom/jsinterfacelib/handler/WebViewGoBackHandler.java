@@ -27,7 +27,7 @@ public class WebViewGoBackHandler extends BridgeHandler {
             LogUtils.i("返回1");
              WebView webView = ((AppCompatActivity) context).findViewById(R.id.wv_webview);
              if(webView.canGoBack()){
-                 webView.canGoBack();
+                 webView.goBack();
                  LogUtils.i("返回2");
              }else{
                  ((AppCompatActivity) context).finish();
