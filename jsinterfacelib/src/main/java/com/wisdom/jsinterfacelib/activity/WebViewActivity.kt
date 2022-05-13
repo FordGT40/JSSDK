@@ -27,6 +27,7 @@ open class WebViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_web_view)
         //重置这个变量
         CAN_BACK_KEY_USEFUL=false
+        JS_FUN_NAME=""
         //获得控件
         webView = findViewById<View>(R.id.wv_webview) as BridgeWebView
 
@@ -104,6 +105,7 @@ open class WebViewActivity : AppCompatActivity() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 //重置这个变量
                 CAN_BACK_KEY_USEFUL=false
+                JS_FUN_NAME=""
                 //使用WebView加载显示url
                 view.loadUrl(url)
                 //返回true
