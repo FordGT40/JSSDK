@@ -23,11 +23,12 @@ public class OpenNewWebViewHandler extends BridgeHandler {
     public void handler(Context context, String data, CallBackFunction function) {
         LogUtils.i("接到的json：" + data);
         try {
+            Boolean closeCurWeb=false;
             JSONObject jsonObject = new JSONObject(data);
             String url = jsonObject.optString("url");
             Boolean hideNavBar = jsonObject.optBoolean("hideNavBar");
             String titleJs = jsonObject.optString("title");
-            Boolean closeCurWeb = jsonObject.optBoolean("closeCurWeb");
+             closeCurWeb = jsonObject.optBoolean("closeCurWeb");
             if ("".equals(url)) {
                 BaseModel baseModel = new BaseModel("url不能为空", -1, "Api调用失败，url不能为空");
                 function.onCallBack(GsonUtils.toJson(baseModel));

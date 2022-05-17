@@ -33,7 +33,7 @@ public class WebViewGoBackHandler extends BridgeHandler {
                  ((AppCompatActivity) context).finish();
                  LogUtils.i("返回3");
              }
-            BaseModel baseModel = new BaseModel("Api调用成功", 0, "Api调用成功");
+            BaseModel baseModel = new BaseModel("Api调用成功", 0, "Api(WebViewGoBackHandler)调用成功");
             function.onCallBack(GsonUtils.toJson(baseModel));
             LogUtils.i("返回4");
         }catch (Exception e){

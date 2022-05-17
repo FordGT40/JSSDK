@@ -46,15 +46,16 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation "androidx.core:core-ktx:1.6.0"
     api 'com.smallbuer:jsbridge:1.0.3'
 
     //https://github.com/LuckSiege/PictureSelector/tree/v2.6.0
 //    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
 //    api 'io.github.lucksiege:pictureselector:v2.7.3-rc09'
 //    api 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.1'
-    api 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.1'
+//    api 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.1'
+    implementation 'io.github.lucksiege:pictureselector:v3.0.9'
     api 'com.blankj:utilcodex:1.29.0'
     implementation 'com.github.HuanTanSheng:EasyPhotos:3.1.3'
 

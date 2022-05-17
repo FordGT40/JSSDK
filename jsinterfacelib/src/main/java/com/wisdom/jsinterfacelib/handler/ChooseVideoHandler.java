@@ -5,26 +5,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.basic.PictureSelector;
+import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.listener.OnResultCallbackListener;
+import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.RequestCallback;
 import com.smallbuer.jsbridge.core.BridgeHandler;
 import com.smallbuer.jsbridge.core.CallBackFunction;
+import com.wisdom.jsinterfacelib.model.BaseModel;
+import com.wisdom.jsinterfacelib.model.VideoBackModel;
 import com.wisdom.jsinterfacelib.utils.Base64Util;
 import com.wisdom.jsinterfacelib.utils.GlideEngine;
 import com.wisdom.jsinterfacelib.utils.ImageUtil;
-import com.wisdom.jsinterfacelib.model.BaseModel;
-import com.wisdom.jsinterfacelib.model.VideoBackModel;
 import com.wisdom.jsinterfacelib.utils.UriUtil;
 import com.wisdom.jsinterfacelib.utils.avoidonresult.AvoidOnResult;
 
@@ -34,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -162,14 +162,14 @@ public class ChooseVideoHandler extends BridgeHandler {
         } else {
             //不用摄像头拍摄
             PictureSelector.create((AppCompatActivity) context)
-                    .openGallery(PictureMimeType.ofVideo())
-                    .isCamera(false)
-                    .videoMaxSecond(maxDuration / 1000)
-                    .maxSelectNum(count)
-                    .imageEngine(GlideEngine.createGlideEngine())
+                    .openGallery(SelectMimeType.ofVideo())
+                    .isDisplayCamera(false)
+                    .setFilterVideoMaxSecond(maxDuration / 1000)
+                    .setMaxSelectNum(count)
+                    .setImageEngine(GlideEngine.createGlideEngine())
                     .forResult(new OnResultCallbackListener<LocalMedia>() {
                         @Override
-                        public void onResult(List<LocalMedia> result) {
+                        public void onResult(ArrayList<LocalMedia> result) {
                             if (result.size() > 0) {
 
                                 if (result.get(0).getDuration() > maxDuration) {

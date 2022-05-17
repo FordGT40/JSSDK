@@ -15,11 +15,11 @@ import androidx.core.content.FileProvider;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.UriUtils;
-import com.huantansheng.easyphotos.ui.dialog.LoadingDialog;
-import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.listener.OnResultCallbackListener;
+import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.RequestCallback;
 import com.smallbuer.jsbridge.core.BridgeHandler;
@@ -142,14 +142,14 @@ public class ChooseImageHandler extends BridgeHandler {
 
 
     private void showImageSelect(final Context context, Boolean hasCamaro, int count, final Boolean finalIsCompressed, final BaseModel[] baseModel, final CallBackFunction function) {
-        PictureSelector.create((AppCompatActivity) context)
-                .openGallery(PictureMimeType.ofImage())
-                .isCamera(hasCamaro)
-                .maxSelectNum(count)
-                .imageEngine(GlideEngine.createGlideEngine())
+        PictureSelector.create(context)
+                .openGallery(SelectMimeType.ofImage())
+                .isDisplayCamera(hasCamaro)
+                .setMaxSelectNum(count)
+                .setImageEngine(GlideEngine.createGlideEngine())
                 .forResult(new OnResultCallbackListener<LocalMedia>() {
                     @Override
-                    public void onResult(List<LocalMedia> result) {
+                    public void onResult(ArrayList<LocalMedia> result) {
                         if (result.size() > 0) {
                             if(result.size()==1 && width.length>0&&height.length>0){
                                 //选了一张图片并且要剪裁到指定宽高，打开剪裁页面
@@ -205,6 +205,7 @@ public class ChooseImageHandler extends BridgeHandler {
                         }
 
                     }
+
 
                     @Override
                     public void onCancel() {
