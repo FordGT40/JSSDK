@@ -19,7 +19,7 @@
         <activity android:name="com.wisdom.jssdk_basic.ScanActivity">
 
         </activity>
-        <activity android:name="com.wisdom.jssdk_basic.MainActivity">
+        <activity android:name="com.wisdom.jssdk_basic.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

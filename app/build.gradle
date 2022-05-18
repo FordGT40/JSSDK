@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 ext {
-    kotlin_version = '1.5.21'
+    kotlin_version = '1.6.10'
 }
 //apply plugin: 'maven-publish'
 //apply plugin: 'com.android.library'
@@ -9,7 +9,7 @@ ext {
 group = 'com.github.FordGT40 '
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 //    buildToolsVersion "29.0.3"
     ndkVersion "21.1.6352462"
 
@@ -17,7 +17,7 @@ android {
         applicationId "com.wisdom.jssdk_basic"
         minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 //    implementation project(path: ':jsinterfacelib')
     implementation project(":jsinterfacelib")
